@@ -34,8 +34,20 @@ module OrbitaCenter
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.autoload_paths << Rails.root.join('lib', 'values').to_s
+
     config.time_zone = 'Krasnoyarsk'
     config.active_record.default_timezone = :local
     config.i18n.default_locale = :ru
+
+    config.generators do |g|
+      g.orm :active_record
+      g.test_framework :rspec,
+                       fixtures: true,
+                       routing_specs: false,
+                       request_specs: false,
+                       controller_spec: true
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
+    end
   end
 end

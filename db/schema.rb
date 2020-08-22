@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2020_08_22_073142) do
     t.string "fio"
     t.integer "dept"
     t.json "user_details"
-    t.json "attributes"
+    t.json "attrs"
     t.integer "rating", limit: 1
     t.datetime "finished_at_plan"
     t.datetime "finished_at"
