@@ -41,3 +41,4 @@ db/sphinx
 .ruby-version
 /public/uploads
 coverage
+.rubocop.yml
