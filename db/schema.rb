@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_074520) do
+ActiveRecord::Schema.define(version: 2020_08_23_122015) do
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "service_id"
@@ -38,7 +38,14 @@ ActiveRecord::Schema.define(version: 2020_08_23_074520) do
     t.index ["tn"], name: "index_claims_on_tn"
   end
 
+  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", limit: 45
+    t.string "description"
+    t.index ["name"], name: "index_roles_on_name"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "role_id", null: false
     t.integer "tn", null: false
     t.integer "id_tn", null: false
     t.string "fio", null: false
@@ -50,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_08_23_074520) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["fio"], name: "index_users_on_fio"
     t.index ["id_tn"], name: "index_users_on_id_tn"
+    t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["tn"], name: "index_users_on_tn"
   end
 
@@ -64,5 +72,6 @@ ActiveRecord::Schema.define(version: 2020_08_23_074520) do
     t.index ["status"], name: "index_works_on_status"
   end
 
+  add_foreign_key "users", "roles"
   add_foreign_key "works", "claims"
 end
