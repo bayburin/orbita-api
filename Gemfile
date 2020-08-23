@@ -6,6 +6,7 @@ ruby '2.5.5'
 gem 'active_model_serializers'
 gem 'awesome_print'
 gem 'colorize'
+gem 'devise'
 gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
