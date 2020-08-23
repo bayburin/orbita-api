@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_22_073142) do
+ActiveRecord::Schema.define(version: 2020_08_23_060853) do
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "service_id"
@@ -38,4 +38,16 @@ ActiveRecord::Schema.define(version: 2020_08_22_073142) do
     t.index ["tn"], name: "index_claims_on_tn"
   end
 
+  create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.string "title", limit: 45
+    t.integer "status", limit: 1
+    t.json "attrs"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id"], name: "index_works_on_claim_id"
+    t.index ["status"], name: "index_works_on_status"
+  end
+
+  add_foreign_key "works", "claims"
 end
