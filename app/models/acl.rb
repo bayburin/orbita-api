@@ -1,0 +1,2 @@
+class Acl < ApplicationRecord
+end
