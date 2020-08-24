@@ -10,13 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_021458) do
+ActiveRecord::Schema.define(version: 2020_08_24_022200) do
 
   create_table "acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_acls_on_name"
   end
 
@@ -51,8 +49,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_021458) do
     t.bigint "group_id", null: false
     t.bigint "acl_id", null: false
     t.boolean "value", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["acl_id"], name: "index_group_acls_on_acl_id"
     t.index ["group_id"], name: "index_group_acls_on_group_id"
     t.index ["role_id"], name: "index_group_acls_on_role_id"
@@ -61,8 +57,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_021458) do
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_groups_on_name"
   end
 
@@ -70,6 +64,14 @@ ActiveRecord::Schema.define(version: 2020_08_24_021458) do
     t.string "name", limit: 45
     t.string "description"
     t.index ["name"], name: "index_roles_on_name"
+  end
+
+  create_table "user_acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "acl_id", null: false
+    t.boolean "value", default: false
+    t.index ["acl_id"], name: "index_user_acls_on_acl_id"
+    t.index ["user_id"], name: "index_user_acls_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -105,6 +107,8 @@ ActiveRecord::Schema.define(version: 2020_08_24_021458) do
   add_foreign_key "group_acls", "acls"
   add_foreign_key "group_acls", "groups"
   add_foreign_key "group_acls", "roles"
+  add_foreign_key "user_acls", "acls"
+  add_foreign_key "user_acls", "users"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"
   add_foreign_key "works", "claims"
