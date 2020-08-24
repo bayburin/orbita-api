@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_020707) do
+ActiveRecord::Schema.define(version: 2020_08_24_021458) do
 
   create_table "acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
@@ -44,6 +44,18 @@ ActiveRecord::Schema.define(version: 2020_08_24_020707) do
     t.index ["priority"], name: "index_claims_on_priority"
     t.index ["status"], name: "index_claims_on_status"
     t.index ["tn"], name: "index_claims_on_tn"
+  end
+
+  create_table "group_acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.bigint "group_id", null: false
+    t.bigint "acl_id", null: false
+    t.boolean "value", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["acl_id"], name: "index_group_acls_on_acl_id"
+    t.index ["group_id"], name: "index_group_acls_on_group_id"
+    t.index ["role_id"], name: "index_group_acls_on_role_id"
   end
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -90,6 +102,9 @@ ActiveRecord::Schema.define(version: 2020_08_24_020707) do
     t.index ["status"], name: "index_works_on_status"
   end
 
+  add_foreign_key "group_acls", "acls"
+  add_foreign_key "group_acls", "groups"
+  add_foreign_key "group_acls", "roles"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"
   add_foreign_key "works", "claims"
