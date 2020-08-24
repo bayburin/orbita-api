@@ -5,7 +5,6 @@ class CreateGroupAcls < ActiveRecord::Migration[6.0]
       t.references :group, foreign_key: true, null: false
       t.references :acl, foreign_key: true, null: false
       t.boolean :value, default: false
-      t.timestamps
     end
   end
 end
