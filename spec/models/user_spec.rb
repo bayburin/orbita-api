@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
 
   it { is_expected.to belong_to(:role) }
   it { is_expected.to belong_to(:group).optional }
+  it { is_expected.to have_many(:histories) }
 
   describe '#role?' do
     it 'return true if user has received role' do

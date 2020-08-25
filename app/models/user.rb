@@ -2,6 +2,8 @@
 class User < ApplicationRecord
   devise
 
+  has_many :histories
+
   belongs_to :role
   belongs_to :group, optional: true
 
