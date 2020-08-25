@@ -1,10 +1,15 @@
 # Класс, описывающий пользователя.
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise
 
   belongs_to :role
-  belongs_to :group
+  belongs_to :group, optional: true
+
+  def role?(role_name)
+    role.name.to_sym == role_name.to_sym
+  end
+
+  def one_of_roles?(*roles)
+    roles.include?(role.name.to_sym)
+  end
 end
