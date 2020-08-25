@@ -12,12 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2020_08_24_041202) do
 
-  create_table "acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "name", limit: 45
-    t.string "description"
-    t.index ["name"], name: "index_acls_on_name"
-  end
-
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "service_id"
     t.integer "app_template_id"
@@ -44,16 +38,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_041202) do
     t.index ["tn"], name: "index_claims_on_tn"
   end
 
-  create_table "group_acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "role_id", null: false
-    t.bigint "group_id", null: false
-    t.bigint "acl_id", null: false
-    t.boolean "value", default: false
-    t.index ["acl_id"], name: "index_group_acls_on_acl_id"
-    t.index ["group_id"], name: "index_group_acls_on_group_id"
-    t.index ["role_id"], name: "index_group_acls_on_role_id"
-  end
-
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
@@ -66,17 +50,9 @@ ActiveRecord::Schema.define(version: 2020_08_24_041202) do
     t.index ["name"], name: "index_roles_on_name"
   end
 
-  create_table "user_acls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "acl_id", null: false
-    t.boolean "value", default: false
-    t.index ["acl_id"], name: "index_user_acls_on_acl_id"
-    t.index ["user_id"], name: "index_user_acls_on_user_id"
-  end
-
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "role_id", null: false
-    t.bigint "group_id", null: false
+    t.bigint "group_id"
     t.integer "tn", null: false
     t.integer "id_tn", null: false
     t.string "fio", null: false
@@ -113,11 +89,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_041202) do
     t.index ["status"], name: "index_works_on_status"
   end
 
-  add_foreign_key "group_acls", "acls"
-  add_foreign_key "group_acls", "groups"
-  add_foreign_key "group_acls", "roles"
-  add_foreign_key "user_acls", "acls"
-  add_foreign_key "user_acls", "users"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"
   add_foreign_key "workers", "users"

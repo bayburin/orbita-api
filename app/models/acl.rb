@@ -1,2 +1,0 @@
-class Acl < ApplicationRecord
-end
