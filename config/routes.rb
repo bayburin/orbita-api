@@ -3,6 +3,14 @@ Rails.application.routes.draw do
 
   root to: 'claims#index'
 
-  resources :works
-  resources :claims
+  namespace :api, constraints: { format: 'json' } do
+    namespace :v1 do
+      get 'welcome', to: 'base#welcome'
+      post 'auth/token'
+      post 'auth/revoke'
+
+      resources :works
+      resources :claims
+    end
+  end
 end

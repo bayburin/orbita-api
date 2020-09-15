@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ClaimsController, type: :controller do
+RSpec.describe Api::V1::ClaimsController, type: :controller do
   describe 'GET #index' do
     before { create_list(:claim, 3) }
 
