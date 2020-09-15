@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  root to: 'claims#index'
+  root to: 'application#welcome'
 
   namespace :api, constraints: { format: 'json' } do
     namespace :v1 do
