@@ -10,6 +10,8 @@ gem 'devise'
 gem 'dotenv-rails'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'interactor'
+gem 'jwt'
 gem 'mysql2', '>= 0.4.4'
 gem 'oj'
 gem 'rack-cors'
@@ -49,7 +51,7 @@ group :development do
 
   gem 'bullet'
   gem 'guard-rspec', require: false
-  gem 'pry-rails'
+  # gem 'pry-rails'
 end
 
 group :test do

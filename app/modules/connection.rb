@@ -1,6 +1,3 @@
-require 'faraday'
-require 'faraday_middleware'
-
 # Модуль для установки соединения с внешним API.
 module Connection
   def self.included(base)
