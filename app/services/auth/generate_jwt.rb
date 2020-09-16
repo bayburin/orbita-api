@@ -4,7 +4,8 @@ module Auth
     include Interactor
 
     def call
-      context.jwt = JWT.encode(context.user.as_json, ENV['AUTH_CENTER_APP_SECRET'], ENV['JWT_HMAC'])
+      user_data = UserSerializer.new(context.user).as_json
+      context.jwt = JsonWebToken.encode(user_data)
     end
   end
 end
