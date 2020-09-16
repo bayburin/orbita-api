@@ -10,6 +10,8 @@ require 'faker'
 require 'rspec/its'
 require 'webmock/rspec'
 
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -37,6 +39,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include JsonSpec::Helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.extend ControllerMacros, type: :controller
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

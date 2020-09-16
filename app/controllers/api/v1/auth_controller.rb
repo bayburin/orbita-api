@@ -1,4 +1,6 @@
 class Api::V1::AuthController < Api::V1::BaseController
+  skip_before_action :authenticate_user!, only: :token
+
   def token
     result = Auth::Authorize.call(code: params[:code])
 
