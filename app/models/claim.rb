@@ -6,5 +6,18 @@ class Claim < ApplicationRecord
   enum priority: { default: 1, low: 2, high: 3 }, _suffix: true
 
   # TODO: Добавить value claim_user
-  # TODO: Добавить value time_info
+
+  def runtime
+    Runtime.new(
+      created_at: created_at,
+      updated_at: updated_at,
+      finished_at_plan: finished_at_plan,
+      finished_at: finished_at
+    )
+  end
+
+  def runtime=(runtime)
+    self.finished_at_plan = runtime.finished_at_plan
+    self.finished_at = runtime.finished_at
+  end
 end

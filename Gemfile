@@ -15,6 +15,7 @@ gem 'jwt'
 gem 'mysql2', '>= 0.4.4'
 gem 'oj'
 gem 'rack-cors'
+gem 'virtus'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
