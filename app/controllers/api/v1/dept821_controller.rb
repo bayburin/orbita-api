@@ -1,11 +1,10 @@
 class Api::V1::Dept821Controller < Api::V1::BaseController
   def create
-    # TODO: Убрать хардкод
+    # TODO: Вынести весь процесс в отдельные команды.
+    # TODO: Убрать хардкод при использовании билдера.
     claim = ClaimBuilder.build do |cl|
-      cl.set_service_id(nil)
-      cl.set_service_name('Отдел 821')
-      cl.set_app_template_id(nil)
-      cl.set_app_template_name('Заявка на размножение КД')
+      cl.set_service(nil, 'Отдел 821')
+      cl.set_app_template(nil, 'Заявка на размножение КД')
     end
     claim_form = ClaimForm.new(claim)
 

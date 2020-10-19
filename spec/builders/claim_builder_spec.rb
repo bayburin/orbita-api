@@ -29,6 +29,13 @@ RSpec.describe ClaimBuilder do
       it { expect(subject.claim.service_name).to eq attr[:service_name] }
     end
 
+    describe '#set_service' do
+      let(:service) { Service.new(id: attr[:service_id], name: attr[:service_name]) }
+      before { subject.set_service(attr[:service_id], attr[:service_name]) }
+
+      it { expect(subject.claim.service).to eq service }
+    end
+
     describe '#set_app_template_id' do
       before { subject.set_app_template_id(attr[:app_template_id]) }
 
@@ -39,6 +46,13 @@ RSpec.describe ClaimBuilder do
       before { subject.set_app_template_name(attr[:app_template_name]) }
 
       it { expect(subject.claim.app_template_name).to eq attr[:app_template_name] }
+    end
+
+    describe '#set_app_template' do
+      let(:app_template) { AppTemplate.new(id: attr[:app_template_id], name: attr[:app_template_name]) }
+      before { subject.set_app_template(attr[:app_template_id], attr[:app_template_name]) }
+
+      it { expect(subject.claim.app_template).to eq app_template }
     end
 
     describe '#set_status' do

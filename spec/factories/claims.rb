@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :claim do
+    service_id { 1 }
+    app_template_id { 2 }
     service_name { "#{Faker::Company.name} service" }
     app_template_name { "#{Faker::Company.name} template name" }
     status { nil }

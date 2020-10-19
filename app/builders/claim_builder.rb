@@ -12,14 +12,13 @@ class ClaimBuilder
     @claim = Claim.new
   end
 
-  # def set_service(service_id, service_name)
-  #   claim.service = Service.new(service_id: service_id, service_name: service_name)
-  # end
+  def set_service(service_id, service_name)
+    claim.service = Service.new(id: service_id, name: service_name)
+  end
 
-  # def set_app_template(app_template)
-  #   claim.app_template_id = app_template.id
-  #   claim.app_template_name = app_template.name
-  # end
+  def set_app_template(app_template_id, app_template_name)
+    claim.app_template = AppTemplate.new(id: app_template_id, name: app_template_name)
+  end
 
   def set_service_id(service_id)
     claim.service_id = service_id

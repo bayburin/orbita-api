@@ -22,4 +22,22 @@ class Claim < ApplicationRecord
     self.finished_at_plan = runtime.finished_at_plan
     self.finished_at = runtime.finished_at
   end
+
+  def service
+    Service.new(id: service_id, name: service_name)
+  end
+
+  def service=(service)
+    self.service_id = service.id
+    self.service_name = service.name
+  end
+
+  def app_template
+    AppTemplate.new(id: app_template_id, name: app_template_name)
+  end
+
+  def app_template=(app_template)
+    self.app_template_id = app_template.id
+    self.app_template_name = app_template.name
+  end
 end
