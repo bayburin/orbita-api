@@ -15,6 +15,8 @@ gem 'jwt'
 gem 'mysql2', '>= 0.4.4'
 gem 'oj'
 gem 'rack-cors'
+gem 'reform'
+gem 'reform-rails'
 gem 'virtus'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

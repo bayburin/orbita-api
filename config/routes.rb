@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
       resources :works
       resources :claims
+      resources :dept821, only: :create
     end
   end
 end
