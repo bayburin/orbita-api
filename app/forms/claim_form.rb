@@ -5,8 +5,8 @@ class ClaimForm < Reform::Form
   property :app_template_id
   property :service_name
   property :app_template_name
-  property :status
-  property :priority
+  property :status, default: ->(**) { :opened }
+  property :priority, default: ->(**) { :default }
   property :id_tn
   property :tn
   property :fio
