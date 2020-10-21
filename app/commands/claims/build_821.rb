@@ -1,5 +1,5 @@
-# Создает объект заявки для 821 отдела.
 module Claims
+  # Создает объект заявки для 821 отдела.
   class Build821
     include Interactor
 

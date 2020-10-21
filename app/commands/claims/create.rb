@@ -1,5 +1,5 @@
-# Создает форму вопроса и сохраняет в базе.
 module Claims
+  # Создает форму вопроса и сохраняет в базе.
   class Create
     include Interactor
 
