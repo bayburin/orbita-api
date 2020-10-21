@@ -20,40 +20,44 @@ class ClaimBuilder
     claim.app_template = AppTemplate.new(id: app_template_id, name: app_template_name)
   end
 
-  def set_service_id(service_id)
+  def service_id=(service_id)
     claim.service_id = service_id
   end
 
-  def set_service_name(service_name)
+  def service_name=(service_name)
     claim.service_name = service_name
   end
 
-  def set_app_template_id(app_template_id)
+  def app_template_id=(app_template_id)
     claim.app_template_id = app_template_id
   end
 
-  def set_app_template_name(app_template_name)
+  def app_template_name=(app_template_name)
     claim.app_template_name = app_template_name
   end
 
-  def set_status(status)
+  def status=(status)
     claim.status = status
   end
 
   # FIXME: Исправить метод, чтобы сохранять все данные, а не только tn
-  def set_user_credentials(tn)
+  def user_credentials=(tn)
     claim.tn = tn
   end
 
-  def set_attrs(attrs)
+  def attrs=(attrs)
     claim.attrs = attrs
   end
 
-  def set_rating(rating)
+  def rating=(rating)
     claim.rating = rating
   end
 
   def set_runtime(finished_at_plan, finished_at)
     claim.runtime = Runtime.new(finished_at_plan: finished_at_plan, finished_at: finished_at)
+  end
+
+  def add_work(work)
+    claim.works << work
   end
 end
