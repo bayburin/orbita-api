@@ -1,6 +1,6 @@
 module Events
   # Класс-обработчик события выполнения некоторого действия во внешней системе (аналог workflow в текущей системе).
-  class ActionEvent
+  class WorkflowEvent
     include Interactor
 
     delegate :event, :work, :workflow, to: :context

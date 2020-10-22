@@ -3,7 +3,7 @@ module Events
   class Handler
     def self.call(params:)
       sw = Switch.new
-      sw.register('action', Events::ActionEvent)
+      sw.register('workflow', Events::WorkflowEvent)
       sw.register('close', Events::CloseEvent)
 
       sw.call(Event.new(params))

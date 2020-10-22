@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Events
-  RSpec.describe ActionEvent do
+  RSpec.describe WorkflowEvent do
     let(:user) { create(:admin) }
     let(:claim) { create(:claim) }
     let(:payload) { { message: 'Test payload message' }.as_json }

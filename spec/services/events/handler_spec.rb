@@ -13,7 +13,7 @@ module Events
       end
 
       it 'register all event types' do
-        expect(sw_dbl).to receive(:register).with('action', ActionEvent)
+        expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
 
         subject.call(params: params)
