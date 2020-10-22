@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_25_085626) do
+ActiveRecord::Schema.define(version: 2020_10_22_030816) do
 
   create_table "action_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
@@ -62,6 +62,19 @@ ActiveRecord::Schema.define(version: 2020_08_25_085626) do
     t.index ["work_id"], name: "index_histories_on_work_id"
   end
 
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.bigint "work_id"
+    t.bigint "sender_id", null: false
+    t.string "type"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id"], name: "index_messages_on_claim_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+    t.index ["work_id"], name: "index_messages_on_work_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
@@ -109,6 +122,9 @@ ActiveRecord::Schema.define(version: 2020_08_25_085626) do
 
   add_foreign_key "histories", "users"
   add_foreign_key "histories", "works"
+  add_foreign_key "messages", "claims"
+  add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "messages", "works"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"
   add_foreign_key "workers", "users"

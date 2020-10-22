@@ -1,8 +1,9 @@
-# Класс, описывающий работу группы по заявке
+# Класс, описывающий работу группы по заявке.
 class Work < ApplicationRecord
   has_many :workers, dependent: :destroy
   has_many :users, through: :workers
   has_many :histories, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   belongs_to :claim
 
