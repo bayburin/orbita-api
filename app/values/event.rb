@@ -3,6 +3,6 @@ class Event
 
   attribute :claim_id, Integer
   attribute :type, String
-  attribute :domainName, String
+  attribute :userName, String
   attribute :payload, Hash
 end
