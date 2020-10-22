@@ -59,8 +59,8 @@ Claim.create(
       },
       finished_at_plan: Time.zone.now + 2.days,
       works: [
-        Work.create(title: Group.first.description, users: [User.first]),
-        Work.create(title: Group.last.description, users: [User.last])
+        Work.create(group: Group.first, users: [User.first]),
+        Work.create(group: Group.last, users: [User.last])
       ]
     },
     {

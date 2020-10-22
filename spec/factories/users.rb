@@ -7,6 +7,10 @@ FactoryBot.define do
     mobile_tel { '8-999-999-99-99' }
     email { Faker::Internet.email }
     is_vacation { false }
+
+    after(:build) do |user, _ev|
+      user.group = Group.first || create(:group)
+    end
   end
 
   factory :admin, parent: :user do

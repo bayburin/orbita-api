@@ -15,7 +15,8 @@ class Api::V1::EventsController < Api::V1::BaseController
     params.require(:event).permit(
       :claim_id,
       :type,
-      :domainName,
+      :user_name,
+      :id_tn,
       payload: {}
     )
   end

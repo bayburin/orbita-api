@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_030816) do
+ActiveRecord::Schema.define(version: 2020_10_22_091041) do
 
   create_table "action_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
@@ -111,12 +111,14 @@ ActiveRecord::Schema.define(version: 2020_10_22_030816) do
 
   create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "claim_id", null: false
+    t.bigint "group_id", null: false
     t.string "title", limit: 45
     t.integer "status", limit: 1
     t.json "attrs"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id"], name: "index_works_on_claim_id"
+    t.index ["group_id"], name: "index_works_on_group_id"
     t.index ["status"], name: "index_works_on_status"
   end
 
@@ -130,4 +132,5 @@ ActiveRecord::Schema.define(version: 2020_10_22_030816) do
   add_foreign_key "workers", "users"
   add_foreign_key "workers", "works"
   add_foreign_key "works", "claims"
+  add_foreign_key "works", "groups"
 end
