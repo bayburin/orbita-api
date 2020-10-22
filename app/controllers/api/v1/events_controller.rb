@@ -5,7 +5,7 @@ class Api::V1::EventsController < Api::V1::BaseController
     if handler.success?
       render json: { message: handler.message }
     else
-      render json: handler.errors, status: :unprocessable_entity
+      render json: { error: handler.error }, status: :unprocessable_entity
     end
   end
 

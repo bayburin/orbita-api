@@ -30,7 +30,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
     end
 
     context 'when handler finished with fail' do
-      let(:handler_dbl) { double(:handler, success?: false, errors: { error: 'errors' }) }
+      let(:handler_dbl) { double(:handler, success?: false, error: { error: 'errors' }) }
 
       it 'respond with error status' do
         post :create, params: params
@@ -41,7 +41,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
       it 'respond with error' do
         post :create, params: params
 
-        expect(response.body).to eq handler_dbl.errors.to_json
+        expect(response.body).to eq({ error: handler_dbl.error }.to_json)
       end
     end
   end
