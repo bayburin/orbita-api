@@ -3,7 +3,7 @@ class Api::V1::EventsController < Api::V1::BaseController
     handler = Events::Handler.call(params: action_params)
 
     if handler.success?
-      render json: { message: handler.message }
+      render json: { message: I18n.t('controllers.api.v1.events.processed_successfully') }
     else
       render json: { error: handler.error }, status: :unprocessable_entity
     end

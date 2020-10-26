@@ -1,0 +1,6 @@
+ru:
+  controllers:
+    api:
+      v1:
+        events:
+          processed_successfully: 'Событие обработано'

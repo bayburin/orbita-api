@@ -8,7 +8,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
     before { allow(Events::Handler).to receive(:call).and_return(handler_dbl) }
 
     context 'when handler finished with success' do
-      let(:handler_dbl) { double(:handler, success?: true, message: 'ok') }
+      let(:handler_dbl) { double(:handler, success?: true, message: I18n.t('controllers.api.v1.events.processed_successfully')) }
 
       it 'call Events::Handler.call method' do
         expect(Events::Handler).to receive(:call).and_return(handler_dbl)
