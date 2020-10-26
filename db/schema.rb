@@ -10,13 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_091041) do
-
-  create_table "action_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "name", limit: 45
-    t.string "template"
-    t.index ["name"], name: "index_action_templates_on_name"
-  end
+ActiveRecord::Schema.define(version: 2020_10_26_042618) do
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "service_id"
@@ -44,6 +38,13 @@ ActiveRecord::Schema.define(version: 2020_10_22_091041) do
     t.index ["tn"], name: "index_claims_on_tn"
   end
 
+  create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", limit: 45
+    t.string "description"
+    t.string "template"
+    t.index ["name"], name: "index_event_types_on_name"
+  end
+
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
@@ -51,13 +52,13 @@ ActiveRecord::Schema.define(version: 2020_10_22_091041) do
   end
 
   create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "event_type_id"
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
     t.text "action"
-    t.integer "action_type", limit: 1
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["action_type"], name: "index_histories_on_action_type"
+    t.index ["event_type_id"], name: "index_histories_on_event_type_id"
     t.index ["user_id"], name: "index_histories_on_user_id"
     t.index ["work_id"], name: "index_histories_on_work_id"
   end
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_091041) do
     t.index ["status"], name: "index_works_on_status"
   end
 
+  add_foreign_key "histories", "event_types"
   add_foreign_key "histories", "users"
   add_foreign_key "histories", "works"
   add_foreign_key "messages", "claims"

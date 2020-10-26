@@ -2,6 +2,7 @@ Claim.destroy_all
 User.destroy_all
 Group.destroy_all
 Role.destroy_all
+EventType.destroy_all
 
 Role.create(name: 'admin', description: 'Администратор')
 Group.create(
@@ -85,6 +86,36 @@ Claim.create(
         'Модель': 'system product name / 16 Гб / nvidia geforce gt 730 / intel(r) core(tm) i5-6400 cpu @ 2.70ghz / wd wd5000azlx-00k2t scsi disk device'
       },
       finished_at_plan: Time.zone.now + 5.days
+    }
+  ]
+)
+
+EventType.create(
+  [
+    {
+      name: 'workflow',
+      description: 'Выполнено действие',
+      template: 'Выполнено действие: {workflow}'
+    },
+    {
+      name: 'comment',
+      description: 'Добавлен комментарий',
+      template: 'Добавлен комментарий: {comment}'
+    },
+    {
+      name: 'add_worker',
+      description: 'Добавлены исполнители',
+      template: 'Добавлены исполнители: {workers}'
+    },
+    {
+      name: 'postpone',
+      description: 'Перенесен срок исполнения',
+      template: 'Срок исполнения перенесен на {datetime}'
+    },
+    {
+      name: 'close',
+      description: 'Заявка закрыта',
+      template: 'Заявка закрыта'
     }
   ]
 )
