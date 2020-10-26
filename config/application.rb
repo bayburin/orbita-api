@@ -38,6 +38,8 @@ module OrbitaCenter
     config.active_record.default_timezone = :local
     config.i18n.default_locale = :ru
 
+    config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
+
     config.generators do |g|
       g.orm :active_record
       g.test_framework :rspec,
