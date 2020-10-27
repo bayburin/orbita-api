@@ -14,7 +14,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   def action_params
     params.require(:event).permit(
       :claim_id,
-      :type,
+      :event_type,
       :user_name,
       :id_tn,
       payload: {}

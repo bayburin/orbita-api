@@ -8,7 +8,7 @@ module Events
       let(:sw_dbl) { double(:sw, register: true, call: true) }
       let(:params) { { foo: :bar } }
       before do
-        allow(Event).to receive(:new).with(**params)
+        allow(EventBuilder).to receive(:build).with(**params)
         allow(Switch).to receive(:new).and_return(sw_dbl)
       end
 
@@ -20,7 +20,7 @@ module Events
       end
 
       it 'call "call" method of Switch instance with Event instance argument' do
-        expect(sw_dbl).to receive(:call).with(Event.new(params))
+        expect(sw_dbl).to receive(:call).with(EventBuilder.build(params))
 
         subject.call(params: params)
       end

@@ -6,7 +6,7 @@ module Events
       sw.register('workflow', Events::WorkflowEvent)
       sw.register('close', Events::CloseEvent)
 
-      sw.call(Event.new(params))
+      sw.call(EventBuilder.build(params))
     end
   end
 end

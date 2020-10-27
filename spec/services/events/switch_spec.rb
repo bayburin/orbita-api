@@ -2,12 +2,13 @@ require 'rails_helper'
 
 module Events
   RSpec.describe Switch do
-    let(:event) { Event.new(type: 'test name') }
+    let!(:event_type) { create(:event_type, :workflow) }
+    let(:event) { EventBuilder.build(event_type: 'workflow') }
     let(:command_dbl) { double(:command, call: true) }
-    before { subject.register(event.type, command_dbl) }
+    before { subject.register(event.event_type.name, command_dbl) }
 
     describe '#register' do
-      it { expect(subject.event_map[event.type]).to eq command_dbl }
+      it { expect(subject.event_map[event.event_type.name]).to eq command_dbl }
     end
 
     describe '#call' do
@@ -18,7 +19,8 @@ module Events
       end
 
       context 'when command not found' do
-        before { allow(event).to receive(:type).and_return('unknown') }
+        let(:event_type_dbl) { double(:event_type, name: 'unknown') }
+        before { allow(event).to receive(:event_type).and_return(event_type_dbl) }
 
         it 'raise error' do
           expect { subject.call(event) }.to raise_error(RuntimeError, 'Неизвестное событие')
