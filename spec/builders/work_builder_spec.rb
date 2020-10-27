@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe WorkBuilder do
+  include_examples 'application builder', Work
+
   describe 'class methods' do
     subject { described_class }
 
@@ -20,19 +22,19 @@ RSpec.describe WorkBuilder do
     describe '#title=' do
       before { subject.title = attr[:title] }
 
-      it { expect(subject.work.title).to eq attr[:title] }
+      it { expect(subject.model.title).to eq attr[:title] }
     end
 
     describe '#status=' do
       before { subject.status = attr[:status] }
 
-      it { expect(subject.work.status).to eq attr[:status] }
+      it { expect(subject.model.status).to eq attr[:status] }
     end
 
     describe '#attrs=' do
       before { subject.attrs = attr[:attrs] }
 
-      it { expect(subject.work.attrs).to eq attr[:attrs] }
+      it { expect(subject.model.attrs).to eq attr[:attrs] }
     end
   end
 end

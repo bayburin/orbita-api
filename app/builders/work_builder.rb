@@ -1,26 +1,18 @@
-# Позволяет построить объект работы для заявки.
-class WorkBuilder
-  attr_reader :work
-
-  def self.build
-    builder = new
-    yield(builder) if block_given?
-    builder.work
-  end
-
-  def initialize
-    @work = Work.new
+# Позволяет построить объект работы для заявки Work.
+class WorkBuilder < ApplicationBuilder
+  def initialize(params = {})
+    @model = Work.new(params)
   end
 
   def title=(title)
-    work.title = title
+    model.title = title
   end
 
   def status=(status)
-    work.status = status
+    model.status = status
   end
 
   def attrs=(attrs)
-    work.attrs = attrs
+    model.attrs = attrs
   end
 end
