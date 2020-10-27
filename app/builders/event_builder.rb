@@ -5,19 +5,23 @@ class EventBuilder < ApplicationBuilder
   end
 
   def claim_id=(claim_id)
-    model.claim_id = claim_id
+    model.claim = Claim.find_by(id: claim_id)
+  end
+
+  def claim=(claim)
+    model.claim = claim
   end
 
   def event_type=(event_type)
     model.event_type = EventType.find_by(name: event_type)
   end
 
-  def user_name=(user_name)
-    model.user_name = user_name
+  def id_tn=(id_tn)
+    model.user = User.find_by(id_tn: id_tn)
   end
 
-  def id_tn=(id_tn)
-    model.id_tn = id_tn
+  def user=(user)
+    model.user = user
   end
 
   def payload=(payload)

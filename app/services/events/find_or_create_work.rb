@@ -4,15 +4,20 @@ module Events
   class FindOrCreateWork
     include Interactor
 
-    delegate :work, :user, :claim, to: :context
+    delegate :event, to: :context
 
     def call
-      context.work = claim.works.where(group_id: user.group_id).first_or_initialize do |w|
-        w.group_id = user.group_id
+      work = event.claim.find_or_initialize_work_by_user(event.user)
+      unless work.workers.exists?(user_id: event.user.id)
+        context.skip_history = false
+        work.users << event.user
       end
-      work.users << user
 
-      context.fail!(error: work.errors.full_messages) unless context.work.save
+      if work.save
+        event.work = work
+      else
+        context.fail!(error: work.errors.full_messages)
+      end
     end
   end
 end

@@ -1,9 +1,9 @@
 class Event
   include Virtus.model
 
-  attribute :claim_id, Integer
+  attribute :claim, Claim
   attribute :event_type, EventType
-  attribute :user_name, String
-  attribute :id_tn, Integer
+  attribute :user, User
+  attribute :work, Work
   attribute :payload, Hash
 end

@@ -8,6 +8,12 @@ class Claim < ApplicationRecord
 
   # TODO: Добавить value claim_user
 
+  def find_or_initialize_work_by_user(user)
+    works.where(group_id: user.group_id).first_or_initialize do |w|
+      w.group_id = user.group_id
+    end
+  end
+
   def runtime
     Runtime.new(
       created_at: created_at,

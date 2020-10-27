@@ -4,12 +4,13 @@ module Events
   RSpec.describe FindOrCreateWork do
     let(:user) { create(:admin) }
     let(:claim) { create(:claim) }
-    subject(:context) { described_class.call(claim: claim, user: user) }
+    let(:event) { EventBuilder.build(claim: claim, user: user) }
+    subject(:context) { described_class.call(event: event) }
 
     describe '.call' do
       it { expect(context).to be_a_success }
       it { expect { context }.to change { Work.count }.by(1) }
-      it { expect(context.work.group_id).to eq user.group_id }
+      it { expect(context.event.work.group_id).to eq user.group_id }
 
       context 'when work was not created' do
         let(:errors_dbl) { double(:errors, full_messages: ['error message']) }
@@ -32,6 +33,12 @@ module Events
           context
 
           expect(work.users).to include(user)
+        end
+
+        context 'and when worker already exist' do
+          before { work.users << user }
+
+          it { expect { context }.not_to change { Worker.count } }
         end
       end
     end

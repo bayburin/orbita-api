@@ -94,27 +94,42 @@ EventType.create(
   [
     {
       name: 'workflow',
-      description: 'Выполнено действие',
+      description: 'Исполнитель выполнил действие',
       template: 'Выполнено действие: {workflow}'
     },
     {
       name: 'comment',
-      description: 'Добавлен комментарий',
+      description: 'Исполнитель добавил комментарий',
       template: 'Добавлен комментарий: {comment}'
     },
-    {
-      name: 'add_worker',
-      description: 'Добавлены исполнители',
-      template: 'Добавлены исполнители: {workers}'
-    },
+    # {
+    #   name: 'add_workers',
+    #   description: 'Исполнитель подключил других исполнителей',
+    #   template: 'Добавлены исполнители: {workers}'
+    # },
+    # {
+    #   name: 'add_self',
+    #   description: 'Исполниитель подключился к работе',
+    #   template: 'Подключился к работе'
+    # },
+    # {
+    #   name: 'remove_workers',
+    #   description: 'Исполнитель исключил других исполнителей',
+    #   template: 'Исключены исполнители: {workers}'
+    # },
+    # {
+    #   name: 'remove_self',
+    #   description: 'Исполниитель отключился от работы',
+    #   template: 'Отключился от работы'
+    # },
     {
       name: 'postpone',
-      description: 'Перенесен срок исполнения',
-      template: 'Срок исполнения перенесен на {datetime}'
+      description: 'Исполнитель перенесен срок исполнения',
+      template: 'Срок исполнения перенесен с {old_datetime} на {new_datetime}'
     },
     {
       name: 'close',
-      description: 'Заявка закрыта',
+      description: 'Исполнитель закрыл заявку',
       template: 'Заявка закрыта'
     }
   ]

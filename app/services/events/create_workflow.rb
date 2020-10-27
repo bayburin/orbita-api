@@ -3,13 +3,13 @@ module Events
   class CreateWorkflow
     include Interactor
 
-    delegate :event, :work, :workflow, :user, :claim, to: :context
+    delegate :event, :workflow, to: :context
 
     def call
-      context.workflow = work.workflows.build(
+      context.workflow = event.work.workflows.build(
         message: event.payload['message'],
-        sender: user,
-        claim: claim
+        sender: event.user,
+        claim: event.claim
       )
 
       context.fail!(error: workflow.errors.full_messages) unless workflow.save
