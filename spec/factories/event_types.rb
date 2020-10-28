@@ -7,6 +7,11 @@ FactoryBot.define do
       template { 'Make workflow {message}' }
     end
 
+    trait :comment do
+      name { 'comment' }
+      template { 'Make comment {message}' }
+    end
+
     trait :add_self do
       name { 'add_self' }
       template { 'Added self' }
