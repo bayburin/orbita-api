@@ -7,7 +7,7 @@ module Events
     let(:user) { create(:admin) }
     let(:claim) { create(:claim, works: [work]) }
     let(:event) { double(:event, claim: claim, user: user, work: work, payload: payload) }
-    subject(:context) { described_class.call(claim: claim, work: work, user: user, event: event) }
+    subject(:context) { described_class.call(event: event) }
 
     describe '.call' do
       it { expect(context).to be_a_success }

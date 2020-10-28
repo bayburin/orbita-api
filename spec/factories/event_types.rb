@@ -11,5 +11,15 @@ FactoryBot.define do
       name { 'add_self' }
       template { 'Added self' }
     end
+
+    trait :postpone do
+      name { 'postpone' }
+      template { 'Postpone claim from {old_date} to {new_date}' }
+    end
+
+    trait :close do
+      name { 'close' }
+      template { 'Close claim' }
+    end
   end
 end
