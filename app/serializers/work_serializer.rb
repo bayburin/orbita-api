@@ -3,4 +3,6 @@ class WorkSerializer < ActiveModel::Serializer
 
   has_many :users
   has_many :histories
+
+  belongs_to :group
 end
