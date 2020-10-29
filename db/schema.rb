@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_042618) do
   end
 
   create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "name", limit: 45
+    t.integer "name", limit: 1
     t.string "description"
     t.string "template"
     t.index ["name"], name: "index_event_types_on_name"

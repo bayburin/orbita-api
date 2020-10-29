@@ -93,12 +93,12 @@ Claim.create(
 EventType.create(
   [
     {
-      name: 'workflow',
+      name: :workflow,
       description: 'Исполнитель выполнил действие',
       template: 'Выполнено действие: {workflow}'
     },
     {
-      name: 'comment',
+      name: :comment,
       description: 'Исполнитель добавил комментарий',
       template: 'Добавлен комментарий: {comment}'
     },
@@ -123,12 +123,12 @@ EventType.create(
     #   template: 'Отключился от работы'
     # },
     {
-      name: 'postpone',
+      name: :postpone,
       description: 'Исполнитель перенесен срок исполнения',
       template: 'Срок исполнения перенесен с {old_datetime} на {new_datetime}'
     },
     {
-      name: 'close',
+      name: :close,
       description: 'Исполнитель закрыл заявку',
       template: 'Заявка закрыта'
     }

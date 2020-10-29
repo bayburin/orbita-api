@@ -3,27 +3,27 @@ FactoryBot.define do
     description { 'Make some action' }
 
     trait :workflow do
-      name { 'workflow' }
+      name { :workflow }
       template { 'Make workflow {message}' }
     end
 
     trait :comment do
-      name { 'comment' }
+      name { :comment }
       template { 'Make comment {message}' }
     end
 
-    trait :add_self do
-      name { 'add_self' }
-      template { 'Added self' }
-    end
+    # trait :add_self do
+    #   name { 'add_self' }
+    #   template { 'Added self' }
+    # end
 
     trait :postpone do
-      name { 'postpone' }
+      name { :postpone }
       template { 'Postpone claim from {old_date} to {new_date}' }
     end
 
     trait :close do
-      name { 'close' }
+      name { :close }
       template { 'Close claim' }
     end
   end
