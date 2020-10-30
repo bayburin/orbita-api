@@ -19,6 +19,8 @@ module Api
 
     def self.user_info(token)
       connect.get do |req|
+        # ? TODO: Возможно понадобится adLogin. В таком случае необходимо перечислить все параметры, которые нужны.
+        # req.params['fields'] = 'adLogin'
         req.url '/api/module/main/login_info'
         req.headers['Authorization'] = "Bearer #{token}"
       end
