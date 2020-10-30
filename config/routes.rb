@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       resources :claims
       resources :dept821, only: :create
       resources :events, only: :create
+      resources :users, only: :index
     end
   end
 end
