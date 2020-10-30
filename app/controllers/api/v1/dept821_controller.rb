@@ -12,6 +12,6 @@ class Api::V1::Dept821Controller < Api::V1::BaseController
   protected
 
   def claim_params
-    params.require(:dept821).permit(:tn, attrs: {})
+    params.require(:dept821).permit(:id_tn, attrs: {})
   end
 end

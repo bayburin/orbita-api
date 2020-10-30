@@ -1,5 +1,5 @@
 module Api
-  # Выполняет запросы к ЦА.
+  # Содержит API для обращения к ЦА.
   class AuthCenter
     include Connection
 

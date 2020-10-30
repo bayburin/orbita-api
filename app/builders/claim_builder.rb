@@ -32,9 +32,18 @@ class ClaimBuilder < ApplicationBuilder
     model.status = status
   end
 
-  # FIXME: Исправить метод, чтобы сохранять все данные, а не только tn
-  def user_credentials=(tn)
-    model.tn = tn
+  def user_credentials=(id_tn)
+    user_info = Employees::Employee.new(:load).load(id_tn)
+
+    if user_info
+      data = user_info['employeePositions'][0]
+
+      model.tn = data['personnelNo']
+      model.fio = "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}"
+      model.dept = data['departmentForAccounting']
+    end
+
+    model.id_tn = id_tn
   end
 
   def attrs=(attrs)
