@@ -28,6 +28,24 @@ class Claim < ApplicationRecord
     self.finished_at = runtime.finished_at
   end
 
+  def claim_user
+    ClaimUser.new(
+      id_tn: id_tn,
+      tn: tn,
+      fio: fio,
+      dept: dept,
+      user_details: user_details
+    )
+  end
+
+  def claim_user=(claim_user)
+    self.id_tn = claim_user.id_tn
+    self.tn = claim_user.tn
+    self.fio = claim_user.fio
+    self.dept = claim_user.dept
+    self.user_details = claim_user.user_details
+  end
+
   def service
     Service.new(id: service_id, name: service_name)
   end

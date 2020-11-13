@@ -34,16 +34,17 @@ class ClaimBuilder < ApplicationBuilder
 
   def user_credentials=(id_tn)
     user_info = Employees::Employee.new(:load).load(id_tn)
+    attrs = { id_tn: id_tn }
 
     if user_info
       data = user_info['employeePositions'][0]
 
-      model.tn = data['personnelNo']
-      model.fio = "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}"
-      model.dept = data['departmentForAccounting']
+      attrs[:tn] = data['personnelNo']
+      attrs[:fio] = "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}"
+      attrs[:dept] = data['departmentForAccounting']
     end
 
-    model.id_tn = id_tn
+    model.claim_user = ClaimUser.new(attrs)
   end
 
   def attrs=(attrs)
