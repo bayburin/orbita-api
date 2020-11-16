@@ -39,6 +39,7 @@ module OrbitaCenter
     config.i18n.default_locale = :ru
 
     config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
+    config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
 
     config.generators do |g|
       g.orm :active_record

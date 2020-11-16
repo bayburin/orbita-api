@@ -1,5 +1,5 @@
 # Позволяет построить объект события Event.
-class EventBuilder < ApplicationBuilder
+class EventBuilder < BaseBuilder
   def initialize(params = {})
     @model = Event.new(params)
   end

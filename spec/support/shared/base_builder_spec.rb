@@ -1,4 +1,4 @@
-RSpec.shared_examples 'application builder' do |klass|
+RSpec.shared_examples 'base builder' do |klass|
   describe 'class methods' do
     subject { described_class }
 

@@ -32,11 +32,21 @@ User.create(
       work_tel: '24-80',
       email: 'drag',
       is_vacation: false
+    },
+    {
+      role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 7141),
+      id_tn: 20092,
+      tn: 15173,
+      fio: 'Сильченко Дмитрий Михайлович',
+      work_tel: '28-74',
+      email: 'dmitry',
+      is_vacation: false
     }
   ]
 )
 
-Claim.create(
+Application.create(
   [
     {
       service_id: 62,
@@ -45,15 +55,18 @@ Claim.create(
       app_template_name: 'Заявка на печать',
       status: :opened,
       priority: :default,
-      id_tn: 25_988,
-      tn: 20_705,
-      fio: 'Шестаков Алексей Петрович',
-      dept: 713,
-      user_details: {
-        email: 'shestakovap@iss-reshetnev.ru',
-        phone: '30-81',
-        mobile: '8-988-455-23-45'
-      },
+      source_snapshot: SourceSnapshot.create(
+        id_tn: 25_988,
+        tn: 20_705,
+        fio: 'Шестаков Алексей Петрович',
+        dept: 713,
+        user_attrs: {
+          email: 'shestakovap@iss-reshetnev.ru',
+          'Телефон': '30-81',
+          'Мобильный': '8-988-455-23-45'
+        },
+        invent_num: '766123'
+      ),
       attrs: {
         'Номер наряда': '2323-ЛЗ от 05.03.2019',
         'Количество копий': '3'
@@ -71,15 +84,18 @@ Claim.create(
       app_template_name: 'Заявка на ремонт',
       status: :opened,
       priority: :default,
-      id_tn: 12_880,
-      tn: 17_664,
-      fio: 'Байбурин Равиль Фаильевич',
-      dept: 714,
-      user_details: {
-        email: 'bayburin@iss-reshetnev.ru',
-        phone: '84-29',
-        mobile: '8-111-222-33-22'
-      },
+      source_snapshot: SourceSnapshot.create(
+        id_tn: 12_880,
+        tn: 17_664,
+        fio: 'Байбурин Равиль Фаильевич',
+        dept: 714,
+        user_attrs: {
+          email: 'shestakovap@iss-reshetnev.ru',
+          'Телефон': '84-29',
+          'Мобильный': '8-111-222-33-22'
+        },
+        invent_num: '155784'
+      ),
       attrs: {
         'Тип': 'Системный блок',
         'Инв. №': '765122',

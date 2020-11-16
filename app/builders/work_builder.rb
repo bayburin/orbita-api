@@ -1,5 +1,5 @@
-# Позволяет построить объект работы для заявки Work.
-class WorkBuilder < ApplicationBuilder
+# Позволяет построить объект работы для объекта работы Work.
+class WorkBuilder < BaseBuilder
   def initialize(params = {})
     @model = Work.new(params)
   end

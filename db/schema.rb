@@ -10,32 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_042618) do
+ActiveRecord::Schema.define(version: 2020_11_16_024847) do
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "service_id"
     t.integer "app_template_id"
     t.string "service_name"
     t.string "app_template_name"
+    t.string "type"
     t.integer "status", limit: 1
     t.integer "priority", limit: 1
-    t.integer "id_tn"
-    t.integer "tn"
-    t.string "fio"
-    t.integer "dept"
-    t.json "user_details"
     t.json "attrs"
     t.integer "rating", limit: 1
     t.datetime "finished_at_plan"
     t.datetime "finished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["dept"], name: "index_claims_on_dept"
-    t.index ["fio"], name: "index_claims_on_fio"
-    t.index ["id_tn"], name: "index_claims_on_id_tn"
     t.index ["priority"], name: "index_claims_on_priority"
     t.index ["status"], name: "index_claims_on_status"
-    t.index ["tn"], name: "index_claims_on_tn"
   end
 
   create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -52,10 +44,10 @@ ActiveRecord::Schema.define(version: 2020_10_26_042618) do
   end
 
   create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "event_type_id"
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
     t.text "action"
+    t.bigint "event_type_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_type_id"], name: "index_histories_on_event_type_id"
@@ -80,6 +72,30 @@ ActiveRecord::Schema.define(version: 2020_10_26_042618) do
     t.string "name", limit: 45
     t.string "description"
     t.index ["name"], name: "index_roles_on_name"
+  end
+
+  create_table "source_snapshots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.integer "id_tn"
+    t.integer "tn"
+    t.string "fio"
+    t.integer "dept"
+    t.json "user_attrs"
+    t.string "dns"
+    t.string "domain_user", limit: 45
+    t.string "source_ip", limit: 15
+    t.string "destination_ip", limit: 15
+    t.string "mac", limit: 48
+    t.string "invent_num", limit: 64
+    t.string "os", limit: 64
+    t.string "netbios", limit: 15
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id"], name: "index_source_snapshots_on_claim_id"
+    t.index ["dept"], name: "index_source_snapshots_on_dept"
+    t.index ["fio"], name: "index_source_snapshots_on_fio"
+    t.index ["id_tn"], name: "index_source_snapshots_on_id_tn"
+    t.index ["tn"], name: "index_source_snapshots_on_tn"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -129,6 +145,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_042618) do
   add_foreign_key "messages", "claims"
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "messages", "works"
+  add_foreign_key "source_snapshots", "claims"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"
   add_foreign_key "workers", "users"

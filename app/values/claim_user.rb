@@ -7,6 +7,6 @@ class ClaimUser
     attribute :tn, Integer
     attribute :fio, String
     attribute :dept, Integer
-    attribute :user_details, Hash
+    attribute :user_attrs, Hash
   end
 end

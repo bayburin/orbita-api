@@ -4,7 +4,7 @@ class CreateHistories < ActiveRecord::Migration[6.0]
       t.references :work, foreign_key: true, null: false
       t.references :user, foreign_key: true, null: false
       t.text :action
-      t.integer :action_type, limit: 1, index: true
+      t.references :event_type, foreign_key: true, null: false
       t.timestamps
     end
   end

@@ -5,7 +5,7 @@ class CreateWorks < ActiveRecord::Migration[6.0]
       t.string :title, limit: 45
       t.integer :status, limit: 1, index: true
       t.json :attrs
-      t.timestamps 
+      t.timestamps
     end
   end
 end

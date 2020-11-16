@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EventBuilder do
-  include_examples 'application builder', Event
+  include_examples 'base builder', Event
 
   describe 'instance methods' do
     let!(:claim) { create(:claim) }
