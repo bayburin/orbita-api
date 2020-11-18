@@ -4,7 +4,10 @@ RSpec.describe Api::V1::ClaimsController, type: :controller do
   sign_in_user
 
   describe 'GET #index' do
-    before { create_list(:claim, 3) }
+    before do
+      create_list(:application, 2)
+      create_list(:case, 2)
+    end
 
     it 'repond with all claims' do
       get :index

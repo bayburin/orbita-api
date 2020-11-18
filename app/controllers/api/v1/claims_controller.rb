@@ -1,5 +1,18 @@
 class Api::V1::ClaimsController < Api::V1::BaseController
   def index
-    render json: Claim.all.includes(works: [:group, { histories: :event_type }]), include: 'works.histories.event_type,works.group,works.workers'
+    claims = Claim.includes(works: [:group, :workers, { histories: :event_type }]).group_by(&:type).map do |type, claims_arr|
+      case type
+      when 'Application'
+        ActiveModelSerializers::SerializableResource.new(
+          claims_arr, each_serializer: ApplicationSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
+        )
+      when 'Case'
+        ActiveModelSerializers::SerializableResource.new(
+          claims_arr, each_serializer: CaseSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
+        )
+      end
+    end
+
+    render json: claims.as_json.flatten.sort_by { |claim| claim[:id] }
   end
 end
