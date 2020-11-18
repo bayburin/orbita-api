@@ -1,9 +1,9 @@
 class Api::V1::Dept821Controller < Api::V1::BaseController
   def create
-    create = Claims::Place821.call(params: claim_params)
+    create = Applications::Place821.call(params: application_params)
 
     if create.success?
-      render json: create.claim
+      render json: create.application
     else
       render json: create.errors, status: :unprocessable_entity
     end
@@ -11,7 +11,7 @@ class Api::V1::Dept821Controller < Api::V1::BaseController
 
   protected
 
-  def claim_params
+  def application_params
     params.require(:dept821).permit(:id_tn, attrs: {})
   end
 end

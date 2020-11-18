@@ -9,7 +9,7 @@ class SourceSnapshotBuilder < BaseBuilder
     attrs = { id_tn: id_tn }
 
     if user_info
-      data = user_info['employeePositions'][0]
+      data = user_info['employeePositions'].first
 
       attrs[:tn] = data['personnelNo']
       attrs[:fio] = "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}"

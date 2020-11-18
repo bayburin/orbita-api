@@ -9,13 +9,13 @@ FactoryBot.define do
     finished_at { nil }
   end
 
-  factory :application, parent: :claim do
+  factory :application, parent: :claim, class: Application do
     service_id { 1 }
     app_template_id { 2 }
     service_name { "#{Faker::Company.name} service" }
     app_template_name { "#{Faker::Company.name} template name" }
   end
 
-  factory :case, parent: :claim do
+  factory :case, parent: :claim, class: Case do
   end
 end
