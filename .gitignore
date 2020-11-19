@@ -43,3 +43,10 @@ db/sphinx
 coverage
 .rubocop.yml
 .vscode
+
+vendor
+
+# Docker
+.docker
+.docker/
+Dockerfile
