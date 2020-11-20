@@ -42,6 +42,16 @@ User.create(
       work_tel: '28-74',
       email: 'dmitry',
       is_vacation: false
+    },
+    {
+      role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 713),
+      id_tn: 25988,
+      tn: 20705,
+      fio: 'Шестаков Алексей Петрович',
+      work_tel: '30-81',
+      email: 'shestakovap',
+      is_vacation: false
     }
   ]
 )

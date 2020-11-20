@@ -40,6 +40,7 @@ module OrbitaCenter
 
     config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
+    config.autoload_paths << Rails.root.join('app', 'models', 'message').to_s
 
     config.generators do |g|
       g.orm :active_record
