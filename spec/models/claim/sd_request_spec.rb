@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Application, type: :model do
+RSpec.describe SdRequest, type: :model do
   it { is_expected.to be_kind_of Claim }
 
   describe '#service' do

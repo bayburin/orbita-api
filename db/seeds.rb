@@ -8,7 +8,9 @@ Role.create(name: 'admin', description: 'Администратор')
 Group.create(
   [
     { name: 7141, description: 'Сектор ИТ' },
-    { name: 7142, description: 'Ремонт ВТ' }
+    { name: 7142, description: 'Ремонт ВТ' },
+    { name: 713, description: 'Отдел 713' },
+    { name: 821, description: 'Бюро 1431' }
   ]
 )
 User.create(
@@ -52,11 +54,21 @@ User.create(
       work_tel: '30-81',
       email: 'shestakovap',
       is_vacation: false
+    },
+    {
+      role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 821),
+      id_tn: 6283,
+      tn: 6283,
+      fio: 'Михальченков Максим Евгеньевич',
+      work_tel: '67-40',
+      email: 'mihalchenkovme',
+      is_vacation: false
     }
   ]
 )
 
-Application.create(
+SdRequest.create(
   [
     {
       service_id: 62,

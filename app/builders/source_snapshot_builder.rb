@@ -2,6 +2,8 @@
 class SourceSnapshotBuilder < BaseBuilder
   def initialize(params = {})
     @model = SourceSnapshot.new(params)
+
+    super()
   end
 
   def user_credentials=(id_tn)

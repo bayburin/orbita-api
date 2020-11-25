@@ -2,6 +2,8 @@
 class WorkBuilder < BaseBuilder
   def initialize(params = {})
     @model = Work.new(params)
+
+    super()
   end
 
   def title=(title)

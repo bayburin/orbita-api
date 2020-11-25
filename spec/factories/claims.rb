@@ -9,7 +9,7 @@ FactoryBot.define do
     finished_at { nil }
   end
 
-  factory :application, parent: :claim, class: Application do
+  factory :sd_request, parent: :claim, class: SdRequest do
     service_id { 1 }
     app_template_id { 2 }
     service_name { "#{Faker::Company.name} service" }

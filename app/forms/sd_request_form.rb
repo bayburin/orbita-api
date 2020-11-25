@@ -1,5 +1,5 @@
 # Описывает форму, которая создает заявку.
-class ApplicationForm < Reform::Form
+class SdRequestForm < Reform::Form
   property :id_tn, virtual: true
   property :ip, virtual: true
   property :invent_num, virtual: true

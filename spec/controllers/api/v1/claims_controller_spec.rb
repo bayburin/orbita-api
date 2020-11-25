@@ -5,7 +5,7 @@ RSpec.describe Api::V1::ClaimsController, type: :controller do
 
   describe 'GET #index' do
     before do
-      create_list(:application, 2)
+      create_list(:sd_request, 2)
       create_list(:case, 2)
     end
 

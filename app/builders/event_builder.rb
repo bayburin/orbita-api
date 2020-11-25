@@ -2,6 +2,8 @@
 class EventBuilder < BaseBuilder
   def initialize(params = {})
     @model = Event.new(params)
+
+    super()
   end
 
   def claim_id=(claim_id)

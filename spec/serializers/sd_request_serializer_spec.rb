@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationSerializer, type: :model do
-  let(:application) { create(:application) }
-  subject { described_class.new(application).to_json }
+RSpec.describe SdRequestSerializer, type: :model do
+  let(:sd_request) { create(:sd_request) }
+  subject { described_class.new(sd_request).to_json }
 
   it { expect(described_class).to be < ClaimSerializer }
 

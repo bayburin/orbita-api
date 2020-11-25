@@ -1,7 +1,9 @@
 # Позволяет построить объект заявки Application.
-class ApplicationBuilder < BaseBuilder
+class SdRequestBuilder < BaseBuilder
   def initialize(params = {})
-    @model = Application.new(params)
+    @model = SdRequest.new(params)
+
+    super()
   end
 
   def set_service(service_id, service_name)

@@ -2,9 +2,9 @@ class Api::V1::ClaimsController < Api::V1::BaseController
   def index
     claims = Claim.includes(works: [:group, :workers, { histories: :event_type }]).group_by(&:type).map do |type, claims_arr|
       case type
-      when 'Application'
+      when 'SdRequest'
         ActiveModelSerializers::SerializableResource.new(
-          claims_arr, each_serializer: ApplicationSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
+          claims_arr, each_serializer: SdRequestSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
         )
       when 'Case'
         ActiveModelSerializers::SerializableResource.new(
