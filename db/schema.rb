@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_024847) do
     t.string "destination_ip", limit: 15
     t.string "mac", limit: 48
     t.string "invent_num", limit: 64
+    t.integer "svt_item_id"
     t.string "os", limit: 64
     t.string "netbios", limit: 15
     t.datetime "created_at", precision: 6, null: false

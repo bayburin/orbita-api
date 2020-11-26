@@ -13,6 +13,7 @@ class SourceSnapshotForm < Reform::Form
   property :destination_ip
   property :mac
   property :invent_num
+  property :svt_item_id
   property :os
   property :netbios
 end

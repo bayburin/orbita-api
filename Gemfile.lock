@@ -328,6 +328,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   fuubar
+  guard
   guard-rspec
   interactor
   json_spec

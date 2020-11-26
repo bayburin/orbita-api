@@ -53,6 +53,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'bullet'
+  gem 'guard'
   gem 'guard-rspec', require: false
   # gem 'pry-rails'
 end

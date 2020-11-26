@@ -1,9 +1,5 @@
 # Описывает форму, которая создает заявку.
 class SdRequestForm < Reform::Form
-  property :id_tn, virtual: true
-  property :ip, virtual: true
-  property :invent_num, virtual: true
-
   property :id
   property :service_id
   property :app_template_id
@@ -12,12 +8,22 @@ class SdRequestForm < Reform::Form
   property :status, default: ->(**) { :opened }
   property :priority, default: ->(**) { :default }
   property :attrs
-  property :source_snapshot, form: SourceSnapshotForm, populate_if_empty: :populate_source_snapshot!
-  collection :works, form: WorkForm, populate_if_empty: WorkForm
+  property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
+  collection :works, form: WorkForm, populate_if_empty: Work, populator: :populate_works!
 
-  def populate_source_snapshot!(_options)
-    SourceSnapshotBuilder.build do |ss|
-      ss.user_credentials = id_tn
+  validates :service_id, :service_name, :attrs, presence: true
+
+  # Обработка источника заявки
+  def populate_source_snapshot!(fragment:, **)
+    self.source_snapshot = SourceSnapshotBuilder.build do |ss|
+      ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
     end
+  end
+
+  # Обработка списка работ
+  def populate_works!(fragment:, **)
+    item = works.find { |work| work.id == fragment[:id].to_i }
+
+    item || works.append(Work.new)
   end
 end
