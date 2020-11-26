@@ -11,7 +11,7 @@ class SdRequestForm < Reform::Form
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
   collection :works, form: WorkForm, populate_if_empty: Work, populator: :populate_works!
 
-  validates :service_id, :service_name, :attrs, presence: true
+  validates :service_name, :attrs, presence: true
 
   # Обработка источника заявки
   def populate_source_snapshot!(fragment:, **)

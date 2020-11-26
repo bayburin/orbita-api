@@ -5,7 +5,7 @@ class Api::V1::EventsController < Api::V1::BaseController
     if handler.success?
       render json: { message: I18n.t('controllers.api.v1.events.processed_successfully') }
     else
-      render json: { error: handler.error }, status: :unprocessable_entity
+      render json: handler.error, status: :unprocessable_entity
     end
   end
 

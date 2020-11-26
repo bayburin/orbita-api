@@ -41,7 +41,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
       it 'respond with error' do
         post :create, params: params
 
-        expect(response.body).to eq({ error: handler_dbl.error }.to_json)
+        expect(response.body).to eq(handler_dbl.error.to_json)
       end
     end
   end

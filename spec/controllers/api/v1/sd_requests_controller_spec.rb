@@ -6,15 +6,13 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
   describe 'POST #create' do
     let(:params) { { sd_request: { service_id: 1 } } }
     let!(:sd_request) { create(:sd_request) }
-    before do
-      allow(SdRequestForm).to receive(:new).and_return(create_form_dbl)
-    end
+    before { allow(SdRequests::Create).to receive(:call).and_return(create_form_dbl) }
 
     context 'when form saved data' do
-      let(:create_form_dbl) { double(:create_form, validate: true, save: true, model: sd_request) }
+      let(:create_form_dbl) { double(:create_form, success?: true, sd_request: sd_request) }
 
-      it 'create instnace of SdRequestForm' do
-        expect(SdRequestForm).to receive(:new).with(an_instance_of(SdRequest))
+      it 'call Events::Handler.call method' do
+        expect(SdRequests::Create).to receive(:call).and_return(create_form_dbl)
 
         post :create, params: params
       end
@@ -28,13 +26,12 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with created model' do
         post :create, params: params
 
-        expect(parse_json(response.body)['id']).to eq create_form_dbl.model.id
+        expect(parse_json(response.body)['id']).to eq create_form_dbl.sd_request.id
       end
-
     end
 
     context 'when form finished with fail' do
-      let(:create_form_dbl) { double(:create_form, validate: true, save: false, errors: { error: 'errors' }) }
+      let(:create_form_dbl) { double(:create_form, success?: false, error: 'errors') }
 
       it 'respond with error status' do
         post :create, params: params
@@ -45,7 +42,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with error' do
         post :create, params: params
 
-        expect(response.body).to eq({ error: create_form_dbl.errors }.to_json)
+        expect(response.body).to eq(create_form_dbl.error)
       end
     end
   end

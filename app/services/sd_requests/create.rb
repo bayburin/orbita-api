@@ -6,7 +6,7 @@ module SdRequests
     def call
       create_form = SdRequestForm.new(context.sd_request || SdRequest.new)
 
-      if create_form.validate(context.params.merge(source_snapshot: {})) && create_form.save
+      if create_form.validate(context.params) && create_form.save
         context.sd_request = create_form.model
       else
         context.fail!(errors: create_form.errors)

@@ -11,6 +11,8 @@ module SdRequests
         cl.set_service(nil, 'Отдел 821')
         cl.set_app_template(nil, 'Заявка на размножение КД')
       end
+
+      params.merge!(source_snapshot: { id_tn: params[:id_tn] })
     end
   end
 end

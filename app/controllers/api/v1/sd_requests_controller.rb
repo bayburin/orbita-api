@@ -1,11 +1,11 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def create
-    create_form = SdRequestForm.new(SdRequest.new)
+    create = SdRequests::Create.call(params: sd_request_params)
 
-    if create_form.validate(sd_request_params) && create_form.save
-      render json: create_form.model, status: 200
+    if create.success?
+      render json: create.sd_request
     else
-      render json: { error: create_form.errors }, status: 422
+      render json: create.error, status: :unprocessable_entity
     end
   end
 
