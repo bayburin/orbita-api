@@ -55,6 +55,7 @@ group :development do
   gem 'bullet'
   gem 'guard'
   gem 'guard-rspec', require: false
+  gem 'solargraph'
   # gem 'pry-rails'
 end
 
