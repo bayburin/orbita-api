@@ -10,6 +10,7 @@ class SdRequestForm < Reform::Form
   property :attrs
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
   collection :works, form: WorkForm, populate_if_empty: Work, populator: :populate_works!
+  collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
   validates :service_name, :attrs, presence: true
 

@@ -31,6 +31,11 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :claim_id,
         :group_id,
         { users: [:id] }
+      ],
+      attachments: [
+        :id,
+        :claim_id,
+        :attachment
       ]
     )
   end

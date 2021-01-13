@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_024847) do
+ActiveRecord::Schema.define(version: 2021_01_12_094002) do
+
+  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.string "document"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id"], name: "index_attachments_on_claim_id"
+  end
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "service_id"
@@ -140,6 +148,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_024847) do
     t.index ["status"], name: "index_works_on_status"
   end
 
+  add_foreign_key "attachments", "claims"
   add_foreign_key "histories", "event_types"
   add_foreign_key "histories", "users"
   add_foreign_key "histories", "works"

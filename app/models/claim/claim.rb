@@ -2,6 +2,7 @@
 class Claim < ApplicationRecord
   has_many :works, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :attachments, dependent: :destroy
   has_one :source_snapshot, dependent: :destroy
 
   enum priority: { default: 1, low: 2, high: 3 }, _suffix: true

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:works).dependent(:destroy) }
   it { is_expected.to have_many(:comments).dependent(:destroy) }
+  it { is_expected.to have_many(:attachments).dependent(:destroy) }
 
   describe '#runtime' do
     it { expect(subject.runtime).to be_instance_of(Runtime) }

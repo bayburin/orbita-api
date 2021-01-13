@@ -5,6 +5,8 @@ ruby '2.7.2'
 
 gem 'active_model_serializers'
 gem 'awesome_print'
+gem 'carrierwave'
+gem 'carrierwave-i18n'
 gem 'colorize'
 gem 'devise'
 gem 'dotenv-rails'
