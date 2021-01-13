@@ -5,6 +5,7 @@ class SdRequestForm < Reform::Form
   property :app_template_id
   property :service_name
   property :app_template_name
+  property :description
   property :status, default: ->(**) { :opened }
   property :priority, default: ->(**) { :default }
   property :attrs

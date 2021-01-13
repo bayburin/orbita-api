@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.string "service_name"
     t.string "app_template_name"
     t.string "type"
+    t.text "description"
     t.integer "status", limit: 1
     t.integer "priority", limit: 1
     t.json "attrs"

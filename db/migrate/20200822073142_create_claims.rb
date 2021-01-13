@@ -6,6 +6,7 @@ class CreateClaims < ActiveRecord::Migration[6.0]
       t.string :service_name
       t.string :app_template_name
       t.string :type
+      t.text :description
       t.integer :status, limit: 1, index: true
       t.integer :priority, limit: 1, index: true
       t.json :attrs

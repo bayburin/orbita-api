@@ -57,6 +57,16 @@ User.create(
     },
     {
       role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 713),
+      id_tn: 25410,
+      tn: 20834,
+      fio: 'Пермякова Евгения Константиновна',
+      work_tel: '67-10',
+      email: 'permyakovaek',
+      is_vacation: false
+    },
+    {
+      role: Role.find_by(name: :admin),
       group: Group.find_by(name: 821),
       id_tn: 6283,
       tn: 6283,
@@ -75,6 +85,7 @@ SdRequest.create(
       service_name: 'Печать',
       app_template_id: 5,
       app_template_name: 'Заявка на печать',
+      description: '',
       status: :opened,
       priority: :default,
       source_snapshot: SourceSnapshot.create(
@@ -104,6 +115,7 @@ SdRequest.create(
       service_name: 'Ремонт и обслуживание компьютера',
       app_template_id: 6,
       app_template_name: 'Заявка на ремонт',
+      description: '',
       status: :opened,
       priority: :default,
       source_snapshot: SourceSnapshot.create(

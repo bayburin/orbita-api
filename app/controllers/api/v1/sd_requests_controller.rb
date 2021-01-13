@@ -18,6 +18,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       :service_name,
       :app_template_id,
       :app_template_name,
+      :description,
       :priority,
       :finished_at_plan,
       attrs: {},
