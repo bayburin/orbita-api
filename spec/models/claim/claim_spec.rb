@@ -5,6 +5,26 @@ RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
 
+  describe '#find_or_initialize_work_by_user' do
+    let(:user) { create(:admin) }
+
+    it 'return new work' do
+      expect(subject.find_or_initialize_work_by_user(user)).to be_instance_of(Work)
+    end
+
+    it 'set group_id from user group' do
+      expect(subject.find_or_initialize_work_by_user(user).group_id).to eq(user.group_id)
+    end
+
+    context 'when work exists' do
+      let!(:work) { create(:work, group: user.group, claim: subject) }
+
+      it 'return work which includes user' do
+        expect(subject.find_or_initialize_work_by_user(user)).to eq(work)
+      end
+    end
+  end
+
   describe '#runtime' do
     it { expect(subject.runtime).to be_instance_of(Runtime) }
   end

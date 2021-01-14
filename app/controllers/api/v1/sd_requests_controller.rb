@@ -33,11 +33,12 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :group_id,
         { users: [:id] }
       ],
-      attachments: [
-        :id,
-        :claim_id,
-        :attachment
-      ]
+      attachments: %i[
+        id
+        claim_id
+        attachment
+      ],
+      users: :id
     )
   end
 end

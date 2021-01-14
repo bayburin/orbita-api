@@ -10,12 +10,19 @@ class SdRequestForm < Reform::Form
   property :priority, default: ->(**) { :default }
   property :attrs
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
-  collection :works, form: WorkForm, populate_if_empty: Work, populator: :populate_works!
+  collection :users, virtual: true
+  collection :works, form: WorkForm
   collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
   validates :service_name, :attrs, presence: true
 
-  # Обработка источника заявки
+  def validate(params)
+    super(params)
+
+    processing_users
+  end
+
+  # Обрабатывает источник заявки
   def populate_source_snapshot!(fragment:, **)
     self.source_snapshot = SourceSnapshotBuilder.build do |ss|
       ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
@@ -23,9 +30,22 @@ class SdRequestForm < Reform::Form
   end
 
   # Обработка списка работ
-  def populate_works!(fragment:, **)
-    item = works.find { |work| work.id == fragment[:id].to_i }
+  # def populate_works!(fragment:, **)
+  #   item = works.find { |work| work.id == fragment[:id].to_i }
 
-    item || works.append(Work.new)
+  #   item || works.append(Work.new)
+  # end
+
+  # Обрабатывает список пользователей и создает работы по заявке, если необходимо
+  def processing_users
+    user_instances = User.where(id: users.map { |u| u[:id] })
+
+    # TODO: Тоже самое в классе FindOrCreateWork
+    user_instances.each do |user|
+      work = model.find_or_initialize_work_by_user(user)
+      work.workers.build(user: user) unless work.workers.exists?(user_id: user.id)
+
+      works.append(work)
+    end
   end
 end
