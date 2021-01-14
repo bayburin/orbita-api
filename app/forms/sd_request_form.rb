@@ -9,6 +9,7 @@ class SdRequestForm < Reform::Form
   property :status, default: ->(**) { :opened }
   property :priority, default: ->(**) { :default }
   property :attrs
+  property :finished_at_plan, default: ->(**) { Time.zone.now + 3.days }
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
   collection :users, virtual: true
   collection :works, form: WorkForm

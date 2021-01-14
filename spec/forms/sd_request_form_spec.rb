@@ -8,6 +8,18 @@ RSpec.describe SdRequestForm, type: :model do
     it { is_expected.to validate_presence_of(:service_name) }
     it { is_expected.to validate_presence_of(:attrs) }
 
+    describe 'default values' do
+      let!(:time) { Time.parse('2020-08-20 10:00:15') }
+      before do
+        allow(Time.zone).to receive(:now).and_return(time)
+        subject.validate({})
+      end
+
+      it { expect(subject.status).to eq(:opened) }
+      it { expect(subject.priority).to eq(:default) }
+      it { expect(subject.finished_at_plan).to eq(Time.zone.now + 3.days) }
+    end
+
     describe '#populate_source_snapshot!' do
       let(:ss_params) { { id_tn: 123 } }
       let(:params) { attributes_for(:sd_request, source_snapshot: ss_params) }
