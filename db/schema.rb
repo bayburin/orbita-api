@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "claim_id", null: false
-    t.string "document"
+    t.string "attachment"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id"], name: "index_attachments_on_claim_id"
