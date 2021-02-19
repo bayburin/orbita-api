@@ -1,0 +1,100 @@
+version: "3.9"
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: docker/app/app.dev.Dockerfile
+    args:
+      RUBY_VERSION: 2.7.2
+      BUNDLER_VERSION: 2.1.4
+      RAILS_ROOT: /app
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  volumes:
+    - .:/app:cached
+    - bundle:/usr/local/bundle
+    - rails_cache:/app/tmp/cache
+  environment:
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+  stdin_open: true
+  tty: true
+  depends_on:
+    - mysql
+    - redis
+  env_file:
+    - .env
+
+services:
+  runner:
+    <<: *backend
+    command: /bin/bash
+
+  app:
+    <<: *backend
+    restart: unless-stopped
+    ports:
+      - 3000
+    command: bash -c "rm -rf /app/tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+
+  nginx:
+    image: nginx:1.19.6-alpine
+    restart: unless-stopped
+    ports:
+      - 9080:80
+      - 9443:443
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+      - ./docker/nginx/nginx.dev.conf:/etc/nginx/conf.d/nginx.dev.conf
+      - ./docker/tls/:/etc/pki/tls/nginx/
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DEV_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DEV_DATABASE}
+      MYSQL_USER: ${MYSQL_DEV_USER}
+      MYSQL_PASSWORD: ${MYSQL_DEV_PASSWORD}
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  mysql_test:
+    image: mysql:5.7
+    volumes:
+      - mysql-test:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
+      MYSQL_USER: ${MYSQL_TEST_USER}
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  redis:
+    image: redis:5.0
+    volumes:
+      - redis:/data
+    restart: always
+
+  guard:
+    <<: *backend
+    depends_on:
+      - mysql-test
+    command: bundle exec guard
+
+volumes:
+  bundle:
+  rails_cache:
+  mysql:
+  mysql-test:
+  redis:

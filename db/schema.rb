@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2021_01_12_094002) do
 
-  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
     t.string "attachment"
     t.datetime "created_at", precision: 6, null: false
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["claim_id"], name: "index_attachments_on_claim_id"
   end
 
-  create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "service_id"
     t.integer "app_template_id"
     t.string "service_name"
@@ -39,20 +39,20 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["status"], name: "index_claims_on_status"
   end
 
-  create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "name", limit: 1
     t.string "description"
     t.string "template"
     t.index ["name"], name: "index_event_types_on_name"
   end
 
-  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
     t.index ["name"], name: "index_groups_on_name"
   end
 
-  create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
     t.text "action"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["work_id"], name: "index_histories_on_work_id"
   end
 
-  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
     t.bigint "work_id"
     t.bigint "sender_id", null: false
@@ -77,13 +77,13 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["work_id"], name: "index_messages_on_work_id"
   end
 
-  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
     t.index ["name"], name: "index_roles_on_name"
   end
 
-  create_table "source_snapshots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "source_snapshots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
     t.integer "id_tn"
     t.integer "tn"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["tn"], name: "index_source_snapshots_on_tn"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "group_id"
     t.integer "tn", null: false
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["tn"], name: "index_users_on_tn"
   end
 
-  create_table "workers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "workers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["work_id"], name: "index_workers_on_work_id"
   end
 
-  create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
     t.bigint "group_id", null: false
     t.string "title", limit: 45

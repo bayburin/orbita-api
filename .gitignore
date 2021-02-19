@@ -49,4 +49,3 @@ vendor
 # Docker
 .docker
 .docker/
-Dockerfile

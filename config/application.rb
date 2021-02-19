@@ -24,6 +24,11 @@ module OrbitaCenter
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    ENV['http_proxy'] = ""
+    ENV['https_proxy'] = ""
+    ENV['HTTP_PROXY'] = ""
+    ENV['HTTPS_PROXY'] = ""
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
@@ -37,6 +42,7 @@ module OrbitaCenter
     config.time_zone = 'Krasnoyarsk'
     config.active_record.default_timezone = :local
     config.i18n.default_locale = :ru
+    config.hosts << "localhost.iss-reshetnev.ru"
 
     config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
