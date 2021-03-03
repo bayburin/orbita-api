@@ -1,0 +1,12 @@
+default: &default
+  url: <%= ENV.fetch('REDIS_URL') { "redis://localhost:6379" } %>
+  db: <%= ENV.fetch('REDIS_DB') { 11 } %>
+
+development:
+  <<: *default
+
+test:
+  adapter: async
+
+production:
+  <<: *default

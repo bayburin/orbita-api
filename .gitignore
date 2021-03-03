@@ -28,9 +28,9 @@
 .idea/
 .rspec
 /config/database.yml
-/config/redis.yml
+# /config/redis.yml
 config/database.yml
-config/redis.yml
+# config/redis.yml
 config/secrets.yml
 config/development.sphinx.conf
 config/test.sphinx.conf

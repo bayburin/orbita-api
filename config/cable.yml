@@ -1,10 +1,14 @@
+default: &default
+  adapter: redis
+  url: <%= "#{ ENV.fetch('REDIS_URL') { "redis://localhost:6379" } }/1/cable" %>
+
 development:
-  adapter: async
+  <<: *default
+  channel_prefix: orbita_dev
 
 test:
   adapter: test
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: orbita_center_production
+  <<: *default
+  channel_prefix: orbita_prod
