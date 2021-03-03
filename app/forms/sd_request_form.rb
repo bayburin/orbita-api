@@ -15,7 +15,7 @@ class SdRequestForm < Reform::Form
   collection :works, form: WorkForm
   collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
-  validates :service_name, :attrs, presence: true
+  validates :description, :attrs, presence: true
 
   def validate(params)
     super(params)

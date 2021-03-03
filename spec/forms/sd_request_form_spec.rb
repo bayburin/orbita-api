@@ -6,7 +6,7 @@ RSpec.describe SdRequestForm, type: :model do
     subject { described_class.new(model) }
     let(:params) { { sd_request: attributes_for(:sd_request) } }
 
-    it { is_expected.to validate_presence_of(:service_name) }
+    it { is_expected.to validate_presence_of(:description) }
     it { is_expected.to validate_presence_of(:attrs) }
 
     describe 'default values' do
