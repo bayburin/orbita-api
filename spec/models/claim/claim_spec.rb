@@ -5,6 +5,15 @@ RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
 
+  describe '.default_finished_at_plan' do
+    let!(:time) { Time.parse('2020-08-20 10:00:15') }
+    before { allow(Time.zone).to receive(:now).and_return(time) }
+
+    it 'set +3 days to finished_at_plan attribute' do
+      expect(described_class.default_finished_at_plan).to eq Time.zone.now + 3.days
+    end
+  end
+
   describe '#find_or_initialize_work_by_user' do
     let(:user) { create(:admin) }
 

@@ -7,6 +7,22 @@ class Claim < ApplicationRecord
 
   enum priority: { default: 1, low: 2, high: 3 }, _suffix: true
 
+  def self.default_finished_at_plan
+    Time.zone.now + 3.days
+  end
+
+  def self.default_service_name
+    'Техподдержка'
+  end
+
+  def self.default_status
+    :opened
+  end
+
+  def self.default_priority
+    :default
+  end
+
   def find_or_initialize_work_by_user(user)
     works.where(group_id: user.group_id).first_or_initialize do |w|
       w.group_id = user.group_id

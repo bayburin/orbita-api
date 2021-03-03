@@ -2,22 +2,20 @@ require 'rails_helper'
 
 RSpec.describe SdRequestForm, type: :model do
   describe 'creating model' do
-    subject { described_class.new(SdRequest.new) }
+    let(:model) { SdRequest.new }
+    subject { described_class.new(model) }
     let(:params) { { sd_request: attributes_for(:sd_request) } }
 
     it { is_expected.to validate_presence_of(:service_name) }
     it { is_expected.to validate_presence_of(:attrs) }
 
     describe 'default values' do
-      let!(:time) { Time.parse('2020-08-20 10:00:15') }
-      before do
-        allow(Time.zone).to receive(:now).and_return(time)
-        subject.validate({})
-      end
+      before { allow(Claim).to receive(:default_finished_at_plan).and_return(Time.zone.now) }
 
-      it { expect(subject.status).to eq(:opened) }
-      it { expect(subject.priority).to eq(:default) }
-      it { expect(subject.finished_at_plan).to eq(Time.zone.now + 3.days) }
+      it { expect(subject.service_name).to eq(Claim.default_service_name) }
+      it { expect(subject.status).to eq(Claim.default_status) }
+      it { expect(subject.priority).to eq(Claim.default_priority) }
+      it { expect(subject.finished_at_plan).to eq(Claim.default_finished_at_plan) }
     end
 
     describe '#populate_source_snapshot!' do

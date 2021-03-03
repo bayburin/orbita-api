@@ -3,13 +3,13 @@ class SdRequestForm < Reform::Form
   property :id
   property :service_id
   property :app_template_id
-  property :service_name
+  property :service_name, default: ->(**) { Claim.default_service_name }
   property :app_template_name
   property :description
-  property :status, default: ->(**) { :opened }
-  property :priority, default: ->(**) { :default }
+  property :status, default: ->(**) { Claim.default_status }
+  property :priority, default: ->(**) { Claim.default_priority }
   property :attrs
-  property :finished_at_plan, default: ->(**) { Time.zone.now + 3.days }
+  property :finished_at_plan, default: ->(**) { Claim.default_finished_at_plan }
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
   collection :users, virtual: true
   collection :works, form: WorkForm
