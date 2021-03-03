@@ -45,7 +45,3 @@ coverage
 .vscode
 
 vendor
-
-# Docker
-.docker
-.docker/
