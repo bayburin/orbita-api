@@ -2,5 +2,5 @@
 class EventType < ApplicationRecord
   has_many :histories, dependent: :nullify
 
-  enum name: { workflow: 1, comment: 2, postpone: 3, close: 4 }
+  enum name: { created: 1, workflow: 2, comment: 3, postpone: 4, close: 5 }
 end

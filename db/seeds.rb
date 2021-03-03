@@ -143,6 +143,11 @@ SdRequest.create(
 EventType.create(
   [
     {
+      name: :created,
+      description: 'Исполнитель создал заявку',
+      template: 'Заявка создана'
+    },
+    {
       name: :workflow,
       description: 'Исполнитель выполнил действие',
       template: 'Выполнено действие: {workflow}'
