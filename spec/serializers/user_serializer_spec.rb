@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UserSerializer, type: :model do
   subject { described_class.new(create(:admin)).to_json }
 
-  %w[id role_id tn id_tn fio work_tel mobile_tel email is_vacation role].each do |attr|
+  %w[id role_id tn id_tn fio work_tel mobile_tel email is_vacation role auth_center_token].each do |attr|
     it "has #{attr} attribute" do
       expect(subject).to have_json_path(attr)
     end

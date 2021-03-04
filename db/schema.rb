@@ -129,7 +129,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.index ["tn"], name: "index_users_on_tn"
   end
 
-  create_table "workers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "workers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false

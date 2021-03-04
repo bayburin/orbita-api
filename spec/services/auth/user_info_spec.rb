@@ -8,7 +8,7 @@ module Auth
     let(:response) { double(:response, success?: true, body: body) }
     subject(:context) { described_class.call(params) }
 
-    before { allow(Api::AuthCenter).to receive(:user_info).and_return(response) }
+    before { allow(Api::AuthCenter).to receive(:login_info).and_return(response) }
 
     describe '.call' do
       it 'finished with success' do
@@ -16,7 +16,7 @@ module Auth
       end
 
       it 'call "user_info" method with "access_token" param' do
-        expect(Api::AuthCenter).to receive(:user_info).with(auth_data['access_token']).and_return(response)
+        expect(Api::AuthCenter).to receive(:login_info).with(auth_data['access_token']).and_return(response)
 
         context
       end

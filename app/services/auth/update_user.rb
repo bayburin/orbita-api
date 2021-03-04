@@ -14,6 +14,7 @@ module Auth
         email: context.user_info['email']
       )
         context.user = user
+        context.user.auth_center_token = AuthCenterToken.new(context.auth_data)
       else
         context.fail!(message: user.errors.full_messages)
       end
