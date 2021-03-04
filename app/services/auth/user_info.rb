@@ -4,7 +4,7 @@ module Auth
     include Interactor
 
     def call
-      response = Api::AuthCenter.user_info(context.auth_data['access_token'])
+      response = Api::AuthCenter.login_info(context.auth_data['access_token'])
 
       if response.success?
         context.user_info = response.body

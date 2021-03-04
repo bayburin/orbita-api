@@ -17,11 +17,18 @@ module Api
       connect.post('/oauth/token', body.to_json)
     end
 
-    def self.user_info(token)
+    def self.login_info(token)
       connect.get do |req|
-        # ? TODO: Возможно понадобится adLogin. В таком случае необходимо перечислить все параметры, которые нужны.
-        # req.params['fields'] = 'adLogin'
-        req.url '/api/module/main/login_info'
+        req.url ENV['AUTH_CENTER_LOGIN_INFO']
+        req.headers['Authorization'] = "Bearer #{token}"
+      end
+    end
+
+    def self.host_info(token, search_key = '', value = '')
+      connect.get do |req|
+        req.params['idfield'] = search_key
+        req.params['id'] = value
+        req.url ENV['AUTH_CENTER_HOST_INFO']
         req.headers['Authorization'] = "Bearer #{token}"
       end
     end

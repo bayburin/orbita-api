@@ -42,19 +42,41 @@ module Api
     describe '::user_info' do
       let(:access_token) { 'fake_access_token' }
       let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
+      let(:req) { "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_LOGIN_INFO']}" }
 
       before do
-        stub_request(:get, "#{ENV['AUTH_CENTER_URL']}/api/module/main/login_info").to_return(status: 200, body: '', headers: {})
+        stub_request(:get, req).to_return(status: 200, body: '', headers: {})
       end
 
       it 'sends :get request with required headers' do
-        subject.user_info(access_token)
+        subject.login_info(access_token)
 
-        expect(WebMock).to have_requested(:get, "#{ENV['AUTH_CENTER_URL']}/api/module/main/login_info").with(headers: headers)
+        expect(WebMock).to have_requested(:get, req).with(headers: headers)
       end
 
       it 'returns instance of Faraday::Response class' do
-        expect(subject.user_info(access_token)).to be_instance_of(Faraday::Response)
+        expect(subject.login_info(access_token)).to be_instance_of(Faraday::Response)
+      end
+    end
+
+    describe '::login_info' do
+      let(:access_token) { 'fake_access_token' }
+      let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
+      let(:params) { { id: 'invent_num', idfield: 'id' } }
+      let(:req) { "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_INFO']}?id=#{params[:id]}&idfield=#{params[:idfield]}" }
+
+      before do
+        stub_request(:get, req).to_return(status: 200, body: '', headers: {})
+      end
+
+      it 'sends :get request with required headers' do
+        subject.host_info(access_token, params[:idfield], params[:id])
+
+        expect(WebMock).to have_requested(:get, req).with(headers: headers)
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.host_info(access_token, params[:idfield], params[:id])).to be_instance_of(Faraday::Response)
       end
     end
   end
