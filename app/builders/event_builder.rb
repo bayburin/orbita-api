@@ -6,12 +6,10 @@ class EventBuilder < BaseBuilder
     super()
   end
 
+  delegate :claim=, :user=, :payload=, to: :model
+
   def claim_id=(claim_id)
     model.claim = Claim.find_by(id: claim_id)
-  end
-
-  def claim=(claim)
-    model.claim = claim
   end
 
   def event_type=(event_type)
@@ -20,13 +18,5 @@ class EventBuilder < BaseBuilder
 
   def id_tn=(id_tn)
     model.user = User.find_by(id_tn: id_tn)
-  end
-
-  def user=(user)
-    model.user = user
-  end
-
-  def payload=(payload)
-    model.payload = payload
   end
 end

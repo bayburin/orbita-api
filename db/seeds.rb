@@ -144,48 +144,71 @@ EventType.create(
   [
     {
       name: :created,
-      description: 'Исполнитель создал заявку',
-      template: 'Заявка создана'
+      description: 'Событие создания заявки/кейса',
+      template: 'Заявка создана',
+      is_public: true
     },
     {
       name: :workflow,
-      description: 'Исполнитель выполнил действие',
-      template: 'Выполнено действие: {workflow}'
+      description: 'Было выполнило действие для решения проблемы',
+      template: 'Выполнено действие: {workflow}',
+      is_public: true
     },
     {
-      name: :comment,
-      description: 'Исполнитель добавил комментарий',
-      template: 'Добавлен комментарий: {comment}'
+      name: :status,
+      description: 'Изменен статус',
+      template: 'Новый статус: {status}',
+      is_public: true
     },
-    # {
-    #   name: 'add_workers',
-    #   description: 'Исполнитель подключил других исполнителей',
-    #   template: 'Добавлены исполнители: {workers}'
-    # },
-    # {
-    #   name: 'add_self',
-    #   description: 'Исполниитель подключился к работе',
-    #   template: 'Подключился к работе'
-    # },
-    # {
-    #   name: 'remove_workers',
-    #   description: 'Исполнитель исключил других исполнителей',
-    #   template: 'Исключены исполнители: {workers}'
-    # },
-    # {
-    #   name: 'remove_self',
-    #   description: 'Исполниитель отключился от работы',
-    #   template: 'Отключился от работы'
-    # },
+    {
+      name: :add_workers,
+      description: 'Добавлены новые исполнители',
+      template: 'Добавлены исполнители: {workers}',
+      is_public: true
+    },
+    {
+      name: :del_workers,
+      description: 'Исключены исполнители',
+      template: 'Исключены исполнители: {workers}',
+      is_public: true
+    },
+    {
+      name: :escalation,
+      description: 'Вынос проблемы на вышестоящее руководство',
+      template: 'Эскалация',
+      is_public: true
+    },
     {
       name: :postpone,
-      description: 'Исполнитель перенесен срок исполнения',
-      template: 'Срок исполнения перенесен с {old_datetime} на {new_datetime}'
+      description: 'Изменен срок исполнения',
+      template: 'Срок исполнения перенесен с {old_datetime} на {new_datetime}',
+      is_public: true
     },
     {
       name: :close,
-      description: 'Исполнитель закрыл заявку',
-      template: 'Заявка закрыта'
+      description: 'Событие закрытия заявки/кейса',
+      template: 'Заявка закрыта',
+      is_public: true
+    },
+    {
+      name: :comment,
+      description: 'Был добавлен комментарий',
+      template: 'Добавлен комментарий: {comment}'
+    },
+    {
+      name: :add_files,
+      description: 'Прикреплены новые файлы',
+      template: 'Прикреплены файлы: {files}'
+    },
+    {
+      name: :add_tags,
+      description: 'Добавлены теги',
+      template: 'Добавлены теги: {tags}'
+    },
+    {
+      name: :priority,
+      description: 'Изменен приоритет',
+      template: 'Новый приоритет: {priority}'
     }
   ]
 )

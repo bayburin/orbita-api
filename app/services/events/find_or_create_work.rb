@@ -9,7 +9,7 @@ module Events
     def call
       work = event.claim.find_or_initialize_work_by_user(event.user)
       unless work.workers.exists?(user_id: event.user.id)
-        context.skip_history = false
+        # context.skip_history = false
         work.users << event.user
       end
 
