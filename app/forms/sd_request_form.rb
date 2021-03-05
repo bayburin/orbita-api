@@ -11,6 +11,7 @@ class SdRequestForm < Reform::Form
   property :attrs
   property :finished_at_plan, default: ->(**) { Claim.default_finished_at_plan }
   property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
+  property :current_user, virtual: true
   collection :users, virtual: true
   collection :works, form: WorkForm
   collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
@@ -27,6 +28,7 @@ class SdRequestForm < Reform::Form
   def populate_source_snapshot!(fragment:, **)
     self.source_snapshot = SourceSnapshotBuilder.build do |ss|
       ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
+      ss.set_host_credentials(current_user, fragment[:invent_num]) if fragment[:invent_num]
     end
   end
 

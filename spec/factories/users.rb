@@ -7,6 +7,10 @@ FactoryBot.define do
     mobile_tel { '8-999-999-99-99' }
     email { Faker::Internet.email }
     is_vacation { false }
+    access_token { 'fake_access_token' }
+    refresh_token { 'fake_refresh_token' }
+    expires_in { Faker::Number.number(digits: 6) }
+    token_type { 'Bearer' }
 
     after(:build) do |user, _ev|
       user.group = Group.first || create(:group)

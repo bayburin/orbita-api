@@ -62,7 +62,7 @@ module Api
     describe '::login_info' do
       let(:access_token) { 'fake_access_token' }
       let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
-      let(:params) { { id: 'invent_num', idfield: 'id' } }
+      let(:params) { { id: 'invent_num', idfield: 'name' } }
       let(:req) { "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_INFO']}?id=#{params[:id]}&idfield=#{params[:idfield]}" }
 
       before do
@@ -70,13 +70,20 @@ module Api
       end
 
       it 'sends :get request with required headers' do
-        subject.host_info(access_token, params[:idfield], params[:id])
+        subject.host_info(access_token, params[:id], params[:idfield])
 
         expect(WebMock).to have_requested(:get, req).with(headers: headers)
       end
 
+      it 'set default :idfield attribute' do
+        stub_request(:get, "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_INFO']}?id=#{params[:id]}&idfield=id").to_return(status: 200, body: '', headers: {})
+        subject.host_info(access_token, params[:id])
+
+        expect(WebMock).to have_requested(:get, "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_INFO']}?id=#{params[:id]}&idfield=id").with(headers: headers)
+      end
+
       it 'returns instance of Faraday::Response class' do
-        expect(subject.host_info(access_token, params[:idfield], params[:id])).to be_instance_of(Faraday::Response)
+        expect(subject.host_info(access_token, params[:id], params[:idfield])).to be_instance_of(Faraday::Response)
       end
     end
   end

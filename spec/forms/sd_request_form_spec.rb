@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SdRequestForm, type: :model do
   describe 'creating model' do
+    let(:user) { create(:admin) }
     let(:model) { SdRequest.new }
     subject { described_class.new(model) }
     let(:params) { { sd_request: attributes_for(:sd_request) } }
@@ -19,11 +20,13 @@ RSpec.describe SdRequestForm, type: :model do
     end
 
     describe '#populate_source_snapshot!' do
-      let(:ss_params) { { id_tn: 123 } }
+      let(:ss_params) { { id_tn: 123, invent_num: 123 } }
       let(:params) { attributes_for(:sd_request, source_snapshot: ss_params) }
       let(:source_snapshot_dbl) { double(:source_snapshot) }
       before do
         allow_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=)
+        allow_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials)
+        subject.current_user = user
       end
 
       it 'call SourceSnapshotBuilder' do
@@ -34,6 +37,19 @@ RSpec.describe SdRequestForm, type: :model do
 
       it 'set user_credentials' do
         expect_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=).with(ss_params[:id_tn])
+
+        subject.validate(params)
+      end
+
+      it 'does not set user_credentials if id_tn is empty' do
+        ss_params[:id_tn] = nil
+        expect_any_instance_of(SourceSnapshotBuilder).not_to receive(:user_credentials=)
+
+        subject.validate(params)
+      end
+
+      it 'set host_credentials' do
+        expect_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials).with(user, ss_params[:invent_num])
 
         subject.validate(params)
       end

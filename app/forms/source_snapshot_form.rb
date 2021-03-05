@@ -14,7 +14,6 @@ class SourceSnapshotForm < Reform::Form
   property :mac
   property :invent_num
   property :svt_item_id
-  # property :svt_item
   property :os
   property :netbios
 end
