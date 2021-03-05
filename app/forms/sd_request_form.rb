@@ -39,9 +39,13 @@ class SdRequestForm < Reform::Form
   #   item || works.append(Work.new)
   # end
 
-  # Обрабатывает список пользователей и создает работы по заявке, если необходимо
+  protected
+
+  # Обрабатывает список пользователей и создает работы по заявке, если необходимо.
+  # Проверяет наличие текущего пользователя в списке исполнителей.
   def processing_users
-    user_instances = User.where(id: users.map { |u| u[:id] })
+    user_instances = User.where(id: users.map { |u| u[:id] }).to_a
+    user_instances << current_user if users.none? { |u| u[:id] == current_user.id }
 
     # TODO: Тоже самое в классе FindOrCreateWork
     user_instances.each do |user|

@@ -5,7 +5,7 @@ FactoryBot.define do
     priority { nil }
     attrs { {} }
     rating { nil }
-    finished_at_plan { Time.zone.now + 2.days }
+    finished_at_plan { nil }
     finished_at { nil }
   end
 
