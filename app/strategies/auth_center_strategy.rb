@@ -7,9 +7,9 @@ class AuthCenterStrategy < Warden::Strategies::Base
   def authenticate!
     user_info = JsonWebToken.decode(access_token)
     user = User.find_by(id_tn: user_info[:id_tn])
-    user.auth_center_token = AuthCenterToken.new(user_info['auth_center_token'])
 
     if user
+      user.auth_center_token = AuthCenterToken.new(user_info['auth_center_token'])
       success!(user)
     else
       Rails.logger.debug { 'Пользователь в базе не найден. Доступ запрещен.' }

@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#belongs_to_claim?', focus: true do
+  describe '#belongs_to_claim?' do
     let(:claim) { create(:sd_request) }
     let!(:work) { create(:work, claim: claim) }
 

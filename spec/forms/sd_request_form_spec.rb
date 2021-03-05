@@ -100,7 +100,7 @@ RSpec.describe SdRequestForm, type: :model do
   #       expect(subject.model.works.last.workers.last.user).to eq(user)
   #     end
 
-  #     context 'when user already exist at work', focus: true do
+  #     context 'when user already exist at work' do
   #       before { sd_request.works.last.users << user }
 
   #       # ! TODO: Тест не проходит
