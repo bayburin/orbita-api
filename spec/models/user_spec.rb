@@ -32,4 +32,17 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#belongs_to_claim?', focus: true do
+    let(:claim) { create(:sd_request) }
+    let!(:work) { create(:work, claim: claim) }
+
+    it { expect(subject.belongs_to_claim?(claim)).to be_falsey }
+
+    it 'return true if user belongs to claim' do
+      work.users << subject
+
+      expect(subject.belongs_to_claim?(claim)).to be_truthy
+    end
+  end
 end

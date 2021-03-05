@@ -32,4 +32,8 @@ class User < ApplicationRecord
   def one_of_roles?(*roles)
     roles.include?(role.name.to_sym)
   end
+
+  def belongs_to_claim?(claim)
+    claim.works.includes(:workers).any? { |work| work.workers.any? { |worker| worker.user_id == id } }
+  end
 end
