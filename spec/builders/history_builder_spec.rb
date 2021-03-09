@@ -2,6 +2,19 @@ require 'rails_helper'
 
 RSpec.describe HistoryBuilder do
   include_examples 'base builder', History
+  let(:attr) { attributes_for(:history) }
+
+  describe '#user=' do
+    before { subject.user = attr[:user] }
+
+    it { expect(subject.model.user).to eq attr[:user] }
+  end
+
+  describe '#work=' do
+    before { subject.work = attr[:work] }
+
+    it { expect(subject.model.work).to eq attr[:work] }
+  end
 
   describe '#set_event_type' do
     let!(:event_type) { create(:event_type, :created) }

@@ -6,7 +6,13 @@ class HistoryBuilder < BaseBuilder
     super()
   end
 
-  delegate :user, :work, to: :model
+  def user=(user)
+    model.user = user
+  end
+
+  def work=(work)
+    model.work = work
+  end
 
   def set_event_type(type, **payload)
     event_type = EventType.find_by(name: type)
