@@ -12,7 +12,7 @@ module Histories
       end
     end
 
-    describe '#save' do
+    describe '#save!' do
       let(:work) { create(:work) }
       let(:new_history) { build(:history) }
       before do
@@ -22,12 +22,12 @@ module Histories
       end
 
       it 'should set work' do
-        subject.save
+        subject.save!
 
         expect(subject.histories.first.work).to eq work
       end
 
-      it { expect { subject.save }.to change { History.count }.by(2) }
+      it { expect { subject.save! }.to change { History.count }.by(2) }
     end
   end
 end

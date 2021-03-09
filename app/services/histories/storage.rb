@@ -12,7 +12,7 @@ module Histories
       histories << history
     end
 
-    def save
+    def save!
       History.transaction do
         histories.each do |h|
           h.work = work

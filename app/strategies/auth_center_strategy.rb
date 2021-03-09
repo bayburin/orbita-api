@@ -16,7 +16,7 @@ class AuthCenterStrategy < Warden::Strategies::Base
       fail!('Доступ запрещен')
     end
   rescue JWT::DecodeError => e
-    Rails.logger.debug { "Ошибка: Не валидный токен. #{e.message}".red }
+    Rails.logger.debug { "Ошибка: Невалидный токен. #{e.message}".red }
     fail!('Не валидный токен')
   end
 
