@@ -52,4 +52,18 @@ RSpec.describe Claim, type: :model do
       expect(subject.finished_at).to eq runtime.finished_at
     end
   end
+
+  describe '#work_for' do
+    let!(:work_1) { create(:work, claim: subject) }
+    let!(:work_2) { create(:work, claim: subject) }
+    let!(:user) { create(:admin) }
+
+    it { expect(subject.work_for(user)).to be_nil }
+
+    it 'return work which belongs to user' do
+      work_1.users << user
+
+      expect(subject.work_for(user)).to eq work_1
+    end
+  end
 end

@@ -42,4 +42,8 @@ class Claim < ApplicationRecord
     self.finished_at_plan = runtime.finished_at_plan
     self.finished_at = runtime.finished_at
   end
+
+  def work_for(user)
+    works.joins(:workers).find_by(workers: { user_id: user.id })
+  end
 end
