@@ -2,6 +2,11 @@ FactoryBot.define do
   factory :event_type do
     description { 'Make some action' }
 
+    trait :created do
+      name { :created }
+      template { 'Create claim' }
+    end
+
     trait :workflow do
       name { :workflow }
       template { 'Make workflow {message}' }
