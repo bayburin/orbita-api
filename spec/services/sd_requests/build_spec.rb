@@ -53,7 +53,7 @@ module SdRequests
         it { expect(context).to be_a_failure }
       end
 
-      describe 'processing history', focus: true do
+      describe 'processing history' do
         let(:history) { double(:history) }
         before do
           allow(HistoryBuilder).to receive(:build).and_yield(history)

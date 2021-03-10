@@ -1,6 +1,9 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def create
-    create = SdRequests::Create.call(params: sd_request_params)
+    create = SdRequests::Create.call(
+      current_user: current_user,
+      params: sd_request_params
+    )
 
     if create.success?
       render json: create.sd_request
@@ -25,6 +28,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       source_snapshot: [
         :id_tn,
         :svt_item_id,
+        :invent_num,
         { user_attrs: {} }
       ],
       works: [
