@@ -22,7 +22,7 @@ User.create(
       tn: 17664,
       fio: 'Байбурин Равиль Фаильевич',
       work_tel: '84-29',
-      email: 'bayburin',
+      email: 'bayburin@iss-reshetnev.ru',
       is_vacation: false
     },
     {
@@ -32,7 +32,7 @@ User.create(
       tn: 24125,
       fio: 'Дрянных Алексей Геннадьевич',
       work_tel: '24-80',
-      email: 'drag',
+      email: 'drag@iss-reshetnev.ru',
       is_vacation: false
     },
     {
@@ -42,7 +42,7 @@ User.create(
       tn: 15173,
       fio: 'Сильченко Дмитрий Михайлович',
       work_tel: '28-74',
-      email: 'dmitry',
+      email: 'dmitry@iss-reshetnev.ru',
       is_vacation: false
     },
     {
@@ -52,7 +52,7 @@ User.create(
       tn: 20705,
       fio: 'Шестаков Алексей Петрович',
       work_tel: '30-81',
-      email: 'shestakovap',
+      email: 'shestakovap@iss-reshetnev.ru',
       is_vacation: false
     },
     {
@@ -62,7 +62,7 @@ User.create(
       tn: 20834,
       fio: 'Пермякова Евгения Константиновна',
       work_tel: '67-10',
-      email: 'permyakovaek',
+      email: 'permyakovaek@iss-reshetnev.ru',
       is_vacation: false
     },
     {
@@ -72,7 +72,7 @@ User.create(
       tn: 6283,
       fio: 'Михальченков Максим Евгеньевич',
       work_tel: '67-40',
-      email: 'mihalchenkovme',
+      email: 'mihalchenkovme@iss-reshetnev.ru',
       is_vacation: false
     }
   ]
