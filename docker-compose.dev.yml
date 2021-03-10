@@ -84,6 +84,13 @@ services:
       - redis:/data
     restart: always
 
+  sidekiq:
+    <<: *backend
+    depends_on:
+      - redis
+    restart: unless-stopped
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
   guard:
     <<: *backend
     depends_on:

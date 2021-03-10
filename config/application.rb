@@ -48,6 +48,8 @@ module OrbitaCenter
     config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'message').to_s
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.generators do |g|
       g.orm :active_record
       g.test_framework :rspec,

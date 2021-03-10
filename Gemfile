@@ -19,6 +19,7 @@ gem 'oj'
 gem 'rack-cors'
 gem 'reform'
 gem 'reform-rails'
+gem 'sidekiq'
 gem 'virtus'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
