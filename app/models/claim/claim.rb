@@ -1,6 +1,8 @@
 # Общий класс заявки
 class Claim < ApplicationRecord
   has_many :works, dependent: :destroy
+  has_many :workers, through: :works, dependent: :destroy
+  has_many :users, through: :workers, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :attachments, dependent: :destroy
   has_one :source_snapshot, dependent: :destroy

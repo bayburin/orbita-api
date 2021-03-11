@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:works).dependent(:destroy) }
+  it { is_expected.to have_many(:workers).through(:works).dependent(:destroy) }
+  it { is_expected.to have_many(:users).through(:workers).dependent(:destroy) }
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
 

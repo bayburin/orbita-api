@@ -1,12 +1,18 @@
-class SdRequests::CreatedWorker
-  include Sidekiq::Worker
+module SdRequests
+  class CreatedWorker
+    include Sidekiq::Worker
 
-  def perform(sd_request_id)
-    # 1. Broadcast через сокеты
+    def perform(sd_request_id)
+      sd_request = SdRequest.find(sd_request_id)
 
-    # 2. Найти всех исполнителей
-    # 3. Запустить воркер по отправке почты каждому исполнителю
+      # TODO: Сделать broadcast каждому исполнителю через сокет.
+      sd_request.users.each do |user|
+        UserMailer.sd_request_created_email(user, sd_request).deliver_later
+        NotifyUserOnCreateByMattermostWorker.perform_async(user.id, sd_request_id)
+      end
 
-    # 4. Отправить email пользователю
+      # TODO: Создать mailer для отправки почты работнику, создавшему заявку.
+      Rails.logger.debug "Send notification to #{sd_request.source_snapshot.fio}"
+    end
   end
 end
