@@ -1,14 +1,14 @@
 class UserMailer < ApplicationMailer
   # Отправляет email с уведомлением о создании заявки.
-  def question_created_email(delivery_user, sd_request)
-    unless delivery_user.email
-      Rails.logger.info { "Email для #{delivery_user.fio} отсутствует" }
+  def question_created_email(recipient, sd_request)
+    unless recipient.email
+      Rails.logger.info { "Email для #{recipient.fio} отсутствует" }
 
       return
     end
 
     mail(
-      to: "#{delivery_user.fio} <#{delivery_user.email}>",
+      to: "#{recipient.fio} <#{recipient.email}>",
       subject: "Портал \"Орбита\": создана новая заявка №#{sd_request.id}"
     )
   end
