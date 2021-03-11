@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'active_model_serializers'
+gem 'anycable-rails'
 gem 'awesome_print'
 gem 'carrierwave'
 gem 'carrierwave-i18n'
