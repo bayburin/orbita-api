@@ -1,5 +1,5 @@
 module SdRequests
-  # Создает форму вопроса и сохраняет в базе.
+  # Сохраняет форму заявки и историю.
   class Save
     include Interactor
 
