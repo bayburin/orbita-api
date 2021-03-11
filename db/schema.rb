@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.bigint "group_id"
     t.integer "tn", null: false
     t.integer "id_tn", null: false
+    t.string "login"
     t.string "fio", null: false
     t.string "work_tel", limit: 45
     t.string "mobile_tel", limit: 45

@@ -5,6 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     create_table :users do |t|
       t.integer :tn, null: false, index: true
       t.integer :id_tn, null: false, unique: true, index: true
+      t.string :login
       t.string :fio, null: false, index: true
       t.string :work_tel, limit: 45
       t.string :mobile_tel, limit: 45

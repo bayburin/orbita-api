@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :user do
     id_tn { Faker::Number.number(digits: 6) }
     tn { Faker::Number.number(digits: 6) }
+    login { 'LoginAD' }
     fio { Faker::Name.name }
     work_tel { '12-34' }
     mobile_tel { '8-999-999-99-99' }
