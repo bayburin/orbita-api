@@ -1,12 +1,13 @@
 class ClaimUser
   include ActiveModel::Serialization
-  include Virtus.model
+  include Virtus.value_object
 
   values do
     attribute :id_tn, Integer
     attribute :tn, Integer
-    attribute :fio, String
+    attribute :fio, Fio
     attribute :dept, Integer
-    attribute :user_attrs, Hash
+    attribute :user_attrs, Hash, default: {}
+    attribute :domain_user, String
   end
 end

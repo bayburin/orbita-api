@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 2021_01_12_094002) do
     t.string "fio"
     t.integer "dept"
     t.json "user_attrs"
-    t.string "dns"
     t.string "domain_user", limit: 45
+    t.string "dns"
     t.string "source_ip", limit: 15
     t.string "destination_ip", limit: 15
     t.string "mac", limit: 48

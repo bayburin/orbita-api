@@ -1,6 +1,6 @@
 class Host
   include ActiveModel::Serialization
-  include Virtus.model
+  include Virtus.value_object
 
   values do
     attribute :dns, String

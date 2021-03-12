@@ -7,7 +7,8 @@ class SourceSnapshot < ApplicationRecord
       tn: tn,
       fio: fio,
       dept: dept,
-      user_attrs: user_attrs
+      user_attrs: user_attrs,
+      domain_user: domain_user
     )
   end
 
@@ -17,6 +18,7 @@ class SourceSnapshot < ApplicationRecord
     self.fio = claim_user.fio
     self.dept = claim_user.dept
     self.user_attrs = claim_user.user_attrs
+    self.domain_user = claim_user.domain_user
   end
 
   def host

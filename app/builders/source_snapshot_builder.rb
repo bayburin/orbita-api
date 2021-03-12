@@ -16,7 +16,8 @@ class SourceSnapshotBuilder < BaseBuilder
       attrs.merge!(
         tn: data['personnelNo'],
         fio: "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}",
-        dept: data['departmentForAccounting']
+        dept: data['departmentForAccounting'],
+        domain_user: user_info['employeeContact']['login']
       )
     end
 

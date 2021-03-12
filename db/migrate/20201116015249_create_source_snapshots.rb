@@ -7,8 +7,8 @@ class CreateSourceSnapshots < ActiveRecord::Migration[6.0]
       t.string :fio, limit: 255, index: true
       t.integer :dept, index: true
       t.json :user_attrs
-      t.string :dns, limit: 255
       t.string :domain_user, limit: 45
+      t.string :dns, limit: 255
       t.string :source_ip, limit: 15
       t.string :destination_ip, limit: 15
       t.string :mac, limit: 48

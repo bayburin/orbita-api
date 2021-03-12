@@ -10,10 +10,11 @@ RSpec.describe SourceSnapshotBuilder do
     describe '#user_credentials=' do
       let(:user_info) do
         {
-          lastName: 'last',
-          firstName: 'first',
-          middleName: 'middle',
-          employeePositions: [{ personnelNo: 1, departmentForAccounting: 700 }]
+          lastName: 'Last',
+          firstName: 'First',
+          middleName: 'Middle',
+          employeePositions: [{ personnelNo: 1, departmentForAccounting: 700 }],
+          employeeContact: { login: 'TestAD' }
         }.as_json
       end
       before do
