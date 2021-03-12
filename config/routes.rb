@@ -1,7 +1,7 @@
-require 'sidekiq/web'
+# require 'sidekiq/web'
+# mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
 
 Rails.application.routes.draw do
-  mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
   devise_for :users
 
   root to: 'application#welcome'
