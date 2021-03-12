@@ -1,4 +1,5 @@
 module SdRequests
+  # Отправляет все необходимые уведомления всем участникам заявки.
   class CreatedWorker
     include Sidekiq::Worker
 
@@ -11,8 +12,7 @@ module SdRequests
         NotifyUserOnCreateByMattermostWorker.perform_async(user.id, sd_request_id)
       end
 
-      # TODO: Создать mailer для отправки почты работнику, создавшему заявку.
-      Rails.logger.debug "Send notification to #{sd_request.source_snapshot.fio}"
+      NotifyEmployeeOnCreateByEmailWorker.perform_async(sd_request_id)
     end
   end
 end

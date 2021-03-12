@@ -9,6 +9,7 @@ require 'rspec/rails'
 require 'faker'
 require 'rspec/its'
 require 'webmock/rspec'
+require 'sidekiq/testing'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
@@ -82,3 +83,4 @@ Shoulda::Matchers.configure do |config|
   end
 end
 WebMock.disable_net_connect!
+Sidekiq::Testing.inline!

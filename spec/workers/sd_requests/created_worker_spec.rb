@@ -9,10 +9,12 @@ module SdRequests
 
     before do
       work.users << admin
+      allow(NotifyUserOnCreateByMattermostWorker).to receive(:perform_async)
+      allow(NotifyEmployeeOnCreateByEmailWorker).to receive(:perform_async)
     end
 
     it 'send notification by email to the each user' do
-      expect(UserMailer).to receive(:sd_request_created_email).with(admin, sd_request).and_call_original
+      expect(UserMailer).to receive(:sd_request_created_email).with(admin, sd_request).and_return(mailer_dbl)
 
       subject.perform(sd_request.id)
     end
@@ -30,6 +32,10 @@ module SdRequests
       subject.perform(sd_request.id)
     end
 
-    it 'send notification to employee'
+    it 'send notification to employee' do
+      expect(NotifyEmployeeOnCreateByEmailWorker).to receive(:perform_async).with(sd_request.id)
+
+      subject.perform(sd_request.id)
+    end
   end
 end

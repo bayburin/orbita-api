@@ -1,3 +1,4 @@
+# Класс содержит методы для отправки email исполнителям.
 class UserMailer < ApplicationMailer
   # Отправляет email с уведомлением о создании заявки.
   def sd_request_created_email(recipient, sd_request)
