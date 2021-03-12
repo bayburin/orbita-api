@@ -40,6 +40,12 @@ module SdRequests
         context
       end
 
+      it 'call SdRequests::CreatedWorker worker' do
+        expect(SdRequests::CreatedWorker).to receive(:perform_async).with(created_sd_request.id)
+
+        context
+      end
+
       it { expect(context.sd_request).to eq created_sd_request }
 
       context 'when form was not saved' do
@@ -52,12 +58,24 @@ module SdRequests
 
           context
         end
+
+        it 'does not call SdRequests::CreatedWorker worker' do
+          expect(SdRequests::CreatedWorker).not_to receive(:perform_async)
+
+          context
+        end
       end
 
       context 'when history was not saved' do
         before { allow(history_store_dbl).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved) }
 
         it { expect(context).to be_a_failure }
+
+        it 'does not call SdRequests::CreatedWorker worker' do
+          expect(SdRequests::CreatedWorker).not_to receive(:perform_async)
+
+          context
+        end
       end
     end
   end
