@@ -18,7 +18,7 @@ RSpec.describe SourceSnapshotBuilder do
         }.as_json
       end
       before do
-        allow_any_instance_of(Employees::Employee).to receive(:load).with(attr[:id_tn]).and_return(user_info)
+        allow_any_instance_of(Employees::Loader).to receive(:load).with(attr[:id_tn]).and_return(user_info)
         subject.user_credentials = attr[:id_tn]
       end
 

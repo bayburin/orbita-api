@@ -20,7 +20,7 @@ module SdRequests
     protected
 
     def load_email
-      user_info = Employees::Employee.new(:load).load(@snapshot.id_tn)
+      user_info = Employees::Loader.new(:load).load(@snapshot.id_tn)
 
       if user_info
         user_info['employeeContact']['email'].first

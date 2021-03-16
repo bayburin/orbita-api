@@ -7,7 +7,7 @@ class SourceSnapshotBuilder < BaseBuilder
   end
 
   def user_credentials=(id_tn)
-    user_info = Employees::Employee.new(:load).load(id_tn)
+    user_info = Employees::Loader.new(:load).load(id_tn)
     attrs = { id_tn: id_tn }
 
     if user_info

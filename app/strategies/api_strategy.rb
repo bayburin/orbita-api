@@ -8,7 +8,7 @@ class ApiStrategy < Warden::Strategies::Base
     user = User.find_by(id_tn: params[:id_tn])
     unless user
       user = User.find_by(role: Role.find_by(name: :employee))
-      user_info = Employees::Employee.new(:load).load(params[:id_tn])
+      user_info = Employees::Loader.new(:load).load(params[:id_tn])
       # ! TODO: Что делать, если НСИ не отвечает
       unless user_info
         Rails.logger.warn { 'Не удалось загрузить данные о пользователе.' }

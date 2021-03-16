@@ -23,17 +23,17 @@ RSpec.describe SdRequests::NotifyEmployeeOnCreateByEmailWorker, type: :worker do
 
     before do
       allow_any_instance_of(SourceSnapshot).to receive(:user_attrs).and_return({})
-      allow_any_instance_of(Employees::Employee).to receive(:load).and_return(employee)
+      allow_any_instance_of(Employees::Loader).to receive(:load).and_return(employee)
     end
 
-    it 'load email with Employees::Employee service' do
+    it 'load email with Employees::Loader service' do
       expect(EmployeeMailer).to receive(:sd_request_created_email).with(sd_request.source_snapshot.fio, email, sd_request)
 
       subject.perform(sd_request.id)
     end
 
-    context 'when user Employees::Employee service is not responding' do
-      before { allow_any_instance_of(Employees::Employee).to receive(:load).and_return(nil) }
+    context 'when user Employees::Loader service is not responding' do
+      before { allow_any_instance_of(Employees::Loader).to receive(:load).and_return(nil) }
 
       it { expect { subject.perform(sd_request.id) }.to raise_error(RuntimeError) }
     end

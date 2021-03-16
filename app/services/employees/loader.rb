@@ -1,6 +1,6 @@
 module Employees
   # Предоставляет интерфейс для обращения к API НСИ.
-  class Employee
+  class Loader
     STOP_COUNTER = 2
 
     def initialize(type)
