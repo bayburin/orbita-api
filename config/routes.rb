@@ -2,6 +2,7 @@
 # mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
 
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users
 
   root to: 'application#welcome'
@@ -19,6 +20,15 @@ Rails.application.routes.draw do
       resources :events, only: :create
       resources :users, only: :index
       resources :employees, only: :index
+    end
+  end
+
+  namespace :events, constraints: { format: 'json' } do
+    namespace :api do
+      namespace :v1 do
+        get 'welcome', to: 'base#welcome'
+        resources :sd_requests, only: :create
+      end
     end
   end
 end

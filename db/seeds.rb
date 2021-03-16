@@ -3,18 +3,33 @@ User.destroy_all
 Group.destroy_all
 Role.destroy_all
 EventType.destroy_all
+Doorkeeper::Application.destroy_all
+Doorkeeper::AccessToken.destroy_all
 
-Role.create(name: 'admin', description: 'Администратор')
+Role.create(
+  [
+    { name: 'admin', description: 'Администратор' },
+    { name: 'employee', description: 'Сотрудник предприятия' }
+  ]
+)
 Group.create(
   [
     { name: 7141, description: 'Сектор ИТ' },
     { name: 7142, description: 'Ремонт ВТ' },
     { name: 713, description: 'Отдел 713' },
-    { name: 821, description: 'Бюро 1431' }
+    { name: 821, description: 'Бюро 1431' },
+    { name: 'employee', description: 'Пользователь' }
   ]
 )
 User.create(
   [
+    {
+      role: Role.find_by(name: :employee),
+      group: Group.find_by(name: :employee),
+      id_tn: 1000000,
+      tn: 1000000,
+      fio: 'Фамилия Имя Отчество'
+    },
     {
       role: Role.find_by(name: :admin),
       group: Group.find_by(name: 7141),
@@ -216,5 +231,12 @@ EventType.create(
       description: 'Изменен приоритет',
       template: 'Новый приоритет: {priority}'
     }
+  ]
+)
+
+Doorkeeper::Application.create(
+  [
+    { name: 'Учет ВТ', redirect_uri: '', scopes: '' },
+    { name: 'Приложение оператора архива КД' }
   ]
 )

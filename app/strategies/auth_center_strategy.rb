@@ -12,11 +12,11 @@ class AuthCenterStrategy < Warden::Strategies::Base
       user.auth_center_token = AuthCenterToken.new(user_info['auth_center_token'])
       success!(user)
     else
-      Rails.logger.debug { 'Пользователь в базе не найден. Доступ запрещен.' }
+      Rails.logger.warn { 'Пользователь в базе не найден. Доступ запрещен.' }
       fail!('Доступ запрещен')
     end
   rescue JWT::DecodeError => e
-    Rails.logger.debug { "Ошибка: Невалидный токен. #{e.message}".red }
+    Rails.logger.warn { "Ошибка: Невалидный токен. #{e.message}".red }
     fail!('Не валидный токен')
   end
 
