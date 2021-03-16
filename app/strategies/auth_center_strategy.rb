@@ -5,7 +5,7 @@ class AuthCenterStrategy < Warden::Strategies::Base
   end
 
   def authenticate!
-    user_info = JsonWebToken.decode(access_token)
+    user_info = AuthCenter::JsonWebToken.decode(access_token)
     user = User.find_by(id_tn: user_info[:id_tn])
 
     if user

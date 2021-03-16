@@ -6,10 +6,10 @@ RSpec.describe Api::V1::AuthController, type: :controller do
     let(:jwt) { 'fake-jwt' }
     let(:result) { double(:result, success?: true, jwt: jwt) }
 
-    before { allow(Auth::Authorize).to receive(:call).and_return(result) }
+    before { allow(Users::Authorize).to receive(:call).and_return(result) }
 
-    it 'call Auth::Authorize command' do
-      expect(Auth::Authorize).to receive(:call).with(code: params[:auth][:code]).and_return(result)
+    it 'call Users::Authorize command' do
+      expect(Users::Authorize).to receive(:call).with(code: params[:auth][:code]).and_return(result)
 
       post :token, params: params, format: :json
     end

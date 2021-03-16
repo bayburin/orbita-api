@@ -2,7 +2,7 @@ class Api::V1::AuthController < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: :token
 
   def token
-    result = Auth::Authorize.call(code: auth_params[:code])
+    result = Users::Authorize.call(code: auth_params[:code])
 
     if result.success?
       render json: { token: result.jwt }

@@ -11,18 +11,34 @@ module Employees
     def load(params)
       if @counter == STOP_COUNTER
         @counter = 0
-        return nil
+
+        return
       end
 
       @counter += 1
-      Authorize.token || Authorize.authorize
-      response = UserRequestSwitcher.request(@type, params)
+      response = UserRequestSwitcher.request(@type, token, params)
+
       if response.success?
         @counter = 0
         response.body
       else
-        Authorize.clear
+        Employees::TokenCache.clear
         load(params)
+      end
+    end
+
+    protected
+
+    def token
+      token = TokenCache.token
+      return token if token
+
+      Rails.logger.info { 'Авторизация на сервере НСИ' }
+      authorize = Authorize.call
+
+      unless authorize.success?
+        Rails.logger.warn { "Ошибка: #{authorize.error}".red }
+        raise 'Не удалось авторизоваться на сервере НСИ'
       end
     end
   end

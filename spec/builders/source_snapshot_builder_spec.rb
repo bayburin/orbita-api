@@ -38,26 +38,29 @@ RSpec.describe SourceSnapshotBuilder do
           os: 'W7E'
         }.as_json
       end
-      let(:access_token) { 'fake-token' }
-      let(:app_access_token_dbl) { double(:app_access_token, success?: true, token: { access_token: access_token }.as_json) }
-      let(:response_dbl) { double(:host_info, success?: true, body: host_info) }
-      before do
-        allow(Api::AuthCenter).to receive(:host_info).and_return(response_dbl)
-        allow(Auth::AppAccessToken).to receive(:call).and_return(app_access_token_dbl)
+      let(:host_info_loader_dbl) { double(:host_info_loader, load: host_info) }
+      before { allow(AuthCenter::HostInfoLoader).to receive(:new).and_return(host_info_loader_dbl) }
+
+      context 'when when AuthCenter::AppToken finished successfully' do
+        it 'call "host_info" method' do
+          expect(host_info_loader_dbl).to receive(:load)
+
+          subject.set_host_credentials(attr[:invent_num])
+        end
+
+        context 'compare attrs' do
+          before { subject.set_host_credentials(attr[:invent_num]) }
+
+          it { expect(subject.model.dns).to eq host_info['name'] }
+          it { expect(subject.model.source_ip).to eq host_info['ip'] }
+          it { expect(subject.model.mac).to eq host_info['mac'] }
+          it { expect(subject.model.os).to eq host_info['os'] }
+        end
       end
 
-      context 'when when Auth::AppAccessToken finished successfully' do
-        before { subject.set_host_credentials(attr[:invent_num]) }
-
-        it { expect(subject.model.dns).to eq host_info['name'] }
-        it { expect(subject.model.source_ip).to eq host_info['ip'] }
-        it { expect(subject.model.mac).to eq host_info['mac'] }
-        it { expect(subject.model.os).to eq host_info['os'] }
-      end
-
-      context 'when Auth::AppAccessToken failed' do
+      context 'when AuthCenter::AppToken failed' do
         before do
-          allow(app_access_token_dbl).to receive(:success?).and_return(false)
+          allow(host_info_loader_dbl).to receive(:load).and_return(nil)
           subject.set_host_credentials(attr[:invent_num])
         end
 

@@ -6,17 +6,17 @@ RSpec.describe SdRequests::NotifyUserOnCreateByMattermostWorker, type: :worker d
   let(:response_dbl) { double(:response, status: 200, body: {}) }
   let(:file_content) { 'test content' }
   before do
-    allow(Api::Mattermost).to receive(:notify).and_return(response_dbl)
+    allow(Mattermost::Api).to receive(:notify).and_return(response_dbl)
     allow_any_instance_of(File).to receive(:read).and_return(file_content)
   end
 
-  it 'call Api::Mattermost.notify method' do
-    expect(Api::Mattermost).to receive(:notify).with("@#{user.login}", file_content)
+  it 'call Mattermost::Api.notify method' do
+    expect(Mattermost::Api).to receive(:notify).with("@#{user.login}", file_content)
 
     subject.perform(user.id, sd_request.id)
   end
 
-  it 'raise error if Api::Mattermost.notify finished with 500 status' do
+  it 'raise error if Mattermost::Api.notify finished with 500 status' do
     allow(response_dbl).to receive(:status).and_return(500)
 
     expect { subject.perform(user.id, sd_request.id) }.to raise_error(StandardError)
