@@ -29,7 +29,7 @@ module SdRequests
     def populate_source_snapshot!(fragment:, **)
       self.source_snapshot = SourceSnapshotBuilder.build do |ss|
         ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
-        ss.set_host_credentials(current_user, fragment[:invent_num]) if fragment[:invent_num]
+        ss.set_host_credentials(fragment[:invent_num]) if fragment[:invent_num]
       end
     end
 

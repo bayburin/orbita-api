@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 module Auth
-  RSpec.describe AccessToken do
+  RSpec.describe ClientAccessToken do
     let(:code) { 'fake-code' }
     let(:params) { { code: code } }
     let(:body) { 'fake-body' }
     let(:response) { double(:response, success?: true, body: body) }
     subject(:context) { described_class.call(params) }
 
-    before { allow(Api::AuthCenter).to receive(:access_token).and_return(response) }
+    before { allow(Api::AuthCenter).to receive(:client_access_token).and_return(response) }
 
     describe '.call' do
       it 'finished with success' do
@@ -16,7 +16,7 @@ module Auth
       end
 
       it 'call "access_token" method with "code" param' do
-        expect(Api::AuthCenter).to receive(:access_token).with(code).and_return(response)
+        expect(Api::AuthCenter).to receive(:client_access_token).with(code).and_return(response)
 
         context
       end

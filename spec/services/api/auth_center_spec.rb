@@ -12,7 +12,7 @@ module Api
       expect(subject.singleton_class.ancestors).to include(Connection::ClassMethods)
     end
 
-    describe '::access_token' do
+    describe '::client_access_token' do
       let(:auth_code) { 'fake_authorize_code' }
       let(:body) do
         {
@@ -29,13 +29,38 @@ module Api
       end
 
       it 'sends :post request with required params in body' do
-        subject.access_token(auth_code)
+        subject.client_access_token(auth_code)
 
         expect(WebMock).to have_requested(:post, "#{ENV['AUTH_CENTER_URL']}/oauth/token").with(body: body.to_json)
       end
 
       it 'returns instance of Faraday::Response class' do
-        expect(subject.access_token(auth_code)).to be_instance_of(Faraday::Response)
+        expect(subject.client_access_token(auth_code)).to be_instance_of(Faraday::Response)
+      end
+    end
+
+    describe '::app_access_token' do
+      let(:auth_code) { 'fake_authorize_code' }
+      let(:body) do
+        {
+          grant_type: 'client_credentials',
+          client_id: ENV['AUTH_CENTER_APP_ID'],
+          client_secret: ENV['AUTH_CENTER_APP_SECRET'],
+        }
+      end
+
+      before do
+        stub_request(:post, "#{ENV['AUTH_CENTER_URL']}/oauth/token").to_return(status: 200, body: '', headers: {})
+      end
+
+      it 'sends :post request with required params in body' do
+        subject.app_access_token
+
+        expect(WebMock).to have_requested(:post, "#{ENV['AUTH_CENTER_URL']}/oauth/token").with(body: body.to_json)
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.app_access_token).to be_instance_of(Faraday::Response)
       end
     end
 

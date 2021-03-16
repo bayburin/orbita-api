@@ -3,6 +3,6 @@ module Auth
   class Authorize
     include Interactor::Organizer
 
-    organize AccessToken, UserInfo, UpdateUser, GenerateJwt
+    organize ClientAccessToken, UserInfo, UpdateUser, GenerateJwt
   end
 end

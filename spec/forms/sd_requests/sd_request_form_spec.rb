@@ -53,7 +53,7 @@ module SdRequests
         end
 
         it 'set host_credentials' do
-          expect_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials).with(user, ss_params[:invent_num])
+          expect_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials).with(ss_params[:invent_num])
 
           subject.validate(params)
         end

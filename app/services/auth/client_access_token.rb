@@ -1,10 +1,10 @@
 module Auth
-  # Получает access_token у ЦА.
-  class AccessToken
+  # Получает access_token пользователя у ЦА.
+  class ClientAccessToken
     include Interactor
 
     def call
-      response = Api::AuthCenter.access_token(context.code)
+      response = Api::AuthCenter.client_access_token(context.code)
 
       if response.success?
         context.auth_data = response.body

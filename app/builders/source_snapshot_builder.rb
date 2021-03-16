@@ -6,6 +6,7 @@ class SourceSnapshotBuilder < BaseBuilder
     super()
   end
 
+  # Загружает данные по пользователю из БД НСИ.
   def user_credentials=(id_tn)
     user_info = Employees::Loader.new(:load).load(id_tn)
     employee = Employee.new(user_info)
@@ -23,8 +24,12 @@ class SourceSnapshotBuilder < BaseBuilder
     model.claim_user = ClaimUser.new(attrs)
   end
 
-  def set_host_credentials(current_user, invent_num)
-    host_info = Api::AuthCenter.host_info(current_user.auth_center_token.access_token, invent_num)
+  # Загружает данные по хосту из Netadmin.
+  def set_host_credentials(invent_num)
+    app_access_token = Auth::AppAccessToken.call
+    return unless app_access_token.success?
+
+    host_info = Api::AuthCenter.host_info(app_access_token.token['access_token'], invent_num)
     attrs = {}
 
     if host_info.success?
