@@ -8,16 +8,15 @@ class SourceSnapshotBuilder < BaseBuilder
 
   def user_credentials=(id_tn)
     user_info = Employees::Loader.new(:load).load(id_tn)
+    employee = Employee.new(user_info)
     attrs = { id_tn: id_tn }
 
     if user_info
-      data = user_info['employeePositions'].first
-
       attrs.merge!(
-        tn: data['personnelNo'],
-        fio: "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}",
-        dept: data['departmentForAccounting'],
-        domain_user: user_info['employeeContact']['login']
+        tn: employee.employeePositions.first.personnelNo,
+        fio: employee.fio,
+        dept: employee.employeePositions.first.departmentForAccounting,
+        domain_user: employee.employeeContact.login
       )
     end
 

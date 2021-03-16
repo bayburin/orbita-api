@@ -29,4 +29,10 @@ FactoryBot.define do
       user.role = Role.find_by(name: :manager) || create(:manager_role)
     end
   end
+
+  factory :employee, parent: :user do
+    after(:build) do |user, _ev|
+      user.role = Role.find_by(name: :employee) || create(:employee_role)
+    end
+  end
 end

@@ -28,7 +28,7 @@ User.create(
       group: Group.find_by(name: :employee),
       id_tn: 1000000,
       tn: 1000000,
-      fio: 'Фамилия Имя Отчество'
+      fio: 'Пользователь'
     },
     {
       role: Role.find_by(name: :admin),

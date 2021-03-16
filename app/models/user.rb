@@ -9,6 +9,17 @@ class User < ApplicationRecord
 
   attr_accessor :access_token, :refresh_token, :expires_in, :token_type
 
+  def self.authenticate_employee(id_tn)
+    user = User.find_by(role: Role.find_by(name: :employee))
+    return unless user
+
+    user_info = Employees::Loader.new(:load).load(id_tn)
+    raise 'Не удалось загрузить данные о пользователе.' unless user_info
+
+    user.fill_by_employee(Employee.new(user_info))
+    user
+  end
+
   def auth_center_token
     AuthCenterToken.new(
       access_token: access_token,
@@ -35,5 +46,14 @@ class User < ApplicationRecord
 
   def belongs_to_claim?(claim)
     claim.works.includes(:workers).any? { |work| work.workers.any? { |worker| worker.user_id == id } }
+  end
+
+  def fill_by_employee(employee)
+    self.tn = employee.employeePositions.first.personnelNo
+    self.id_tn = employee.id
+    self.login = employee.employeeContact.login
+    self.fio = employee.fio
+    self.work_tel = employee.employeeContact.phone.first
+    self.email = employee.employeeContact.email.first
   end
 end

@@ -42,11 +42,12 @@ module OrbitaCenter
     config.time_zone = 'Krasnoyarsk'
     config.active_record.default_timezone = :local
     config.i18n.default_locale = :ru
-    config.hosts << "localhost.iss-reshetnev.ru"
+    config.hosts << 'localhost.iss-reshetnev.ru'
 
     config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'message').to_s
+    config.autoload_paths << Rails.root.join('app', 'resources', 'employee').to_s
 
     config.active_job.queue_adapter = :sidekiq
 
