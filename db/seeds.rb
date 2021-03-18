@@ -8,7 +8,9 @@ Doorkeeper::AccessToken.destroy_all
 
 Doorkeeper::Application.create(
   [
-    { name: 'Ремонт и обслуживание компьютера', ticket_id: 88, redirect_uri: '', scopes: '' }
+    { name: 'Техподдержка', redirect_uri: '', scopes: '' },
+    { name: 'Учет ВТ', redirect_uri: '', scopes: '' },
+    { name: 'Приложение оператора архива КД', redirect_uri: '', scopes: '' }
   ]
 )
 
