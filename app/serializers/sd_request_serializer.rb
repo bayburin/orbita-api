@@ -1,3 +1,3 @@
 class SdRequestSerializer < ClaimSerializer
-  attributes :service_id, :app_template_id, :service_name, :app_template_name, :rating
+  attributes :service_id, :ticket_identity, :service_name, :ticket_name, :rating
 end

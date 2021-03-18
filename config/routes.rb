@@ -23,11 +23,12 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :events, constraints: { format: 'json' } do
+  namespace :guest, constraints: { format: 'json' } do
     namespace :api do
       namespace :v1 do
         get 'welcome', to: 'base#welcome'
         resources :sd_requests, only: :create
+        resources :service_desk, only: :create
       end
     end
   end

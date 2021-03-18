@@ -4,13 +4,13 @@ RSpec.describe SdRequest, type: :model do
   it { is_expected.to be_kind_of Claim }
 
   describe '#service' do
-    it { expect(subject.service).to be_instance_of(Service) }
+    it { expect(subject.service).to be_instance_of(ServiceDesk::Service) }
   end
 
   describe '#service=' do
     let(:id) { 1 }
     let(:name) { 'test name' }
-    let(:service) { Service.new(id: id, name: name) }
+    let(:service) { ServiceDesk::Service.new(id: id, name: name) }
 
     it 'should set service attributes to model attributes' do
       subject.service = service
@@ -20,20 +20,20 @@ RSpec.describe SdRequest, type: :model do
     end
   end
 
-  describe '#app_template' do
-    it { expect(subject.app_template).to be_instance_of(AppTemplate) }
+  describe '#ticket' do
+    it { expect(subject.ticket).to be_instance_of(ServiceDesk::Ticket) }
   end
 
-  describe '#app_template=' do
+  describe '#ticket=' do
     let(:id) { 1 }
     let(:name) { 'test name' }
-    let(:app_template) { AppTemplate.new(id: id, name: name) }
+    let(:ticket) { ServiceDesk::Ticket.new(id: id, name: name) }
 
     it 'should set service attributes to model attributes' do
-      subject.app_template = app_template
+      subject.ticket = ticket
 
-      expect(subject.app_template_id).to eq app_template.id
-      expect(subject.app_template_name).to eq app_template.name
+      expect(subject.ticket_identity).to eq ticket.id
+      expect(subject.ticket_name).to eq ticket.name
     end
   end
 end

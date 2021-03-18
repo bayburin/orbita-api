@@ -20,29 +20,29 @@ RSpec.describe SdRequestBuilder do
     end
 
     describe '#set_service' do
-      let(:service) { Service.new(id: attr[:service_id], name: attr[:service_name]) }
+      let(:service) { ServiceDesk::Service.new(id: attr[:service_id], name: attr[:service_name]) }
       before { subject.set_service(attr[:service_id], attr[:service_name]) }
 
       it { expect(subject.model.service).to eq service }
     end
 
-    describe '#app_template_id=' do
-      before { subject.app_template_id = attr[:app_template_id] }
+    describe '#ticket_identity=' do
+      before { subject.ticket_identity = attr[:ticket_identity] }
 
-      it { expect(subject.model.app_template_id).to eq attr[:app_template_id] }
+      it { expect(subject.model.ticket_identity).to eq attr[:ticket_identity] }
     end
 
-    describe '#app_template_name=' do
-      before { subject.app_template_name = attr[:app_template_name] }
+    describe '#ticket_name=' do
+      before { subject.ticket_name = attr[:ticket_name] }
 
-      it { expect(subject.model.app_template_name).to eq attr[:app_template_name] }
+      it { expect(subject.model.ticket_name).to eq attr[:ticket_name] }
     end
 
-    describe '#set_app_template' do
-      let(:app_template) { AppTemplate.new(id: attr[:app_template_id], name: attr[:app_template_name]) }
-      before { subject.set_app_template(attr[:app_template_id], attr[:app_template_name]) }
+    describe '#set_ticket' do
+      let(:ticket) { ServiceDesk::Ticket.new(id: attr[:ticket_identity], name: attr[:ticket_name]) }
+      before { subject.set_ticket(attr[:ticket_identity], attr[:ticket_name]) }
 
-      it { expect(subject.model.app_template).to eq app_template }
+      it { expect(subject.model.ticket).to eq ticket }
     end
 
     describe '#status=' do

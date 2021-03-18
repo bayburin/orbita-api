@@ -11,9 +11,9 @@ FactoryBot.define do
 
   factory :sd_request, parent: :claim, class: SdRequest do
     service_id { 1 }
-    app_template_id { 2 }
+    ticket_identity { 2 }
     service_name { "#{Faker::Company.name} service" }
-    app_template_name { "#{Faker::Company.name} template name" }
+    ticket_name { "#{Faker::Company.name} template name" }
   end
 
   factory :case, parent: :claim, class: Case do

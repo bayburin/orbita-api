@@ -1,4 +1,4 @@
-class Events::Api::V1::BaseController < ApplicationController
+class Guest::Api::V1::BaseController < ApplicationController
   before_action :doorkeeper_authorize!
   before_action { warden.authenticate! :api, scope: :user }
 

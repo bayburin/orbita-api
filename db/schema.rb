@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "service_id"
-    t.integer "app_template_id"
     t.string "service_name"
-    t.string "app_template_name"
+    t.integer "ticket_identity"
+    t.string "ticket_name"
     t.string "type"
     t.text "description"
     t.integer "status", limit: 1

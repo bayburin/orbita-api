@@ -9,7 +9,7 @@ module SdRequests
       # TODO: Убрать хардкод при использовании билдера.
       context.sd_request = SdRequestBuilder.build(params) do |cl|
         cl.set_service(nil, 'Отдел 821')
-        cl.set_app_template(nil, 'Заявка на размножение КД')
+        cl.set_ticket(nil, 'Заявка на размножение КД')
       end
 
       params.merge!(source_snapshot: { id_tn: params[:id_tn] })

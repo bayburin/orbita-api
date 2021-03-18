@@ -1,4 +1,4 @@
-# Позволяет построить объект заявки Application.
+# Позволяет построить объект заявки SdRequest.
 class SdRequestBuilder < BaseBuilder
   def initialize(params = {})
     @model = SdRequest.new(params)
@@ -7,11 +7,11 @@ class SdRequestBuilder < BaseBuilder
   end
 
   def set_service(service_id, service_name)
-    model.service = Service.new(id: service_id, name: service_name)
+    model.service = ServiceDesk::Service.new(id: service_id, name: service_name)
   end
 
-  def set_app_template(app_template_id, app_template_name)
-    model.app_template = AppTemplate.new(id: app_template_id, name: app_template_name)
+  def set_ticket(ticket_identity, ticket_name)
+    model.ticket = ServiceDesk::Ticket.new(id: ticket_identity, name: ticket_name)
   end
 
   def service_id=(service_id)
@@ -22,12 +22,12 @@ class SdRequestBuilder < BaseBuilder
     model.service_name = service_name
   end
 
-  def app_template_id=(app_template_id)
-    model.app_template_id = app_template_id
+  def ticket_identity=(ticket_identity)
+    model.ticket_identity = ticket_identity
   end
 
-  def app_template_name=(app_template_name)
-    model.app_template_name = app_template_name
+  def ticket_name=(ticket_name)
+    model.ticket_name = ticket_name
   end
 
   def status=(status)

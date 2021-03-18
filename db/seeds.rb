@@ -112,8 +112,8 @@ SdRequest.create(
     {
       service_id: 62,
       service_name: 'Печать',
-      app_template_id: 5,
-      app_template_name: 'Заявка на печать',
+      ticket_identity: 5,
+      ticket_name: 'Заявка на печать',
       description: '',
       status: :opened,
       priority: :default,
@@ -142,8 +142,8 @@ SdRequest.create(
     {
       service_id: 18,
       service_name: 'Ремонт и обслуживание компьютера',
-      app_template_id: 6,
-      app_template_name: 'Заявка на ремонт',
+      ticket_identity: 6,
+      ticket_name: 'Заявка на ремонт',
       description: '',
       status: :opened,
       priority: :default,
