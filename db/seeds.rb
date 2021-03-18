@@ -6,6 +6,12 @@ EventType.destroy_all
 Doorkeeper::Application.destroy_all
 Doorkeeper::AccessToken.destroy_all
 
+Doorkeeper::Application.create(
+  [
+    { name: 'Ремонт и обслуживание компьютера', ticket_id: 88, redirect_uri: '', scopes: '' }
+  ]
+)
+
 Role.create(
   [
     { name: 'admin', description: 'Администратор' },
@@ -231,12 +237,5 @@ EventType.create(
       description: 'Изменен приоритет',
       template: 'Новый приоритет: {priority}'
     }
-  ]
-)
-
-Doorkeeper::Application.create(
-  [
-    { name: 'Учет ВТ', redirect_uri: '', scopes: '' },
-    { name: 'Приложение оператора архива КД' }
   ]
 )

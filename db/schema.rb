@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
 
   create_table "oauth_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "ticket_id", null: false
     t.string "uid", null: false
     t.string "secret", null: false
     t.text "redirect_uri"
