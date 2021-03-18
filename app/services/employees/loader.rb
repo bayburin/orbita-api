@@ -36,7 +36,9 @@ module Employees
       Rails.logger.info { 'Авторизация на сервере НСИ' }
       authorize = Authorize.call
 
-      unless authorize.success?
+      if authorize.success?
+        authorize.token
+      else
         Rails.logger.warn { "Ошибка: #{authorize.error}".red }
         raise 'Не удалось авторизоваться на сервере НСИ'
       end
