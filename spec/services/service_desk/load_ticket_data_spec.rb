@@ -7,7 +7,7 @@ module ServiceDesk
     let(:body) { { id: 1 } }
     let(:error) { { error: 'test error' } }
     let(:response_dbl) { double(:response, success?: true, body: body, error: error) }
-    subject(:context) { described_class.call(params) }
+    subject(:context) { described_class.call(params: params) }
     before { allow(Api).to receive(:ticket).and_return(response_dbl) }
 
     describe '.call' do

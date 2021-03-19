@@ -1,6 +1,6 @@
 module SdRequests
   # Создает форму вопроса, историю и запускает все необходимые проверки.
-  class Build
+  class ValidateForm
     include Interactor
 
     delegate :history_store, :create_form, :current_user, to: :context

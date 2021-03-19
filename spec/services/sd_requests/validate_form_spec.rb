@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module SdRequests
-  RSpec.describe Build do
+  RSpec.describe ValidateForm do
     let(:sd_request) { build(:sd_request) }
     let(:history) { build(:history) }
     let(:user) { create(:admin) }

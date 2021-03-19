@@ -1,10 +1,12 @@
 module ServiceDesk
-  # Загружает данные по указанному ticket_id
+  # Загружает данные по указанному ticket_identity
   class LoadTicketData
     include Interactor
 
+    delegate :params, to: :context
+
     def call
-      response = Api.ticket(context.identity)
+      response = Api.ticket(params[:ticket_identity])
 
       if response.success?
         context.ticket = Ticket.new(response.body)

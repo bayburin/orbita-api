@@ -36,7 +36,9 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["priority"], name: "index_claims_on_priority"
+    t.index ["service_id"], name: "index_claims_on_service_id"
     t.index ["status"], name: "index_claims_on_status"
+    t.index ["ticket_identity"], name: "index_claims_on_ticket_identity"
   end
 
   create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

@@ -1,6 +1,15 @@
 class Guest::Api::V1::SdRequestsController < Guest::Api::V1::BaseController
   def create
-    render json: { message: 'ok', user: current_user, token: doorkeeper_token, params: sd_request_params }
+    create = Guest::SdRequests::Create.call(
+      current_user: current_user,
+      params: sd_request_params
+    )
+
+    if create.success?
+      render json: create.sd_request
+    else
+      render json: create.error, status: :unprocessable_entity
+    end
   end
 
   protected

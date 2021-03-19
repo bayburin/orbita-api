@@ -2,9 +2,9 @@ require 'rails_helper'
 
 module SdRequests
   RSpec.describe Create do
-    subject(:context) { described_class.call() }
+    subject(:context) { described_class.call }
     before do
-      allow(Build).to receive(:call!).and_return(true)
+      allow(ValidateForm).to receive(:call!).and_return(true)
       allow(Save).to receive(:call!).and_return(true)
     end
 

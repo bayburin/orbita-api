@@ -16,7 +16,6 @@ Rails.application.routes.draw do
       resources :works
       resources :claims, only: :index
       resources :sd_requests, only: :create
-      resources :dept821, only: :create
       resources :events, only: :create
       resources :users, only: :index
       resources :employees, only: :index

@@ -13,7 +13,7 @@ FactoryBot.define do
     service_id { 1 }
     ticket_identity { 2 }
     service_name { "#{Faker::Company.name} service" }
-    ticket_name { "#{Faker::Company.name} template name" }
+    ticket_name { "#{Faker::Company.name} ticket name" }
   end
 
   factory :case, parent: :claim, class: Case do
