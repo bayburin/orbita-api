@@ -14,35 +14,10 @@ module Employees
       let(:data) { { data: [] }.as_json }
       let(:response) { double('response', status: 200, body: data, success?: true) }
       let(:token) { 'fake-token' }
+      let(:token_dbl) { double(:token, success?: true, token: token) }
       before do
-        allow(TokenCache).to receive(:token).and_return(token)
+        allow(Token).to receive(:call).and_return(token_dbl)
         allow(UserRequestSwitcher).to receive(:request).and_return(response)
-      end
-
-      context 'when TokenCache is empty' do
-        let(:authorize_dbl) { double(:authorize, success?: true, token: token) }
-        before do
-          allow(TokenCache).to receive(:token).and_return(nil)
-          allow(Authorize).to receive(:call).and_return(authorize_dbl)
-        end
-
-        it 'call Authorize.call method' do
-          expect(Authorize).to receive(:call)
-
-          subject.load(params)
-        end
-
-        it 'call UserRequestSwitcher with new token' do
-          expect(UserRequestSwitcher).to receive(:request).with(type, token, params).and_return(response)
-
-          subject.load(params)
-        end
-
-        context 'and when Authorize.call finished failure' do
-          let(:authorize_dbl) { double(:authorize, success?: false, error: {}) }
-
-          it { expect { subject.load(params) }.to raise_error(RuntimeError) }
-        end
       end
 
       context 'when @counter is equal its max value' do

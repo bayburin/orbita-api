@@ -6,13 +6,13 @@ module AuthCenter
     delegate :token, to: :context
 
     def call
-      context.token = AuthCenter::AppTokenCache.token
+      context.token = AppTokenCache.token
       return if token
 
       response = Api.app_token
       if response.success?
         context.token = response.body
-        AuthCenter::AppTokenCache.token = token
+        AppTokenCache.token = token
       else
         context.fail!(error: response.body)
       end

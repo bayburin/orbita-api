@@ -17,7 +17,7 @@ module AuthCenter
           allow(Api).to receive(:app_token).and_return(response)
         end
 
-        it 'call "app_token" method' do
+        it 'call Api.app_token method' do
           expect(Api).to receive(:app_token).and_return(response)
 
           context

@@ -30,18 +30,11 @@ module Employees
     protected
 
     def token
-      token = TokenCache.token
-      return token if token
+      token = Token.call
+      return token.token if token.success?
 
-      Rails.logger.info { 'Авторизация на сервере НСИ' }
-      authorize = Authorize.call
-
-      if authorize.success?
-        authorize.token
-      else
-        Rails.logger.warn { "Ошибка: #{authorize.error}".red }
-        raise 'Не удалось авторизоваться на сервере НСИ'
-      end
+      Rails.logger.warn { "Ошибка: #{token.error}".red }
+      raise 'Не удалось получить токен авторизации на сервере НСИ.'
     end
   end
 end

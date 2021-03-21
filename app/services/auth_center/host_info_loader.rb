@@ -36,9 +36,7 @@ module AuthCenter
 
     def token
       app_token = AppToken.call
-      if app_token.success?
-        return app_token.token.access_token
-      end
+      return app_token.token.access_token if app_token.success?
 
       Rails.logger.warn { "Ошибка: #{app_token.errors}".red }
       raise 'Не удалось получить токен для обращения к AuthCenter'
