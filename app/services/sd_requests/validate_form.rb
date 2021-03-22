@@ -17,7 +17,7 @@ module SdRequests
         end
         history_store.add(history)
       else
-        context.fail!(errors: create_form.errors)
+        context.fail!(error: create_form.errors)
       end
     end
   end

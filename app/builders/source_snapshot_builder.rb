@@ -21,13 +21,13 @@ class SourceSnapshotBuilder < BaseBuilder
       )
     end
 
-    model.claim_user = ClaimUser.new(attrs)
+    model.user = Snapshot::User.new(attrs)
   end
 
   # Загружает данные по хосту из Netadmin.
   def set_host_credentials(invent_num)
     data = AuthCenter::HostInfoLoader.new.load(invent_num)
     attrs = data ? { dns: data['name'], source_ip: data['ip'], mac: data['mac'], os: data['os'] } : {}
-    model.host = Host.new(attrs)
+    model.host = Snapshot::Host.new(attrs)
   end
 end

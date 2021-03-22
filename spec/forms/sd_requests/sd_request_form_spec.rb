@@ -6,16 +6,16 @@ module SdRequests
       let!(:current_user) { create(:employee) }
       let(:model) { SdRequest.new }
       let!(:time) { Time.zone.now }
+      let(:ss_params) { { id_tn: 123, invent_num: 123 } }
+      let!(:params) { { sd_request: attributes_for(:sd_request, source_snapshot: ss_params) } }
       subject do
         allow(Claim).to receive(:default_finished_at_plan).and_return(time)
         described_class.new(model)
       end
-      let(:params) { { sd_request: attributes_for(:sd_request) } }
       before { subject.current_user = current_user }
 
-
       it { is_expected.to validate_presence_of(:description) }
-      it { is_expected.to validate_presence_of(:attrs) }
+      it { is_expected.to validate_presence_of(:source_snapshot) }
 
       describe 'default values' do
         it { expect(subject.service_name).to eq(SdRequest.default_service_name) }
@@ -26,7 +26,6 @@ module SdRequests
       end
 
       describe '#populate_source_snapshot!' do
-        let(:ss_params) { { id_tn: 123, invent_num: 123 } }
         let(:params) { attributes_for(:sd_request, source_snapshot: ss_params) }
         let(:source_snapshot_dbl) { double(:source_snapshot) }
         before do
@@ -64,44 +63,57 @@ module SdRequests
         let!(:default_worker) { create(:admin, :default_worker) }
         let(:user) { create(:admin, group: create(:group)) }
         let(:user_params) { [user.as_json.symbolize_keys] }
-        before { subject.validate(params.merge!(users: user_params)) }
 
-        it { expect { subject.save }.to change { Work.count }.by(2) }
-
-        it 'add users to new work' do
-          subject.save
-
-          expect(subject.model.works.first.workers.last.user).to eq(user)
-        end
-
-        it 'add current_user to user list' do
-          subject.save
-
-          expect(subject.model.works.any? { |work| work.workers.any? { |u| u.user_id == current_user.id } }).to be_truthy
-        end
-
-        context 'when users array is not include uivt users' do
-          let(:user_params) { [] }
+        context 'when form valid' do
+          before { subject.validate(params.merge!(users: user_params)) }
 
           it { expect { subject.save }.to change { Work.count }.by(2) }
 
-          it 'add users with "is_default_worker" flag' do
+          it 'add users to new work' do
             subject.save
 
-            expect(subject.model.users).to include(default_worker)
+            expect(subject.model.works.first.workers.last.user).to eq(user)
+          end
+
+          it 'add current_user to user list' do
+            subject.save
+
+            expect(subject.model.works.any? { |work| work.workers.any? { |u| u.user_id == current_user.id } }).to be_truthy
+          end
+
+          context 'and when users array is not include uivt users' do
+            let(:user_params) { [] }
+
+            it { expect { subject.save }.to change { Work.count }.by(2) }
+
+            it 'add users with "is_default_worker" flag' do
+              subject.save
+
+              expect(subject.model.users).to include(default_worker)
+            end
+          end
+
+          context 'and when add multiple users with the same work' do
+            let(:new_user) { create(:admin, group: user.group) }
+            let(:user_params) { [user.as_json.symbolize_keys, new_user.as_json.symbolize_keys] }
+
+            it { expect { subject.save }.to change { Work.count }.by(2) }
+
+            it 'return created groups' do
+              subject.save
+
+              expect(subject.model.works.as_json.count).to eq 2
+            end
           end
         end
 
-        context 'when add multiple users with the same work' do
-          let(:new_user) { create(:admin, group: user.group) }
-          let(:user_params) { [user.as_json.symbolize_keys, new_user.as_json.symbolize_keys] }
+        context 'when SourceSnapshotForm is not valid' do
+          it { expect(subject.validate(params.merge!({ source_snapshot: {} }))).to be_falsey }
 
-          it { expect { subject.save }.to change { Work.count }.by(2) }
+          it 'add source_snapshot errors' do
+            subject.validate(params.merge!({ source_snapshot: {} }))
 
-          it 'return created groups' do
-            subject.save
-
-            expect(subject.model.works.as_json.count).to eq 2
+            expect(subject.errors.as_json).to include('source_snapshot')
           end
         end
       end

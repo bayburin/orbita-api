@@ -17,12 +17,14 @@ module SdRequests
     collection :works, form: WorkForm
     collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
-    validates :description, :attrs, presence: true
+    validates :description, :source_snapshot, presence: true
+    validate :validate_source_snapshot
 
     def validate(params)
-      super(params)
+      result = super(params)
 
       processing_users
+      result
     end
 
     # Обрабатывает источник заявки
@@ -58,6 +60,13 @@ module SdRequests
 
         works.append(work)
       end
+    end
+
+    # Валидация формы SourceSnapshotForm
+    def validate_source_snapshot
+      return unless source_snapshot
+
+      errors.add(:source_snapshot, source_snapshot.errors) unless source_snapshot.valid?
     end
   end
 end

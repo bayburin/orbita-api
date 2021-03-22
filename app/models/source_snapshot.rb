@@ -1,8 +1,8 @@
 class SourceSnapshot < ApplicationRecord
   belongs_to :claim
 
-  def claim_user
-    ClaimUser.new(
+  def user
+    Snapshot::User.new(
       id_tn: id_tn,
       tn: tn,
       fio: fio,
@@ -12,17 +12,17 @@ class SourceSnapshot < ApplicationRecord
     )
   end
 
-  def claim_user=(claim_user)
-    self.id_tn = claim_user.id_tn
-    self.tn = claim_user.tn
-    self.fio = claim_user.fio
-    self.dept = claim_user.dept
-    self.user_attrs = claim_user.user_attrs
-    self.domain_user = claim_user.domain_user
+  def user=(user)
+    self.id_tn = user.id_tn
+    self.tn = user.tn
+    self.fio = user.fio
+    self.dept = user.dept
+    self.user_attrs = user.user_attrs
+    self.domain_user = user.domain_user
   end
 
   def host
-    Host.new(
+    Snapshot::Host.new(
       dns: dns,
       source_ip: source_ip,
       destination_ip: destination_ip,

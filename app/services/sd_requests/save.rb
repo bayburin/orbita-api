@@ -26,7 +26,7 @@ module SdRequests
         context.sd_request = create_form.model
         SdRequests::CreatedWorker.perform_async(context.sd_request.id)
       else
-        context.fail!(errors: create_form.errors)
+        context.fail!(error: create_form.errors)
       end
     end
   end

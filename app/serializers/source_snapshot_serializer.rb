@@ -1,7 +1,11 @@
 class SourceSnapshotSerializer < ActiveModel::Serializer
-  attributes :id, :claim_user
+  attributes :id, :user, :host
 
-  def claim_user
-    ActiveModelSerializers::SerializableResource.new(object.claim_user, root: 'claim_user').serializable_hash
+  def user
+    ActiveModelSerializers::SerializableResource.new(object.user, root: 'user').serializable_hash
+  end
+
+  def host
+    ActiveModelSerializers::SerializableResource.new(object.host, root: 'host').serializable_hash
   end
 end
