@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Events
-  RSpec.describe Handler do
+  RSpec.describe Create do
     subject { described_class }
 
     describe '.call' do

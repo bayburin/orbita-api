@@ -1,5 +1,5 @@
 module Events
-  # Создает запись в абочего процесса на основании полученного события Event.
+  # Создает запись хода работы в таблице messages на основании полученного события Event.
   class CreateWorkflow
     include Interactor
 

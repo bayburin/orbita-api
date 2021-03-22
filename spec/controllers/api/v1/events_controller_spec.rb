@@ -5,13 +5,13 @@ RSpec.describe Api::V1::EventsController, type: :controller do
 
   describe 'POST #create' do
     let(:params) { { event: { foo: :bar } } }
-    before { allow(Events::Handler).to receive(:call).and_return(handler_dbl) }
+    before { allow(Events::Create).to receive(:call).and_return(create_dbl) }
 
-    context 'when handler finished with success' do
-      let(:handler_dbl) { double(:handler, success?: true, message: I18n.t('controllers.api.v1.events.processed_successfully')) }
+    context 'when interactor finished with success' do
+      let(:create_dbl) { double(:create, success?: true, message: I18n.t('controllers.api.v1.events.processed_successfully')) }
 
-      it 'call Events::Handler.call method' do
-        expect(Events::Handler).to receive(:call).and_return(handler_dbl)
+      it 'call Events::Create.call method' do
+        expect(Events::Create).to receive(:call).and_return(create_dbl)
 
         post :create, params: params
       end
@@ -25,12 +25,12 @@ RSpec.describe Api::V1::EventsController, type: :controller do
       it 'respond with message' do
         post :create, params: params
 
-        expect(parse_json(response.body)['message']).to eq handler_dbl.message
+        expect(parse_json(response.body)['message']).to eq create_dbl.message
       end
     end
 
-    context 'when handler finished with fail' do
-      let(:handler_dbl) { double(:handler, success?: false, error: { error: 'errors' }) }
+    context 'when interactor finished with fail' do
+      let(:create_dbl) { double(:create, success?: false, error: { error: 'errors' }) }
 
       it 'respond with error status' do
         post :create, params: params
@@ -41,7 +41,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
       it 'respond with error' do
         post :create, params: params
 
-        expect(response.body).to eq(handler_dbl.error.to_json)
+        expect(response.body).to eq(create_dbl.error.to_json)
       end
     end
   end

@@ -6,12 +6,13 @@ module Events
     # Регистрирует обработчик события.
     def register(name, command)
       @event_map ||= {}
-      @event_map[name] = command
+      event_map[name] = command
     end
 
     # Вызывает обработчик события по полученному экземпляру класса Event.
+    # event - объект класса Event
     def call(event)
-      command = @event_map[event.event_type.name]
+      command = event_map[event.event_type.name]
       raise 'Неизвестное событие' unless command
 
       command.call(event: event)

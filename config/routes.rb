@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         get 'welcome', to: 'base#welcome'
         resources :sd_requests, only: :create
         resources :service_desk, only: :create
+        resources :events, only: :create
       end
     end
   end

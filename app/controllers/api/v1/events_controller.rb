@@ -1,11 +1,12 @@
 class Api::V1::EventsController < Api::V1::BaseController
+  # TODO: Проверить метод после рефакторинга
   def create
-    handler = Events::Handler.call(params: action_params)
+    create = Events::Create.call(params: action_params)
 
-    if handler.success?
+    if create.success?
       render json: { message: I18n.t('controllers.api.v1.events.processed_successfully') }
     else
-      render json: handler.error, status: :unprocessable_entity
+      render json: create.error, status: :unprocessable_entity
     end
   end
 
@@ -15,7 +16,6 @@ class Api::V1::EventsController < Api::V1::BaseController
     params.require(:event).permit(
       :claim_id,
       :event_type,
-      :user_name,
       :id_tn,
       payload: {}
     )
