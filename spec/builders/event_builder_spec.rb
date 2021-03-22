@@ -30,12 +30,6 @@ RSpec.describe EventBuilder do
       it { expect(subject.model.event_type).to eq event_type }
     end
 
-    describe '#id_tn=' do
-      before { subject.id_tn = attr['id_tn'] }
-
-      it { expect(subject.model.user).to eq user }
-    end
-
     describe '#payload=' do
       before { subject.payload = attr['payload'] }
 

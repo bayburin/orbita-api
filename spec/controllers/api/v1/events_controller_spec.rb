@@ -30,18 +30,18 @@ RSpec.describe Api::V1::EventsController, type: :controller do
     end
 
     context 'when interactor finished with fail' do
-      let(:create_dbl) { double(:create, success?: false, error: { error: 'errors' }) }
+      let(:create_dbl) { double(:create, success?: false, error: 'errors') }
 
       it 'respond with error status' do
         post :create, params: params
 
-        expect(response.status).to eq 422
+        expect(response.status).to eq 400
       end
 
       it 'respond with error' do
         post :create, params: params
 
-        expect(response.body).to eq(create_dbl.error.to_json)
+        expect(response.body).to eq({ error: create_dbl.error }.to_json)
       end
     end
   end

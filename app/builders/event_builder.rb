@@ -15,8 +15,4 @@ class EventBuilder < BaseBuilder
   def event_type=(event_type)
     model.event_type = EventType.find_by(name: event_type)
   end
-
-  def id_tn=(id_tn)
-    model.user = User.find_by(id_tn: id_tn)
-  end
 end

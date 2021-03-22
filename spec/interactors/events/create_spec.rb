@@ -2,9 +2,10 @@ require 'rails_helper'
 
 module Events
   RSpec.describe Create do
-    subject { described_class }
+    subject { described_class.call(user: user, params: params) }
 
     describe '.call' do
+      let(:user) { create(:admin) }
       let(:sw_dbl) { double(:sw, register: true, call: true) }
       let(:params) { { foo: :bar } }
       before do
@@ -16,16 +17,16 @@ module Events
         expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
 
-        subject.call(params: params)
+        subject
       end
 
       it 'call "call" method of Switch instance with Event instance argument' do
         expect(sw_dbl).to receive(:call).with(EventBuilder.build(params))
 
-        subject.call(params: params)
+        subject
       end
 
-      it { expect(subject.call(params: params)).to eq sw_dbl.call }
+      it { expect(subject).to eq sw_dbl.call }
     end
   end
 end
