@@ -103,6 +103,18 @@ User.create(
       work_tel: '67-40',
       email: 'mihalchenkovme@iss-reshetnev.ru',
       is_vacation: false
+    },
+    {
+      role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 713),
+      id_tn: 14779,
+      tn: 9968,
+      login: 'AtamanovAY',
+      fio: 'Атаманов Алексей Юрьевич',
+      work_tel: '66-13',
+      email: 'ataman@iss-reshetnev.ru',
+      is_vacation: false,
+      is_default_worker: true
     }
   ]
 )

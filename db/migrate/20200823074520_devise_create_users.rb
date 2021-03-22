@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :mobile_tel, limit: 45
       t.string :email, limit: 45
       t.boolean :is_vacation, default: false
+      t.boolean :is_default_worker, default: false, index: true
 
       ## Database authenticatable
       # t.string :email,              null: false, default: ""

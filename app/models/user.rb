@@ -9,8 +9,10 @@ class User < ApplicationRecord
 
   attr_accessor :access_token, :refresh_token, :expires_in, :token_type
 
+  scope :default_workers, -> { where(is_default_worker: true) }
+
   def self.authenticate_employee(id_tn)
-    user = User.find_by(role: Role.find_by(name: :employee))
+    user = employee_user
     return unless user
 
     user_info = Employees::Loader.new(:load).load(id_tn)
@@ -18,6 +20,10 @@ class User < ApplicationRecord
 
     user.fill_by_employee(Employee.new(user_info))
     user
+  end
+
+  def self.employee_user
+    User.find_by(role: Role.find_by(name: :employee))
   end
 
   def auth_center_token

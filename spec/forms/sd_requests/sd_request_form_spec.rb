@@ -3,7 +3,7 @@ require 'rails_helper'
 module SdRequests
   RSpec.describe SdRequestForm, type: :model do
     describe 'creating model' do
-      let(:user) { create(:admin) }
+      let!(:current_user) { create(:employee) }
       let(:model) { SdRequest.new }
       let!(:time) { Time.zone.now }
       subject do
@@ -11,7 +11,7 @@ module SdRequests
         described_class.new(model)
       end
       let(:params) { { sd_request: attributes_for(:sd_request) } }
-      before { subject.current_user = user }
+      before { subject.current_user = current_user }
 
 
       it { is_expected.to validate_presence_of(:description) }
@@ -61,18 +61,48 @@ module SdRequests
       end
 
       describe '#validate' do
-        let!(:user) { create(:admin) }
+        let!(:default_worker) { create(:admin, :default_worker) }
+        let(:user) { create(:admin, group: create(:group)) }
         let(:user_params) { [user.as_json.symbolize_keys] }
         before { subject.validate(params.merge!(users: user_params)) }
 
-        it 'add a new work' do
-          expect { subject.save }.to change { Work.count }.by(1)
-        end
+        it { expect { subject.save }.to change { Work.count }.by(2) }
 
         it 'add users to new work' do
           subject.save
 
-          expect(subject.model.works.last.workers.last.user).to eq(user)
+          expect(subject.model.works.first.workers.last.user).to eq(user)
+        end
+
+        it 'add current_user to user list' do
+          subject.save
+
+          expect(subject.model.works.any? { |work| work.workers.any? { |u| u.user_id == current_user.id } }).to be_truthy
+        end
+
+        context 'when users array is not include uivt users' do
+          let(:user_params) { [] }
+
+          it { expect { subject.save }.to change { Work.count }.by(2) }
+
+          it 'add users with "is_default_worker" flag' do
+            subject.save
+
+            expect(subject.model.users).to include(default_worker)
+          end
+        end
+
+        context 'when add multiple users with the same work' do
+          let(:new_user) { create(:admin, group: user.group) }
+          let(:user_params) { [user.as_json.symbolize_keys, new_user.as_json.symbolize_keys] }
+
+          it { expect { subject.save }.to change { Work.count }.by(2) }
+
+          it 'return created groups' do
+            subject.save
+
+            expect(subject.model.works.as_json.count).to eq 2
+          end
         end
       end
     end

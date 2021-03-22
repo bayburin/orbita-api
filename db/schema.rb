@@ -151,11 +151,13 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
     t.string "mobile_tel", limit: 45
     t.string "email", limit: 45
     t.boolean "is_vacation", default: false
+    t.boolean "is_default_worker", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["fio"], name: "index_users_on_fio"
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["id_tn"], name: "index_users_on_id_tn"
+    t.index ["is_default_worker"], name: "index_users_on_is_default_worker"
     t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["tn"], name: "index_users_on_tn"
   end

@@ -43,15 +43,18 @@ module SdRequests
     protected
 
     # Обрабатывает список пользователей и создает работы по заявке, если необходимо.
-    # Проверяет наличие текущего пользователя в списке исполнителей.
     def processing_users
       user_instances = User.where(id: users.map { |u| u[:id] }).to_a
+      # Проверяет наличие текущего пользователя в списке исполнителей.
       user_instances << current_user if users.none? { |u| u[:id] == current_user.id }
+      # Добавляет "исполнителя по умолчанию", если в списке исполнителей отсутствуют работники УИВТ.
+      employee = User.employee_user
+      user_instances.push(*User.default_workers) if user_instances.none? { |user| user.role_id != employee.role_id }
 
-      # TODO: Тоже самое в классе FindOrCreateWork
-      user_instances.each do |user|
-        work = model.find_or_initialize_work_by_user(user)
-        work.workers.build(user: user) unless work.workers.exists?(user_id: user.id)
+      user_instances.group_by(&:group_id).each do |group_id, user_arr|
+        work_form = works.find { |w| w.group_id == group_id }
+        work = work_form.try(:model) || WorkBuilder.build(group_id: group_id)
+        user_arr.each { |user| work.workers.build(user: user) unless work.workers.exists?(user_id: user.id) }
 
         works.append(work)
       end

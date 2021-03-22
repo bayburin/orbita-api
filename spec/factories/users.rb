@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :user do
+    group { build(:group) }
     id_tn { Faker::Number.number(digits: 6) }
     tn { Faker::Number.number(digits: 6) }
     login { 'LoginAD' }
@@ -13,9 +14,9 @@ FactoryBot.define do
     expires_in { Faker::Number.number(digits: 6) }
     token_type { 'Bearer' }
 
-    after(:build) do |user, _ev|
-      user.group = Group.first || create(:group)
-    end
+    # after(:build) do |user, _ev|
+    #   user.group = Group.first || create(:group)
+    # end
   end
 
   factory :admin, parent: :user do
@@ -33,6 +34,12 @@ FactoryBot.define do
   factory :employee, parent: :user do
     after(:build) do |user, _ev|
       user.role = Role.find_by(name: :employee) || create(:employee_role)
+    end
+  end
+
+  trait :default_worker do
+    after(:build) do |user, ev|
+      user.is_default_worker = true
     end
   end
 end
