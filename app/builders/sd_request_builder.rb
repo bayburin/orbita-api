@@ -6,6 +6,8 @@ class SdRequestBuilder < BaseBuilder
     super()
   end
 
+  delegate :ticket=, to: :model
+
   def set_runtime(finished_at_plan, finished_at)
     model.runtime = Runtime.new(finished_at_plan: finished_at_plan, finished_at: finished_at)
   end
