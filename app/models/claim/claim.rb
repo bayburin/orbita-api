@@ -13,10 +13,6 @@ class Claim < ApplicationRecord
     Time.zone.now + 3.days
   end
 
-  def self.default_service_name
-    'Техподдержка'
-  end
-
   def self.default_status
     :opened
   end

@@ -18,7 +18,8 @@ module SdRequests
       it { is_expected.to validate_presence_of(:attrs) }
 
       describe 'default values' do
-        it { expect(subject.service_name).to eq(Claim.default_service_name) }
+        it { expect(subject.service_name).to eq(SdRequest.default_service_name) }
+        it { expect(subject.ticket_name).to eq(SdRequest.default_ticket_name) }
         it { expect(subject.status).to eq(Claim.default_status) }
         it { expect(subject.priority).to eq(Claim.default_priority) }
         it { expect(subject.finished_at_plan).to eq(time) }

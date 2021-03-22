@@ -4,8 +4,8 @@ module SdRequests
     property :id
     property :service_id
     property :ticket_identity
-    property :service_name, default: ->(**) { Claim.default_service_name }
-    property :ticket_name
+    property :service_name, default: ->(**) { SdRequest.default_service_name }
+    property :ticket_name, default: ->(**) { SdRequest.default_ticket_name }
     property :description
     property :status, default: ->(**) { Claim.default_status }
     property :priority, default: ->(**) { Claim.default_priority }
