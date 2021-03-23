@@ -11,7 +11,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
     context 'when form saved data' do
       let(:create_form_dbl) { double(:create_form, success?: true, sd_request: sd_request) }
 
-      it 'call Events::Handler.call method' do
+      it 'call SdRequests::Create.call method' do
         expect(SdRequests::Create).to receive(:call).and_return(create_form_dbl)
 
         post :create, params: params
@@ -43,6 +43,50 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
         post :create, params: params
 
         expect(response.body).to eq(create_form_dbl.error)
+      end
+    end
+  end
+
+  describe 'PUT #update' do
+    let!(:sd_request) { create(:sd_request) }
+    let(:params) { { id: sd_request.id, sd_request: { service_id: 2 } } }
+    let(:error) { { foo: 'bar' } }
+    let(:update_form_dbl) { double(:update_form, success?: true, sd_request: sd_request, error: error) }
+    before { allow(SdRequests::Update).to receive(:call).and_return(update_form_dbl) }
+
+    context 'when data updated' do
+      it 'call SdRequests::Update.call method' do
+        expect(SdRequests::Update).to receive(:call).and_return(update_form_dbl)
+
+        put :update, params: params
+      end
+
+      it 'respond with success status' do
+        put :update, params: params
+
+        expect(response.status).to eq 200
+      end
+
+      it 'respond with updated model' do
+        put :update, params: params
+
+        expect(parse_json(response.body)['id']).to eq update_form_dbl.sd_request.id
+      end
+    end
+
+    context 'when update finished with failure' do
+      before { allow(update_form_dbl).to receive(:success?).and_return(false) }
+
+      it 'respond with error status' do
+        put :update, params: params
+
+        expect(response.status).to eq 422
+      end
+
+      it 'respond with error' do
+        put :update, params: params
+
+        expect(response.body).to eq(error.to_json)
       end
     end
   end

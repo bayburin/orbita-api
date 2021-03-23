@@ -12,6 +12,20 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     end
   end
 
+  def update
+    update = SdRequests::Update.call(
+      current_user: current_user,
+      sd_request: SdRequest.find(params[:id]),
+      params: sd_request_params
+    )
+
+    if update.success?
+      render json: update.sd_request
+    else
+      render json: update.error, status: :unprocessable_entity
+    end
+  end
+
   protected
 
   def sd_request_params

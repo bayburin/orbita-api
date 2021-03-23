@@ -1,5 +1,5 @@
 module SdRequests
-  # Создает форму вопроса и сохраняет в базе.
+  # Создает форму заявки и сохраняет в базе.
   class Create
     include Interactor::Organizer
 
