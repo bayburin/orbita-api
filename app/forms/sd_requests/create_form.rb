@@ -1,6 +1,6 @@
 module SdRequests
   # Описывает форму, которая создает заявку.
-  class SdRequestForm < Reform::Form
+  class CreateForm < Reform::Form
     property :id
     property :service_id
     property :ticket_identity

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module SdRequests
-  RSpec.describe SdRequestForm, type: :model do
+  RSpec.describe CreateForm, type: :model do
     describe 'creating model' do
       let!(:current_user) { create(:employee) }
       let(:model) { SdRequest.new }

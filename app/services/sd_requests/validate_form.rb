@@ -7,7 +7,7 @@ module SdRequests
 
     def call
       context.history_store = Histories::Storage.new
-      context.create_form = SdRequestForm.new(context.sd_request || SdRequest.new)
+      context.create_form = CreateForm.new(context.sd_request || SdRequest.new)
       context.create_form.current_user = current_user
 
       if create_form.validate(context.params)

@@ -7,9 +7,9 @@ module SdRequests
     let(:user) { create(:admin) }
     let(:params) { { foo: :bar } }
     subject(:context) { described_class.call(params: params, current_user: user) }
-    let(:form_dbl) { instance_double('SdRequestForm', validate: true, errors: {}) }
+    let(:form_dbl) { instance_double('CreateForm', validate: true, errors: {}) }
     before do
-      allow(SdRequestForm).to receive(:new).and_return(form_dbl)
+      allow(CreateForm).to receive(:new).and_return(form_dbl)
       allow(form_dbl).to receive(:current_user=)
       allow(HistoryBuilder).to receive(:build).and_return(history)
     end
@@ -18,8 +18,8 @@ module SdRequests
       it { expect(context.history_store).to be_instance_of Histories::Storage }
       it { expect(context).to be_a_success }
 
-      it 'create instance of SdRequestForm' do
-        expect(SdRequestForm).to receive(:new).with(an_instance_of(SdRequest))
+      it 'create instance of CreateForm' do
+        expect(CreateForm).to receive(:new).with(an_instance_of(SdRequest))
 
         context
       end
@@ -28,8 +28,8 @@ module SdRequests
         let(:sd_request) { SdRequest.new(attrs: { foo: :bar }) }
         subject(:context) { described_class.call(sd_request: sd_request) }
 
-        it 'create instance of SdRequestForm with received instance of SdRequest' do
-          expect(SdRequestForm).to receive(:new).with(sd_request)
+        it 'create instance of CreateForm with received instance of SdRequest' do
+          expect(CreateForm).to receive(:new).with(sd_request)
 
           context
         end
