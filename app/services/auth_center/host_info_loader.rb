@@ -22,7 +22,6 @@ module AuthCenter
 
       if host_info.success?
         @counter = 0
-        Rails.logger.debug "DATA: #{host_info.body}".red
         host_info.body
       else
         AuthCenter::AppTokenCache.clear

@@ -55,8 +55,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         id
         claim_id
         attachment
-      ],
-      users: :id
+      ]
     )
   end
 end

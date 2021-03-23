@@ -62,10 +62,10 @@ module SdRequests
       describe '#validate' do
         let!(:default_worker) { create(:admin, :default_worker) }
         let(:user) { create(:admin, group: create(:group)) }
-        let(:user_params) { [user.as_json.symbolize_keys] }
+        let(:work_params) { [{ group_id: user.group_id, users: [{ id: user.id }] }] }
 
         context 'when form valid' do
-          before { subject.validate(params.merge!(users: user_params)) }
+          before { subject.validate(params.merge!(works: work_params)) }
 
           it { expect { subject.save }.to change { Work.count }.by(2) }
 
@@ -82,7 +82,7 @@ module SdRequests
           end
 
           context 'and when users array is not include uivt users' do
-            let(:user_params) { [] }
+            let(:work_params) { [] }
 
             it { expect { subject.save }.to change { Work.count }.by(2) }
 
@@ -95,7 +95,7 @@ module SdRequests
 
           context 'and when add multiple users with the same work' do
             let(:new_user) { create(:admin, group: user.group) }
-            let(:user_params) { [user.as_json.symbolize_keys, new_user.as_json.symbolize_keys] }
+            let(:work_params) { [{ group_id: user.group_id, users: [{ id: user.id }, { id: new_user.id }] }] }
 
             it { expect { subject.save }.to change { Work.count }.by(2) }
 

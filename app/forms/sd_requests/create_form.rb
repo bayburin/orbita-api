@@ -13,8 +13,7 @@ module SdRequests
     property :finished_at_plan, default: ->(**) { Claim.default_finished_at_plan }
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
     property :current_user, virtual: true
-    collection :users, virtual: true
-    collection :works, form: WorkForm
+    collection :works, form: WorkForm, populator: :populate_works!
     collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
     validates :description, :source_snapshot, presence: true
@@ -36,29 +35,38 @@ module SdRequests
     end
 
     # Обработка списка работ
-    # def populate_works!(fragment:, **)
-    #   item = works.find { |work| work.id == fragment[:id].to_i }
+    def populate_works!(fragment:, **)
+      item = works.find { |work| work.id == fragment[:id].to_i }
 
-    #   item || works.append(Work.new)
-    # end
+      item || works.append(Work.new)
+    end
 
     protected
 
-    # Обрабатывает список пользователей и создает работы по заявке, если необходимо.
+    # Дополнительно обрабатывает список исполнителей. Добавляет в него текущего пользователя и, если необходимо,
+    # добавляет "ответственных по умолчанию"
     def processing_users
-      user_instances = User.where(id: users.map { |u| u[:id] }).to_a
-      # Проверяет наличие текущего пользователя в списке исполнителей.
-      user_instances << current_user if users.none? { |u| u[:id] == current_user.id }
-      # Добавляет "исполнителя по умолчанию", если в списке исполнителей отсутствуют работники УИВТ.
-      employee = User.employee_user
-      user_instances.push(*User.default_workers) if user_instances.none? { |user| user.role_id != employee.role_id }
+      # Список id текущих исполнителей
+      user_ids = works.map { |work| work.users.map(&:id) }.flatten
+      # Список объектов User, которых необходимо будет включить в список исполнителей по заявке
+      user_instances = []
 
+      # Проверяет наличие текущего пользователя в списке исполнителей.
+      unless user_ids.include?(current_user.id)
+        user_instances << current_user
+        user_ids << current_user.id
+      end
+
+      # Добавляет "исполнителей по умолчанию", если в списке исполнителей отсутствуют работники УИВТ.
+      employee = User.employee_user
+      user_instances.push(*User.default_workers) if User.where(id: user_ids).none? { |user| user.role_id != employee.role_id }
+
+      # Конечная обработка массива user_instances.
       user_instances.group_by(&:group_id).each do |group_id, user_arr|
         work_form = works.find { |w| w.group_id == group_id }
         work = work_form.try(:model) || WorkBuilder.build(group_id: group_id)
         user_arr.each { |user| work.workers.build(user: user) unless work.workers.exists?(user_id: user.id) }
-
-        works.append(work)
+        works.append(work) unless work_form
       end
     end
 
