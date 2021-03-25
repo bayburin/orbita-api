@@ -6,7 +6,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request, include: ['works.group', 'works.workers.users']
+      render json: create.sd_request, include: ['works.group', 'works.workers.user']
     else
       render json: create.error, status: :bad_request
     end
@@ -15,12 +15,12 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   def update
     update = SdRequests::Update.call(
       current_user: current_user,
-      sd_request: SdRequest.find(params[:id]),
+      sd_request: SdRequest.includes(works: [:group, workers: :user]).find(params[:id]),
       params: sd_request_params
     )
 
     if update.success?
-      render json: update.sd_request, include: ['works.group', 'works.workers.users']
+      render json: update.sd_request, include: ['works.group', 'works.workers.user']
     else
       render json: update.error, status: :bad_request
     end
