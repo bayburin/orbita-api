@@ -4,8 +4,9 @@ module SdRequests
   RSpec.describe Update do
     subject(:context) { described_class.call }
     before do
-      allow(ValidateUpdateForm).to receive(:call!).and_return(true)
-      allow(SaveUpdateForm).to receive(:call!).and_return(true)
+      allow(ValidateForm).to receive(:call!).and_return(true)
+      allow(Save).to receive(:call!).and_return(true)
+      allow(NotifyOnUpdate).to receive(:call!).and_return(true)
     end
 
     describe '.call' do

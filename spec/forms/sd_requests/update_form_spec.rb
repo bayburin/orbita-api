@@ -9,12 +9,6 @@ module SdRequests
       described_class.new(sd_request)
     end
 
-    describe 'validations' do
-      let(:works) { [{ group_id: 1 }, { group_id: 1 }] }
-      before { subject.validate({ works: works }) }
-
-      it { expect(subject.errors.messages).to include(:works) }
-      it { expect(subject.errors.messages[:works]).to include('имеются дублирующиеся группы') }
-    end
+    it { expect(described_class).to be < SdRequestForm }
   end
 end

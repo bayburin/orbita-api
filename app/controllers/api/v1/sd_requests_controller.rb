@@ -2,6 +2,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   def create
     create = SdRequests::Create.call(
       current_user: current_user,
+      form: SdRequests::CreateForm.new(SdRequest.new),
       params: sd_request_params
     )
 
@@ -15,7 +16,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   def update
     update = SdRequests::Update.call(
       current_user: current_user,
-      sd_request: SdRequest.includes(works: [:group, workers: :user]).find(params[:id]),
+      form: SdRequests::UpdateForm.new(SdRequest.includes(works: [:group, workers: :user]).find(params[:id])),
       params: sd_request_params
     )
 

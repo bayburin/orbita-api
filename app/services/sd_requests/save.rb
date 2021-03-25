@@ -3,16 +3,17 @@ module SdRequests
   class Save
     include Interactor
 
-    delegate :create_form, :history_store, :current_user, to: :context
+    delegate :form, :history_store, :current_user, to: :context
 
     def call
       result = false
 
       ActiveRecord::Base.transaction do
-        result = create_form.save
+        result = form.save
+        form.model.reload
 
         if result
-          history_store.work = create_form.model.work_for(current_user)
+          history_store.work = form.model.work_for(current_user)
           history_store.save!
         end
       rescue ActiveRecord::RecordNotSaved
@@ -23,10 +24,9 @@ module SdRequests
       end
 
       if result
-        context.sd_request = create_form.model.reload
-        SdRequests::CreatedWorker.perform_async(context.sd_request.id)
+        context.sd_request = form.model
       else
-        context.fail!(error: create_form.errors)
+        context.fail!(error: form.errors.messages)
       end
     end
   end

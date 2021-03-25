@@ -1,7 +1,8 @@
 # require 'sidekiq/web'
-# mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
+# Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
 Rails.application.routes.draw do
+  # mount Sidekiq::Web => '/sidekiq' # mount Sidekiq::Web in your Rails app
   use_doorkeeper
   devise_for :users
 

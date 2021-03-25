@@ -3,6 +3,8 @@ require 'rails_helper'
 module Histories
   RSpec.describe Storage do
     let(:history) { build(:history) }
+    let(:user) { create(:admin) }
+    subject { described_class.new(user) }
 
     describe '#add' do
       it 'should add history to @histories array' do
@@ -25,6 +27,12 @@ module Histories
         subject.save!
 
         expect(subject.histories.first.work).to eq work
+      end
+
+      it 'should set user' do
+        subject.save!
+
+        expect(subject.histories.first.user).to eq user
       end
 
       it { expect { subject.save! }.to change { History.count }.by(2) }

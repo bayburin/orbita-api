@@ -3,41 +3,35 @@ require 'rails_helper'
 module SdRequests
   RSpec.describe ValidateForm do
     let(:sd_request) { build(:sd_request) }
-    let(:history) { build(:history) }
     let(:user) { create(:admin) }
     let(:params) { { foo: :bar } }
-    subject(:context) { described_class.call(params: params, current_user: user) }
+    let(:history_store_dbl) { instance_double('Histories::Storage') }
     let(:error_dbl) { double(:error, messages: []) }
-    let(:form_dbl) { instance_double('CreateForm', validate: true, errors: error_dbl) }
+    let(:form_dbl) { instance_double('SdRequestForm', validate: true, errors: error_dbl) }
+    subject(:context) { described_class.call(params: params, current_user: user, form: form_dbl) }
     before do
-      allow(CreateForm).to receive(:new).and_return(form_dbl)
       allow(form_dbl).to receive(:current_user=)
-      allow(HistoryBuilder).to receive(:build).and_return(history)
+      allow(form_dbl).to receive(:history_store=)
+      allow(Histories::Storage).to receive(:new).and_return(history_store_dbl)
     end
 
     describe '.call' do
-      it { expect(context.history_store).to be_instance_of Histories::Storage }
       it { expect(context).to be_a_success }
 
-      it 'create instance of CreateForm' do
-        expect(CreateForm).to receive(:new).with(an_instance_of(SdRequest))
+      it 'create Histories::Storage instance' do
+        expect(Histories::Storage).to receive(:new).with(user).and_return(history_store_dbl)
 
         context
       end
 
-      context 'when context.sd_request exist' do
-        let(:sd_request) { SdRequest.new(attrs: { foo: :bar }) }
-        subject(:context) { described_class.call(sd_request: sd_request) }
-
-        it 'create instance of CreateForm with received instance of SdRequest' do
-          expect(CreateForm).to receive(:new).with(sd_request)
-
-          context
-        end
-      end
-
       it 'set current_user into form' do
         expect(form_dbl).to receive(:current_user=).with(user)
+
+        context
+      end
+
+      it 'set history_store into form' do
+        expect(form_dbl).to receive(:history_store=).with(history_store_dbl)
 
         context
       end
@@ -52,29 +46,6 @@ module SdRequests
         before { allow(form_dbl).to receive(:validate).and_return(false) }
 
         it { expect(context).to be_a_failure }
-      end
-
-      describe 'processing history' do
-        let(:history) { double(:history) }
-        before do
-          allow(HistoryBuilder).to receive(:build).and_yield(history)
-          allow(history).to receive(:set_event_type)
-          allow(history).to receive(:user=)
-        end
-
-        it 'set :created event_type' do
-          expect(history).to receive(:set_event_type).with(:created)
-
-          context
-        end
-
-        it 'set current_user' do
-          expect(history).to receive(:user=).with(user)
-
-          context
-        end
-
-        it { expect(context.history_store.histories.length).to eq 1 }
       end
     end
   end

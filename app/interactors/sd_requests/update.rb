@@ -3,6 +3,6 @@ module SdRequests
   class Update
     include Interactor::Organizer
 
-    organize ValidateUpdateForm, SaveUpdateForm
+    organize ValidateForm, Save, NotifyOnUpdate
   end
 end

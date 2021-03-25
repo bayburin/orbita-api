@@ -3,22 +3,13 @@ module SdRequests
   class ValidateForm
     include Interactor
 
-    delegate :history_store, :create_form, :current_user, to: :context
+    delegate :history_store, :form, :current_user, :params, to: :context
 
     def call
-      context.history_store = Histories::Storage.new
-      context.create_form = CreateForm.new(context.sd_request || SdRequest.new)
-      context.create_form.current_user = current_user
-
-      if create_form.validate(context.params)
-        history = HistoryBuilder.build do |h|
-          h.set_event_type(:created)
-          h.user = current_user
-        end
-        history_store.add(history)
-      else
-        context.fail!(error: create_form.errors.messages)
-      end
+      context.history_store = Histories::Storage.new(current_user)
+      form.current_user = current_user
+      form.history_store = history_store
+      context.fail!(error: form.errors.messages) unless form.validate(params)
     end
   end
 end

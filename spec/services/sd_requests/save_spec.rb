@@ -4,12 +4,13 @@ module SdRequests
   RSpec.describe Save do
     let(:created_sd_request) { create(:sd_request) }
     let(:work) { create(:work) }
-    let(:create_form_dbl) { double(:create_form, save: true, model: created_sd_request, errors: {}) }
-    let(:history_store_dbl) { double(:history_store, histories: [], save!: true) }
+    let(:error_dbl) { double(:error, messages: [{ foo: :bar }]) }
+    let(:form_dbl) { double(:form, save: true, model: created_sd_request, errors: error_dbl) }
+    let(:history_store_dbl) { instance_double('Hisroties::Store', histories: [], save!: true) }
     let(:user) { create(:admin) }
     subject(:context) do
       described_class.call(
-        create_form: create_form_dbl,
+        form: form_dbl,
         history_store: history_store_dbl,
         current_user: user
       )
@@ -22,8 +23,8 @@ module SdRequests
     describe '.call' do
       it { expect(context).to be_a_success }
 
-      it 'call #save method for create_form object' do
-        expect(create_form_dbl).to receive(:save)
+      it 'call #save method for form object' do
+        expect(form_dbl).to receive(:save)
 
         context
       end
@@ -40,16 +41,10 @@ module SdRequests
         context
       end
 
-      it 'call SdRequests::CreatedWorker worker' do
-        expect(SdRequests::CreatedWorker).to receive(:perform_async).with(created_sd_request.id)
-
-        context
-      end
-
       it { expect(context.sd_request).to eq created_sd_request }
 
       context 'when form was not saved' do
-        before { allow(create_form_dbl).to receive(:save).and_return(false) }
+        before { allow(form_dbl).to receive(:save).and_return(false) }
 
         it { expect(context).to be_a_failure }
 

@@ -234,7 +234,7 @@ EventType.create(
     {
       name: :postpone,
       description: 'Изменен срок исполнения',
-      template: 'Срок исполнения перенесен с {old_datetime} на {new_datetime}',
+      template: 'Срок исполнения перенесен на {datetime}',
       is_public: true
     },
     {

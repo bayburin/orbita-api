@@ -11,4 +11,8 @@ class Runtime
     attribute :finished_at_plan, DateTime
     attribute :finished_at, DateTime
   end
+
+  def finished_at_plan_str
+    finished_at_plan.strftime("#{DATE_FORMAT} #{TIME_FORMAT}")
+  end
 end

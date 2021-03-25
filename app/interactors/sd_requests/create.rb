@@ -3,6 +3,6 @@ module SdRequests
   class Create
     include Interactor::Organizer
 
-    organize ValidateForm, Save
+    organize ValidateForm, Save, NotifyOnCreate
   end
 end
