@@ -36,7 +36,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with error status' do
         post :create, params: params
 
-        expect(response.status).to eq 422
+        expect(response.status).to eq 400
       end
 
       it 'respond with error' do
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with error status' do
         put :update, params: params
 
-        expect(response.status).to eq 422
+        expect(response.status).to eq 400
       end
 
       it 'respond with error' do

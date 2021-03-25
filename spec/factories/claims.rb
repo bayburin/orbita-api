@@ -5,7 +5,7 @@ FactoryBot.define do
     priority { nil }
     attrs { {} }
     rating { nil }
-    finished_at_plan { nil }
+    finished_at_plan { Claim.default_finished_at_plan }
     finished_at { nil }
   end
 

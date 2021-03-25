@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
     t.json "attrs"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id", "group_id"], name: "index_works_on_claim_id_and_group_id", unique: true
     t.index ["claim_id"], name: "index_works_on_claim_id"
     t.index ["group_id"], name: "index_works_on_group_id"
     t.index ["status"], name: "index_works_on_status"

@@ -115,6 +115,18 @@ User.create(
       email: 'ataman@iss-reshetnev.ru',
       is_vacation: false,
       is_default_worker: true
+    },
+    {
+      role: Role.find_by(name: :admin),
+      group: Group.find_by(name: 7141),
+      id_tn: 24883,
+      tn: 20072,
+      login: 'ProhorovND',
+      fio: 'Прохоров Никита Дмитриевич',
+      work_tel: '50-49',
+      email: 'prohorovnd@iss-reshetnev.ru',
+      is_vacation: false,
+      is_default_worker: false
     }
   ]
 )

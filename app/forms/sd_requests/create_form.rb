@@ -1,6 +1,8 @@
 module SdRequests
   # Описывает форму, которая создает заявку.
   class CreateForm < Reform::Form
+    feature Coercion
+
     property :id
     property :service_id
     property :ticket_identity
@@ -10,14 +12,26 @@ module SdRequests
     property :status, default: ->(**) { Claim.default_status }
     property :priority, default: ->(**) { Claim.default_priority }
     property :attrs
-    property :finished_at_plan, default: ->(**) { Claim.default_finished_at_plan }
+    property :finished_at_plan, type: Types::Params::DateTime, default: ->(**) { Claim.default_finished_at_plan }
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
     property :current_user, virtual: true
     collection :works, form: WorkForm, populator: :populate_works!
     collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
 
-    validates :description, :source_snapshot, presence: true
-    validate :validate_source_snapshot
+    validation do
+      option :form
+      config.messages.backend = :i18n
+
+      params do
+        required(:description).filled
+        required(:source_snapshot).filled
+        optional(:works)
+      end
+
+      rule(:works) do
+        key.failure(:duplicate_groups) if value.map { |work| work[:group_id] }.uniq.count != value.count
+      end
+    end
 
     def validate(params)
       result = super(params)
@@ -47,7 +61,7 @@ module SdRequests
     # добавляет "ответственных по умолчанию"
     def processing_users
       # Список id текущих исполнителей
-      user_ids = works.map { |work| work.users.map(&:id) }.flatten
+      user_ids = works.map { |work| work.workers.map(&:user_id) }.flatten
       # Список объектов User, которых необходимо будет включить в список исполнителей по заявке
       user_instances = []
 
@@ -64,17 +78,15 @@ module SdRequests
       # Конечная обработка массива user_instances.
       user_instances.group_by(&:group_id).each do |group_id, user_arr|
         work_form = works.find { |w| w.group_id == group_id }
-        work = work_form.try(:model) || WorkBuilder.build(group_id: group_id)
-        user_arr.each { |user| work.workers.build(user: user) unless work.workers.exists?(user_id: user.id) }
-        works.append(work) unless work_form
+
+        if work_form
+          user_arr.each { |user| work_form.workers.append(Worker.new(user_id: user.id)) }
+        else
+          work = WorkBuilder.build(group_id: group_id)
+          user_arr.each { |user| work.workers.build(user: user) }
+          works.append(work)
+        end
       end
-    end
-
-    # Валидация формы SourceSnapshotForm
-    def validate_source_snapshot
-      return unless source_snapshot
-
-      errors.add(:source_snapshot, source_snapshot.errors) unless source_snapshot.valid?
     end
   end
 end

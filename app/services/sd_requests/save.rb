@@ -23,7 +23,7 @@ module SdRequests
       end
 
       if result
-        context.sd_request = create_form.model
+        context.sd_request = create_form.model.reload
         SdRequests::CreatedWorker.perform_async(context.sd_request.id)
       else
         context.fail!(error: create_form.errors)

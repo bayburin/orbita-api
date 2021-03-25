@@ -4,5 +4,5 @@ class AttachmentForm < Reform::Form
   property :claim_id
   property :attachment
 
-  validates :attachment, presence: true
+  # TODO: обавить проверку на наличие файла: https://github.com/musaffa/file_validators
 end

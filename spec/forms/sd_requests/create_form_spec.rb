@@ -14,8 +14,17 @@ module SdRequests
       end
       before { subject.current_user = current_user }
 
-      it { is_expected.to validate_presence_of(:description) }
-      it { is_expected.to validate_presence_of(:source_snapshot) }
+      describe 'validations' do
+        let(:works) { [{ group_id: 1 }, { group_id: 1 }] }
+        before { subject.validate({ works: works }) }
+
+        it { expect(subject.errors.messages).to include(:description) }
+        it { expect(subject.errors.messages[:description]).to include('не может быть пустым') }
+        it { expect(subject.errors.messages).to include(:source_snapshot) }
+        it { expect(subject.errors.messages[:source_snapshot]).to include('не может быть пустым') }
+        it { expect(subject.errors.messages).to include(:works) }
+        it { expect(subject.errors.messages[:works]).to include('имеются дублирующиеся группы') }
+      end
 
       describe 'default values' do
         it { expect(subject.service_name).to eq(SdRequest.default_service_name) }
@@ -26,7 +35,7 @@ module SdRequests
       end
 
       describe '#populate_source_snapshot!' do
-        let(:params) { attributes_for(:sd_request, source_snapshot: ss_params) }
+        let(:params) { attributes_for(:sd_request, finished_at_plan: Date.today.to_s, source_snapshot: ss_params) }
         let(:source_snapshot_dbl) { double(:source_snapshot) }
         before do
           allow_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=)
@@ -62,7 +71,7 @@ module SdRequests
       describe '#validate' do
         let!(:default_worker) { create(:admin, :default_worker) }
         let(:user) { create(:admin, group: create(:group)) }
-        let(:work_params) { [{ group_id: user.group_id, users: [{ id: user.id }] }] }
+        let(:work_params) { [{ group_id: user.group_id, workers: [{ user_id: user.id }] }] }
 
         context 'when form valid' do
           before { subject.validate(params.merge!(works: work_params)) }
@@ -95,7 +104,7 @@ module SdRequests
 
           context 'and when add multiple users with the same work' do
             let(:new_user) { create(:admin, group: user.group) }
-            let(:work_params) { [{ group_id: user.group_id, users: [{ id: user.id }, { id: new_user.id }] }] }
+            let(:work_params) { [{ group_id: user.group_id, workers: [{ user_id: user.id }, { user_id: new_user.id }] }] }
 
             it { expect { subject.save }.to change { Work.count }.by(2) }
 
@@ -104,16 +113,6 @@ module SdRequests
 
               expect(subject.model.works.as_json.count).to eq 2
             end
-          end
-        end
-
-        context 'when SourceSnapshotForm is not valid' do
-          it { expect(subject.validate(params.merge!({ source_snapshot: {} }))).to be_falsey }
-
-          it 'add source_snapshot errors' do
-            subject.validate(params.merge!({ source_snapshot: {} }))
-
-            expect(subject.errors.as_json).to include('source_snapshot')
           end
         end
       end

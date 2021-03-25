@@ -6,9 +6,9 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request
+      render json: create.sd_request, include: ['works.group', 'works.workers.users']
     else
-      render json: create.error, status: :unprocessable_entity
+      render json: create.error, status: :bad_request
     end
   end
 
@@ -20,9 +20,9 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if update.success?
-      render json: update.sd_request
+      render json: update.sd_request, include: ['works.group', 'works.workers.users']
     else
-      render json: update.error, status: :unprocessable_entity
+      render json: update.error, status: :bad_request
     end
   end
 
@@ -49,7 +49,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :id,
         :claim_id,
         :group_id,
-        { users: [:id] }
+        { workers: [:id, :work_id, :user_id, :_destroy] }
       ],
       attachments: %i[
         id

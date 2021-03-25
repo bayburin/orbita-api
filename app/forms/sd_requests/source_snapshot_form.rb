@@ -16,6 +16,14 @@ module SdRequests
     property :svt_item_id
     property :os
 
-    validates :id_tn, :tn, :fio, presence: true
+    validation do
+      config.messages.backend = :i18n
+
+      params do
+        required(:id_tn).filled(:int?)
+        required(:tn).filled(:int?)
+        required(:fio).filled
+      end
+    end
   end
 end

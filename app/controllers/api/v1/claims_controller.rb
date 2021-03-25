@@ -4,11 +4,11 @@ class Api::V1::ClaimsController < Api::V1::BaseController
       case type
       when 'SdRequest'
         ActiveModelSerializers::SerializableResource.new(
-          claims_arr, each_serializer: SdRequestSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
+          claims_arr, each_serializer: SdRequestSerializer, include: ['works.histories.event_type', 'works.group', 'works.works.users']
         )
       when 'Case'
         ActiveModelSerializers::SerializableResource.new(
-          claims_arr, each_serializer: CaseSerializer, include: ['works.histories.event_type', 'works.group', 'works.workers']
+          claims_arr, each_serializer: CaseSerializer, include: ['works.histories.event_type', 'works.group', 'works.works.users']
         )
       end
     end

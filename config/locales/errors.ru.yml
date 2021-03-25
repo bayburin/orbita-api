@@ -1,0 +1,10 @@
+ru:
+  dry_validation:
+    errors:
+      filled?: "не может быть пустым"
+      int?: "должен быть числом"
+      rules:
+        works:
+          duplicate_groups: "имеются дублирующиеся группы"
+        group_id:
+          already_exist: 'уже существует'

@@ -7,7 +7,8 @@ module SdRequests
     let(:user) { create(:admin) }
     let(:params) { { foo: :bar } }
     subject(:context) { described_class.call(params: params, current_user: user) }
-    let(:form_dbl) { instance_double('CreateForm', validate: true, errors: {}) }
+    let(:error_dbl) { double(:error, messages: []) }
+    let(:form_dbl) { instance_double('CreateForm', validate: true, errors: error_dbl) }
     before do
       allow(CreateForm).to receive(:new).and_return(form_dbl)
       allow(form_dbl).to receive(:current_user=)
