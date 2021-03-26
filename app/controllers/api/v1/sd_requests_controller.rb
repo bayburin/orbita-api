@@ -42,6 +42,9 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       attrs: {},
       source_snapshot: [
         :id_tn,
+        :tn,
+        :fio,
+        :dept,
         :svt_item_id,
         :invent_num,
         { user_attrs: {} }
@@ -50,12 +53,10 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :id,
         :claim_id,
         :group_id,
+        { workflows: [:id, :message] },
         { workers: [:id, :work_id, :user_id, :_destroy] }
       ],
-      comments: [
-        :id,
-        :message
-      ],
+      comments: [:id, :message],
       attachments: %i[
         id
         claim_id

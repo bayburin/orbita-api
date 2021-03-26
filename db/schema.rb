@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "claim_id", null: false
+    t.bigint "claim_id"
     t.bigint "work_id"
     t.bigint "sender_id", null: false
     t.string "type"

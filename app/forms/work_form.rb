@@ -4,6 +4,9 @@ class WorkForm < Reform::Form
   property :claim_id
   property :group_id
   collection :workers, form: WorkerForm, populator: :populate_workers!
+  collection :workflows, form: MessageForm, populator: :populate_workflows!
+
+  attr_accessor :current_user
 
   validation do
     option :form
@@ -26,5 +29,13 @@ class WorkForm < Reform::Form
     end
 
     item || workers.append(Worker.new)
+  end
+
+  # Обработка списка комментариев
+  # TODO: Запретить изменять существующие записи
+  def populate_workflows!(fragment:, **)
+    item = workflows.find { |workflow| workflow.id == fragment[:id].to_i }
+
+    item || workflows.append(Workflow.new(sender: current_user))
   end
 end
