@@ -7,8 +7,9 @@ module SdRequests
     property :priority, default: ->(**) { Claim.default_priority }
     property :attrs
     property :finished_at_plan, type: Types::Params::DateTime, default: ->(**) { Claim.default_finished_at_plan }
-    collection :works, form: WorkForm, populator: :populate_works!
-    collection :attachments, form: AttachmentForm, populate_if_empty: Attachment
+    collection :works, form: WorkForm, populate_if_empty: Work
+    collection :attachments, form: AttachmentForm
+    collection :comments, form: MessageForm, populator: :populate_comments!
 
     attr_accessor :current_user, :history_store
 
@@ -30,10 +31,21 @@ module SdRequests
     end
 
     # Обработка списка работ
-    def populate_works!(fragment:, **)
-      item = works.find { |work| work.id == fragment[:id].to_i }
+    # def populate_works!(fragment:, **)
+    #   item = works.find { |work| work.id == fragment[:id].to_i }
 
-      item || works.append(Work.new)
+    #   item || works.append(Work.new)
+    # end
+
+    # Обработка списка комментариев
+    def populate_comments!(fragment:, **)
+      item = comments.find { |comment| comment.id == fragment[:id].to_i }
+
+      if item
+        item
+      else
+        comments.append(Comment.new(sender: current_user))
+      end
     end
 
     protected

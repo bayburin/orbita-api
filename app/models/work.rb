@@ -3,7 +3,6 @@ class Work < ApplicationRecord
   has_many :workers, dependent: :destroy
   has_many :users, through: :workers
   has_many :histories, dependent: :destroy
-  has_many :messages, dependent: :destroy
   has_many :workflows, dependent: :destroy
 
   belongs_to :claim

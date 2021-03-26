@@ -52,6 +52,10 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :group_id,
         { workers: [:id, :work_id, :user_id, :_destroy] }
       ],
+      comments: [
+        :id,
+        :message
+      ],
       attachments: %i[
         id
         claim_id
