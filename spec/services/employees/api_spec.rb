@@ -26,7 +26,7 @@ module Employees
         subject.token
 
         expect(WebMock).to have_requested(:post, "#{ENV['EMPLOYEE_DATABASE_URL']}/login")
-                              .with(headers: { 'X-Auth-Username': username, 'X-Auth-Password': password })
+                             .with(headers: { 'X-Auth-Username': username, 'X-Auth-Password': password })
       end
 
       it 'returns instance of Faraday::Response class' do
@@ -39,7 +39,7 @@ module Employees
         subject.load_user(token, 123)
 
         expect(WebMock).to have_requested(:get, "#{ENV['EMPLOYEE_DATABASE_URL']}/emp/123")
-                              .with(headers: { 'X-Auth-Token': token })
+                             .with(headers: { 'X-Auth-Token': token })
       end
 
       it 'returns instance of Faraday::Response class' do
@@ -52,7 +52,7 @@ module Employees
         subject.load_users_by_id_tn(token, [123])
 
         expect(WebMock).to have_requested(:get, "#{ENV['EMPLOYEE_DATABASE_URL']}/emp?search=id=in=(123)")
-                              .with(headers: { 'X-Auth-Token': token })
+                             .with(headers: { 'X-Auth-Token': token })
       end
 
       it 'returns instance of Faraday::Response class' do
@@ -65,7 +65,7 @@ module Employees
         subject.load_users_by_tn(token, [123])
 
         expect(WebMock).to have_requested(:get, "#{ENV['EMPLOYEE_DATABASE_URL']}/emp?search=personnelNo=in=(123)")
-                              .with(headers: { 'X-Auth-Token': token })
+                             .with(headers: { 'X-Auth-Token': token })
       end
 
       it 'returns instance of Faraday::Response class' do
@@ -78,7 +78,7 @@ module Employees
         subject.load_users_like(token, :personnelNo, 12_345)
 
         expect(WebMock).to have_requested(:get, "#{ENV['EMPLOYEE_DATABASE_URL']}/emp?search=personnelNo=='*12345*'")
-                              .with(headers: { 'X-Auth-Token': token })
+                             .with(headers: { 'X-Auth-Token': token })
       end
 
       it 'returns instance of Faraday::Response class' do

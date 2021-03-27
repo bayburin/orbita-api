@@ -22,13 +22,13 @@ module Mattermost
         }
       end
       before do
-        stub_request(:post, "#{ENV['MATTERMOST_NOTIFIER_URL']}").to_return(status: 200, body: '', headers: {})
+        stub_request(:post, ENV['MATTERMOST_NOTIFIER_URL']).to_return(status: 200, body: '', headers: {})
       end
 
       it 'sends :post request with required params in body' do
         subject.notify(channel, message)
 
-        expect(WebMock).to have_requested(:post, "#{ENV['MATTERMOST_NOTIFIER_URL']}").with(body: body.to_json)
+        expect(WebMock).to have_requested(:post, ENV['MATTERMOST_NOTIFIER_URL']).with(body: body.to_json)
       end
 
       it 'returns instance of Faraday::Response class' do

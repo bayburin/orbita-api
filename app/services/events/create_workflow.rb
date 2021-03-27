@@ -8,8 +8,7 @@ module Events
     def call
       context.workflow = event.work.workflows.build(
         message: event.payload['message'],
-        sender: event.user,
-        claim: event.claim
+        sender: event.user
       )
 
       context.fail!(error: workflow.errors.full_messages) unless workflow.save

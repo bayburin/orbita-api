@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
 
   describe '.authenticate_employee' do
     let!(:employee) { create(:employee) }
-    let(:id_tn) { 123321 }
+    let(:id_tn) { 123_321 }
     let(:user_info) { { id: id_tn } }
     let(:employee_dbl) { double(:employee) }
     subject { described_class.authenticate_employee(id_tn) }
@@ -41,7 +41,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when Employees::Loader return nil' do
-      before { expect_any_instance_of(Employees::Loader).to receive(:load).and_return(nil)  }
+      before { expect_any_instance_of(Employees::Loader).to receive(:load).and_return(nil) }
 
       it { expect { subject }.to raise_error(RuntimeError) }
     end
@@ -58,7 +58,7 @@ RSpec.describe User, type: :model do
     let!(:employee) { create(:employee) }
     let(:subject) { described_class }
 
-    it { expect(subject.employee_user).to eq employee  }
+    it { expect(subject.employee_user).to eq employee }
   end
 
   describe '#role?' do

@@ -5,7 +5,7 @@ class SourceSnapshot < ApplicationRecord
     Snapshot::User.new(
       id_tn: id_tn,
       tn: tn,
-    fio: fio,
+      fio: fio,
       dept: dept,
       user_attrs: user_attrs,
       domain_user: domain_user

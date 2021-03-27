@@ -6,7 +6,7 @@ RSpec.describe MessageForm, type: :model do
 
   describe 'validations' do
     context 'when comment is empty' do
-      before { subject.validate({ comment: '' }) }
+      before { subject.validate(comment: '') }
 
       it { expect(subject.errors.messages).to include(:message) }
       it { expect(subject.errors.messages[:message]).to include('не может быть пустым') }

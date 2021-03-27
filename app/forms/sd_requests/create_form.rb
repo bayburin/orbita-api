@@ -25,10 +25,11 @@ module SdRequests
     end
 
     # Обрабатывает источник заявки
+    # TODO: Случай, если данные в форме пришли, но НСИ недоступен.
     def populate_source_snapshot!(fragment:, **)
       self.source_snapshot = SourceSnapshotBuilder.build do |ss|
         ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
-        ss.set_host_credentials(fragment[:invent_num]) if fragment[:invent_num]
+        ss.host_credentials = fragment[:invent_num] if fragment[:invent_num]
       end
     end
 

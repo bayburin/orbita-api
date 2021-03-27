@@ -3,4 +3,3 @@ module Snapshot
     attributes :dns, :source_ip, :destination_ip, :mac, :invent_num, :os, :netbios
   end
 end
-

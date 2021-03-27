@@ -10,7 +10,7 @@ module SdRequests
       html = File.open(file).read
       response = Mattermost::Api.notify("@#{recipient.login}", ERB.new(html).result(binding))
 
-      raise StandardError.new(response.body) if response.status == 500
+      raise(StandardError, response.body) if response.status == 500
     end
   end
 end

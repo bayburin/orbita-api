@@ -38,7 +38,7 @@ FactoryBot.define do
   end
 
   trait :default_worker do
-    after(:build) do |user, ev|
+    after(:build) do |user, _ev|
       user.is_default_worker = true
     end
   end

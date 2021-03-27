@@ -28,7 +28,7 @@ RSpec.describe SourceSnapshotBuilder do
       it { expect(subject.model.dept).to eq user_info['employeePositions'][0]['departmentForAccounting'] }
     end
 
-    describe '#set_host_credentials' do
+    describe '#host_credentials=' do
       let(:user) { create(:admin) }
       let(:host_info) do
         {
@@ -45,11 +45,11 @@ RSpec.describe SourceSnapshotBuilder do
         it 'call "host_info" method' do
           expect(host_info_loader_dbl).to receive(:load)
 
-          subject.set_host_credentials(attr[:invent_num])
+          subject.host_credentials = attr[:invent_num]
         end
 
         context 'compare attrs' do
-          before { subject.set_host_credentials(attr[:invent_num]) }
+          before { subject.host_credentials = attr[:invent_num] }
 
           it { expect(subject.model.dns).to eq host_info['name'] }
           it { expect(subject.model.source_ip).to eq host_info['ip'] }
@@ -61,7 +61,7 @@ RSpec.describe SourceSnapshotBuilder do
       context 'when AuthCenter::AppToken failed' do
         before do
           allow(host_info_loader_dbl).to receive(:load).and_return(nil)
-          subject.set_host_credentials(attr[:invent_num])
+          subject.host_credentials = attr[:invent_num]
         end
 
         it { expect(subject.model.dns).to be_nil }

@@ -45,7 +45,7 @@ module AuthCenter
         {
           grant_type: 'client_credentials',
           client_id: ENV['AUTH_CENTER_APP_ID'],
-          client_secret: ENV['AUTH_CENTER_APP_SECRET'],
+          client_secret: ENV['AUTH_CENTER_APP_SECRET']
         }
       end
 

@@ -10,7 +10,7 @@ RSpec.describe Api::V1::EmployeesController, type: :controller do
     before(:each) { allow_any_instance_of(Employees::Loader).to receive(:load).and_return(api_response) }
 
     it 'call Employees::Loader.load method' do
-      expect_any_instance_of(Employees::Loader).to receive(:load).with({ field: params[:key], term: params[:value] })
+      expect_any_instance_of(Employees::Loader).to receive(:load).with(field: params[:key], term: params[:value])
 
       get :index, params: params
     end

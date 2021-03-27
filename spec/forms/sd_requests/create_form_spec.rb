@@ -26,7 +26,7 @@ module SdRequests
 
     describe 'validations' do
       let(:works) { [{ group_id: 1 }, { group_id: 1 }] }
-      before { subject.validate({ works: works }) }
+      before { subject.validate(works: works) }
 
       it { expect(subject.errors.messages).to include(:description) }
       it { expect(subject.errors.messages[:description]).to include('не может быть пустым') }
@@ -46,7 +46,7 @@ module SdRequests
       let(:params) { attributes_for(:sd_request, finished_at_plan: Date.today.to_s, source_snapshot: ss_params) }
       before do
         allow_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=)
-        allow_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials)
+        allow_any_instance_of(SourceSnapshotBuilder).to receive(:host_credentials=)
       end
 
       it 'call SourceSnapshotBuilder' do
@@ -69,7 +69,7 @@ module SdRequests
       end
 
       it 'set host_credentials' do
-        expect_any_instance_of(SourceSnapshotBuilder).to receive(:set_host_credentials).with(ss_params[:invent_num])
+        expect_any_instance_of(SourceSnapshotBuilder).to receive(:host_credentials=).with(ss_params[:invent_num])
 
         subject.validate(params)
       end
