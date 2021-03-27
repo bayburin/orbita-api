@@ -11,10 +11,25 @@ module SdRequests
 
     describe 'validations' do
       let(:works) { [{ group_id: 1 }, { group_id: 1 }] }
-      before { subject.validate({ works: works }) }
+      before { subject.validate(works: works) }
 
       it { expect(subject.errors.messages).to include(:works) }
       it { expect(subject.errors.messages[:works]).to include('имеются дублирующиеся группы') }
+    end
+
+    describe 'popualate_comments' do
+      context 'when comment exist' do
+        let!(:comment) { create(:comment, claim: sd_request) }
+        let(:new_comment) { 'new message' }
+        let(:comment_params) { { id: comment.id, message: new_comment } }
+
+        it 'does not update comment' do
+          subject.validate(comments: [comment_params])
+          subject.save
+
+          expect(comment.reload.message).not_to eq new_comment
+        end
+      end
     end
   end
 end

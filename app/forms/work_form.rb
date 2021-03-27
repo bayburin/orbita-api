@@ -32,8 +32,9 @@ class WorkForm < Reform::Form
   end
 
   # Обработка списка комментариев
-  # TODO: Запретить изменять существующие записи
   def populate_workflows!(fragment:, **)
+    return skip! if fragment[:id]
+
     item = workflows.find { |workflow| workflow.id == fragment[:id].to_i }
 
     item || workflows.append(Workflow.new(sender: current_user))

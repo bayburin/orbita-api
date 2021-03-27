@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :message do
-    claim { build(:claim) }
     sender { build(:admin) }
     message { Faker::Hipster.paragraph }
   end
@@ -9,6 +8,7 @@ FactoryBot.define do
     work { build(:work) }
   end
 
-  factory :comment, parent: :message, class: 'Workflow' do
+  factory :comment, parent: :message, class: 'Comment' do
+    claim { build(:claim) }
   end
 end

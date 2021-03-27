@@ -26,4 +26,21 @@ RSpec.describe WorkForm, type: :model do
       it { expect(subject.errors.messages).to include(:group_id) }
     end
   end
+
+  describe 'popualate_comments' do
+    context 'when workflow exist', focus: true do
+      let!(:work) { create(:work, claim: create(:sd_request)) }
+      let!(:workflow) { create(:workflow, work: work) }
+      let(:new_workflow) { 'new workflow' }
+      let(:workflow_params) { { id: workflow.id, message: new_workflow } }
+      subject { described_class.new(work) }
+
+      it 'does not update workflow', focus: true do
+        subject.validate(workflows: [workflow_params])
+        subject.save
+
+        expect(workflow.reload.message).not_to eq new_workflow
+      end
+    end
+  end
 end

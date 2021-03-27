@@ -38,8 +38,9 @@ module SdRequests
     end
 
     # Обработка списка комментариев
-    # TODO: Запретить изменять существующие комментарии
     def populate_comments!(fragment:, **)
+      return skip! if fragment[:id]
+
       item = comments.find { |comment| comment.id == fragment[:id].to_i }
 
       item || comments.append(Comment.new(sender: current_user))
