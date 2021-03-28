@@ -5,7 +5,8 @@ module SdRequests
     let!(:current_user) { create(:employee) }
     let(:model) { SdRequest.new }
     let!(:time) { Time.zone.now }
-    let(:ss_params) { { id_tn: 123, invent_num: 123 } }
+    let(:source_snapshot) { build(:source_snapshot) }
+    let(:ss_params) { { id_tn: source_snapshot.id_tn, invent_num: source_snapshot.invent_num } }
     let(:history_yield_dbl) { double(:history) }
     let(:history) { instance_double('History') }
     let(:history_store_dbl) { instance_double('Histories::Storage') }
@@ -44,32 +45,41 @@ module SdRequests
 
     describe '#populate_source_snapshot!' do
       let(:params) { attributes_for(:sd_request, finished_at_plan: Date.today.to_s, source_snapshot: ss_params) }
+      let(:ss_yield_dbl) { double(:source_snapshot_yield_dbl) }
       before do
-        allow_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=)
-        allow_any_instance_of(SourceSnapshotBuilder).to receive(:host_credentials=)
+        allow(SourceSnapshotBuilder).to receive(:build).and_yield(ss_yield_dbl).and_return(source_snapshot)
+        allow(ss_yield_dbl).to receive(:user_credentials=)
+        allow(ss_yield_dbl).to receive(:host_credentials=)
       end
 
       it 'call SourceSnapshotBuilder' do
-        expect(SourceSnapshotBuilder).to receive(:build).and_call_original
+        expect(SourceSnapshotBuilder).to receive(:build)
 
         subject.validate(params)
       end
 
       it 'set user_credentials' do
-        expect_any_instance_of(SourceSnapshotBuilder).to receive(:user_credentials=).with(ss_params[:id_tn])
+        expect(ss_yield_dbl).to receive(:user_credentials=).with(ss_params[:id_tn])
 
         subject.validate(params)
       end
 
       it 'does not set user_credentials if id_tn is empty' do
         ss_params[:id_tn] = nil
-        expect_any_instance_of(SourceSnapshotBuilder).not_to receive(:user_credentials=)
+        expect(ss_yield_dbl).not_to receive(:user_credentials=)
 
         subject.validate(params)
       end
 
       it 'set host_credentials' do
-        expect_any_instance_of(SourceSnapshotBuilder).to receive(:host_credentials=).with(ss_params[:invent_num])
+        expect(ss_yield_dbl).to receive(:host_credentials=).with(ss_params[:invent_num])
+
+        subject.validate(params)
+      end
+
+      it 'does not set host_credentials if invent_num is empty' do
+        ss_params[:invent_num] = nil
+        expect(ss_yield_dbl).not_to receive(:host_credentials=)
 
         subject.validate(params)
       end

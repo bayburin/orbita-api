@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :claim do
+    description { 'test description' }
     source_snapshot { build(:source_snapshot) }
     status { nil }
     priority { nil }
