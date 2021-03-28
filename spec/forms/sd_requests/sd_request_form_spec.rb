@@ -17,7 +17,7 @@ module SdRequests
       it { expect(subject.errors.messages[:works]).to include('имеются дублирующиеся группы') }
     end
 
-    describe 'popualate_comments' do
+    describe '#popualate_comments!' do
       context 'when comment exist' do
         let!(:comment) { create(:comment, claim: sd_request) }
         let(:new_comment) { 'new message' }

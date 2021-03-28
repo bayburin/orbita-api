@@ -34,7 +34,7 @@ module SdRequests
     def populate_works!(fragment:, **)
       item = works.find { |work| work.id == fragment[:id].to_i }
 
-      item || works.append(Work.new).tap { |w| w.current_user = current_user }
+      (item || works.append(Work.new)).tap { |w| w.current_user = current_user }
     end
 
     # Обработка списка комментариев
