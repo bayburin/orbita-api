@@ -207,12 +207,12 @@ EventType.create(
       template: 'Выполнено действие: {workflow}',
       is_public: true
     },
-    {
-      name: :status,
-      description: 'Изменен статус',
-      template: 'Новый статус: {status}',
-      is_public: true
-    },
+    # {
+    #   name: :status,
+    #   description: 'Изменен статус',
+    #   template: 'Новый статус: {status}',
+    #   is_public: true
+    # },
     {
       name: :add_workers,
       description: 'Добавлены новые исполнители',

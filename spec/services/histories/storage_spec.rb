@@ -2,13 +2,26 @@ require 'rails_helper'
 
 module Histories
   RSpec.describe Storage do
-    let(:history) { build(:history) }
+    let!(:event_type) { create(:event_type, :created) }
     let(:user) { create(:admin) }
     subject { described_class.new(user) }
 
     describe '#add' do
+      let(:history_yield_dbl) { double(:history) }
+      let(:history) { instance_double('History') }
+      before do
+        allow(HistoryBuilder).to receive(:build).and_yield(history_yield_dbl).and_return(history)
+        allow(history_yield_dbl).to receive(:set_event_type)
+      end
+
+      it 'should call HistoryBuilder with received type' do
+        expect(history_yield_dbl).to receive(:set_event_type).with(:created)
+
+        subject.add(:created)
+      end
+
       it 'should add history to @histories array' do
-        subject.add(history)
+        subject.add(:created)
 
         expect(subject.histories).to eq [history]
       end
@@ -16,10 +29,9 @@ module Histories
 
     describe '#save!' do
       let(:work) { create(:work) }
-      let(:new_history) { build(:history) }
       before do
-        subject.add(history)
-        subject.add(new_history)
+        subject.add(:created)
+        subject.add(:created)
         subject.work = work
       end
 
