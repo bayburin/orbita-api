@@ -61,6 +61,12 @@ RSpec.describe User, type: :model do
     it { expect(subject.employee_user).to eq employee }
   end
 
+  describe '#fio_initials' do
+    before { subject.fio = 'Тестовый Важный Пользователь' }
+
+    it { expect(subject.fio_initials).to eq 'Тестовый В.П.' }
+  end
+
   describe '#role?' do
     it 'return true if user has received role' do
       expect(subject.role?(:admin)).to be_truthy

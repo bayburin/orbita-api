@@ -26,6 +26,12 @@ class User < ApplicationRecord
     User.find_by(role: Role.find_by(name: :employee))
   end
 
+  # Возвращает Фамилию И.О.
+  def fio_initials
+    arr = fio.split(' ')
+    "#{arr[0]} #{arr[1][0]}.#{arr[2][0]}."
+  end
+
   def auth_center_token
     AuthCenterToken.new(
       access_token: access_token,
