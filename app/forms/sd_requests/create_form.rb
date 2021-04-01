@@ -68,8 +68,8 @@ module SdRequests
     end
 
     def processing_history
-      history = HistoryBuilder.build { |h| h.set_event_type(:created) }
-      history_store.add(history)
+      history_store.add(Histories::CreateType.new.build)
+      super
     end
   end
 end

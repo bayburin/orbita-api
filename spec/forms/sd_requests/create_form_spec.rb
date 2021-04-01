@@ -2,25 +2,21 @@ require 'rails_helper'
 
 module SdRequests
   RSpec.describe CreateForm, type: :model do
+    create_event_types
+
     let!(:current_user) { create(:employee) }
     let(:model) { SdRequest.new }
     let!(:time) { Time.zone.now }
     let(:source_snapshot) { build(:source_snapshot) }
     let(:ss_params) { { id_tn: source_snapshot.id_tn, invent_num: source_snapshot.invent_num } }
-    let(:history_yield_dbl) { double(:history) }
-    let(:history) { instance_double('History') }
-    let(:history_store_dbl) { instance_double('Histories::Storage') }
+    let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
     let!(:params) { { sd_request: attributes_for(:sd_request, source_snapshot: ss_params) } }
     subject do
       allow(Claim).to receive(:default_finished_at_plan).and_return(time)
-      described_class.new(model)
-    end
-    before do
-      subject.current_user = current_user
-      subject.history_store = history_store_dbl
-      allow(HistoryBuilder).to receive(:build).and_yield(history_yield_dbl).and_return(history)
-      allow(history_yield_dbl).to receive(:set_event_type)
-      allow(history_store_dbl).to receive(:add)
+      described_class.new(model).tap do |form|
+        form.current_user = current_user
+        form.history_store = history_store_dbl
+      end
     end
 
     it { expect(described_class).to be < SdRequestForm }
@@ -134,17 +130,14 @@ module SdRequests
       end
     end
 
-    describe '#sync' do
-      it 'set :created event_type' do
-        expect(history_yield_dbl).to receive(:set_event_type).with(:created)
-
-        subject.sync
-      end
+    describe '#processing_history' do
+      let(:history_dbl) { instance_double(History) }
+      before { allow_any_instance_of(Histories::CreateType).to receive(:build).and_return(history_dbl) }
 
       it 'add created history to history_store' do
-        expect(history_store_dbl).to receive(:add).with(history)
+        expect(history_store_dbl).to receive(:add).with(history_dbl)
 
-        subject.sync
+        subject.validate(params)
       end
     end
   end

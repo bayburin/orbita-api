@@ -4,15 +4,13 @@ module SdRequests
     protected
 
     def processing_history
-      # if model.finished_at_plan_changed?
-      #   history = HistoryBuilder.build { |h| h.set_event_type(:postpone, { datetime: model.runtime.finished_at_plan_str }) }
-      #   history_store.add(history)
-      # end
+      if changed?(:finished_at_plan)
+        datetime = Runtime.new(finished_at_plan: finished_at_plan)
+        history_store.add(Histories::PostponeType.new(datetime: datetime.finished_at_plan_str).build)
+      end
 
-      # if model.priority_changed?
-      #   history = HistoryBuilder.build { |h| h.set_event_type(:priority, { priority: model.priority }) }
-      #   history_store.add(history)
-      # end
+      history_store.add(Histories::PriorityType.new(priority: priority).build) if changed?(:priority)
+      super
     end
   end
 end

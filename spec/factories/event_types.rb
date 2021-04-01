@@ -17,19 +17,44 @@ FactoryBot.define do
       template { 'Make comment {message}' }
     end
 
-    # trait :add_self do
-    #   name { 'add_self' }
-    #   template { 'Added self' }
-    # end
+    trait :add_workers do
+      name { :add_workers }
+      template { 'Added workers: {workers}' }
+    end
+
+    trait :del_workers do
+      name { :del_workers }
+      template { 'Removed workers' }
+    end
+
+    trait :escalation do
+      name { :escalation }
+      template { 'Claim escalation' }
+    end
 
     trait :postpone do
       name { :postpone }
-      template { 'Postpone claim from {old_date} to {new_date}' }
+      template { 'Postpone claim to {new_date}' }
     end
 
     trait :close do
       name { :close }
       template { 'Close claim' }
+    end
+
+    trait :add_files do
+      name { :add_files }
+      template { 'Added files: {files}' }
+    end
+
+    trait :add_tags do
+      name { :add_tags }
+      template { 'Added tags: {tags}' }
+    end
+
+    trait :priority do
+      name { :priority }
+      template { 'Priority claim to {priority}' }
     end
   end
 end

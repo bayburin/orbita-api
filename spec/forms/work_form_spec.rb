@@ -1,8 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe WorkForm, type: :model do
-  subject { described_class.new(Work.new) }
-  let(:params) { { work: attributes_for(:work) } }
+  let!(:work) { create(:work) }
+  let(:user) { create(:admin) }
+  let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
+  let(:params) { { work: work.as_json } }
+  subject do
+    described_class.new(work).tap do |form|
+      form.history_store = history_store_dbl
+      form.current_user = user
+    end
+  end
 
   describe 'validations' do
     context 'when group_id is empty' do
@@ -20,27 +28,75 @@ RSpec.describe WorkForm, type: :model do
     end
 
     context 'when its a new object, but such group_id already exist' do
-      let!(:work) { create(:work) }
       before { subject.validate(claim_id: work.claim_id, group_id: work.group_id) }
 
       it { expect(subject.errors.messages).to include(:group_id) }
     end
   end
 
-  describe 'popualate_comments' do
-    context 'when workflow exist' do
-      let!(:work) { create(:work, claim: create(:sd_request)) }
-      let!(:workflow) { create(:workflow, work: work) }
-      let(:new_workflow) { 'new workflow' }
-      let(:workflow_params) { { id: workflow.id, message: new_workflow } }
-      subject { described_class.new(work) }
+  describe '#populate_workers!' do
+    let(:new_user) { create(:manager) }
+    let(:del_user) { create(:manager) }
+    let!(:worker) { create(:worker, work: work, user: del_user) }
+    let(:params) do
+      attributes_for(:work).merge(
+        group_id: new_user.group_id,
+        workers: [
+          { user_id: new_user.id },
+          { user_id: del_user.id, _destroy: true }
+        ]
+      )
+    end
 
-      it 'does not update workflow' do
-        subject.validate(workflows: [workflow_params])
-        subject.save
+    it 'add new worker to @work_obj' do
+      subject.work_obj = { add_workers: [], del_workers: [] }
+      subject.validate(params)
 
-        expect(workflow.reload.message).not_to eq new_workflow
-      end
+      expect(subject.instance_variable_get(:@work_obj)[:add_workers]).to include(new_user.id)
+    end
+
+    it 'add removed workers to @work_obj' do
+      subject.work_obj = { add_workers: [], del_workers: [] }
+      subject.validate(params)
+
+      expect(subject.instance_variable_get(:@work_obj)[:del_workers]).to include(del_user.id)
+    end
+  end
+
+  describe '#popualate_workflows!' do
+    let!(:workflow) { create(:workflow, message: old_workflow, work: work) }
+    let(:old_workflow) { 'old message' }
+    let(:new_workflow) { 'new message' }
+    let(:history_dbl) { double(:history) }
+    let(:workflow_type_dbl) { instance_double('Histories::WorkflowType', build: history_dbl) }
+    let(:params) do
+      attributes_for(:work).merge(
+        group_id: user.group_id,
+        workflows: [
+          { id: workflow.id, message: new_workflow },
+          { message: new_workflow }
+        ]
+      )
+    end
+    before { allow(Histories::WorkflowType).to receive(:new).with(workflow: new_workflow).and_return(workflow_type_dbl) }
+
+    it 'add history with new workflow' do
+      expect(history_store_dbl).to receive(:add).with(history_dbl)
+
+      subject.validate(params)
+    end
+
+    it 'does not update workflow which has id' do
+      subject.validate(params)
+      subject.save
+
+      expect(workflow.reload.message).to eq old_workflow
+    end
+
+    it 'does not add history with workflow which has id' do
+      expect(history_store_dbl).to receive(:add).exactly(1).times
+
+      subject.validate(params)
     end
   end
 end

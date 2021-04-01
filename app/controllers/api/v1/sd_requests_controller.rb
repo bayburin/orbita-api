@@ -14,7 +14,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   end
 
   def update
-    sd_request = SdRequest.includes(works: [:workflows, :group, workers: :user]).find(params[:id])
+    sd_request = SdRequest.includes(comments: :sender, works: [:group, workers: :user, workflows: :sender]).find(params[:id])
     update = SdRequests::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),

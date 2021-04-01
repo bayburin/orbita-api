@@ -4,7 +4,7 @@ FactoryBot.define do
     id_tn { Faker::Number.number(digits: 6) }
     tn { Faker::Number.number(digits: 6) }
     login { 'LoginAD' }
-    fio { Faker::Name.name }
+    fio { Faker::Name.name_with_middle }
     work_tel { '12-34' }
     mobile_tel { '8-999-999-99-99' }
     email { Faker::Internet.email }
