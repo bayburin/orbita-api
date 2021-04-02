@@ -25,7 +25,6 @@ module SdRequests
     end
 
     def validate(params)
-      @work_obj = { add_workers: [], del_workers: [] }
       result = super(params)
       processing_history
       result
@@ -38,7 +37,6 @@ module SdRequests
       (item || works.append(Work.new)).tap do |w|
         w.current_user = current_user
         w.history_store = history_store
-        w.work_obj = @work_obj
       end
     end
 
@@ -52,16 +50,6 @@ module SdRequests
 
     protected
 
-    def processing_history
-      if @work_obj[:add_workers].any?
-        workers = User.where(id: @work_obj[:add_workers]).map(&:fio_initials).join(', ')
-        history_store.add(Histories::AddWorkerType.new(workers: workers).build)
-      end
-
-      if @work_obj[:del_workers].any?
-        workers = User.where(id: @work_obj[:del_workers]).map(&:fio_initials).join(', ')
-        history_store.add(Histories::DelWorkerType.new(workers: workers).build)
-      end
-    end
+    def processing_history; end
   end
 end

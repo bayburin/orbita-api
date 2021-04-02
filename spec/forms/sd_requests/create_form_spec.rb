@@ -9,7 +9,7 @@ module SdRequests
     let!(:time) { Time.zone.now }
     let(:source_snapshot) { build(:source_snapshot) }
     let(:ss_params) { { id_tn: source_snapshot.id_tn, invent_num: source_snapshot.invent_num } }
-    let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
+    let(:history_store_dbl) { instance_double('Histories::Storage', add: true, add_to_combine: true) }
     let!(:params) { { sd_request: attributes_for(:sd_request, source_snapshot: ss_params) } }
     subject do
       allow(Claim).to receive(:default_finished_at_plan).and_return(time)

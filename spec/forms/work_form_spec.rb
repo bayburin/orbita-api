@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe WorkForm, type: :model do
   let!(:work) { create(:work) }
   let(:user) { create(:admin) }
-  let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
+  let(:history_store_dbl) { instance_double('Histories::Storage', add: true, add_to_combine: true) }
   let(:params) { { work: work.as_json } }
   subject do
     described_class.new(work).tap do |form|
@@ -54,14 +54,11 @@ RSpec.describe WorkForm, type: :model do
         ]
       )
     end
-    before do
-      subject.work_obj = { add_workers: [], del_workers: [] }
-      subject.validate(params)
-    end
+    after { subject.validate(params) }
 
-    it { expect(subject.instance_variable_get(:@work_obj)[:add_workers]).to include(new_user.id) }
-    it { expect(subject.instance_variable_get(:@work_obj)[:del_workers]).to include(del_user.id) }
-    it { expect(subject.instance_variable_get(:@work_obj)[:add_workers]).not_to include(subject.current_user.id) }
+    it { expect(history_store_dbl).to receive(:add_to_combine).with(:add_workers, new_user.id) }
+    it { expect(history_store_dbl).to receive(:add_to_combine).with(:del_workers, del_user.id) }
+    it { expect(history_store_dbl).not_to receive(:add_to_combine).with(:add_workers, subject.current_user.id) }
   end
 
   describe '#popualate_workflows!' do

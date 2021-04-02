@@ -24,7 +24,7 @@ class WorkForm < Reform::Form
     item = workers.find { |worker| worker.user_id == fragment[:user_id].to_i }
 
     if fragment[:_destroy].to_s == 'true'
-      work_obj[:del_workers] << fragment[:user_id] if item
+      history_store.add_to_combine(:del_workers, fragment[:user_id]) if item
       workers.delete(item)
       return skip!
     end
@@ -32,7 +32,7 @@ class WorkForm < Reform::Form
     if item
       item
     else
-      work_obj[:add_workers] << fragment[:user_id] unless fragment[:user_id] == current_user.id
+      history_store.add_to_combine(:add_workers, fragment[:user_id]) unless fragment[:user_id] == current_user.id
       workers.append(Worker.new)
     end
   end

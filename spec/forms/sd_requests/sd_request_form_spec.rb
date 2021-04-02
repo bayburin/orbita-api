@@ -7,7 +7,7 @@ module SdRequests
     let(:user) { create(:admin) }
     let!(:sd_request) { create(:sd_request) }
     let!(:time) { Time.zone.now }
-    let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
+    let(:history_store_dbl) { instance_double('Histories::Storage', add: true, add_to_combine: true) }
     subject do
       allow(Claim).to receive(:default_finished_at_plan).and_return(time)
       described_class.new(sd_request).tap do |form|
