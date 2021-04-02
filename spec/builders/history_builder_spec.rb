@@ -33,6 +33,12 @@ RSpec.describe HistoryBuilder do
       expect(subject.model.action).to eq event_type.template
     end
 
+    it 'set order attribute' do
+      subject.set_event_type :created
+
+      expect(subject.model.order).to eq event_type.order
+    end
+
     context 'if event_type template has any attributes' do
       let!(:event_type) { create(:event_type, :workflow) }
       let(:message) { 'Test message' }

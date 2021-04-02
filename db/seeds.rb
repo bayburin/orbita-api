@@ -199,13 +199,15 @@ EventType.create(
       name: :created,
       description: 'Событие создания заявки/кейса',
       template: 'Заявка создана',
-      is_public: true
+      is_public: true,
+      order: 10
     },
     {
       name: :workflow,
       description: 'Было выполнило действие для решения проблемы',
       template: 'Выполнено действие: {workflow}',
-      is_public: true
+      is_public: true,
+      order: 60
     },
     # {
     #   name: :status,
@@ -217,51 +219,68 @@ EventType.create(
       name: :add_workers,
       description: 'Добавлены новые исполнители',
       template: 'Добавлены исполнители: {workers}',
-      is_public: true
+      is_public: true,
+      order: 20
     },
     {
       name: :del_workers,
       description: 'Исключены исполнители',
       template: 'Исключены исполнители: {workers}',
-      is_public: true
+      is_public: true,
+      order: 30
     },
     {
       name: :escalation,
       description: 'Вынос проблемы на вышестоящее руководство',
       template: 'Эскалация',
-      is_public: true
+      is_public: true,
+      order: 70
     },
     {
       name: :postpone,
       description: 'Изменен срок исполнения',
       template: 'Срок исполнения перенесен на {datetime}',
-      is_public: true
+      is_public: true,
+      order: 50
     },
     {
       name: :close,
       description: 'Событие закрытия заявки/кейса',
       template: 'Заявка закрыта',
-      is_public: true
+      is_public: true,
+      order: 1000
     },
     {
       name: :comment,
       description: 'Был добавлен комментарий',
-      template: 'Добавлен комментарий: {comment}'
+      template: 'Добавлен комментарий: {comment}',
+      order: 100
     },
     {
       name: :add_files,
       description: 'Прикреплены новые файлы',
-      template: 'Прикреплены файлы: {files}'
+      template: 'Прикреплены файлы: {files}',
+      is_public: true,
+      order: 80
+    },
+    {
+      name: :del_files,
+      description: 'Удалены файлы',
+      template: 'Удаленные файлы: {files}',
+      order: 90
     },
     {
       name: :add_tags,
       description: 'Добавлены теги',
-      template: 'Добавлены теги: {tags}'
+      template: 'Добавлены теги: {tags}',
+      order: 110
     },
     {
       name: :priority,
       description: 'Изменен приоритет',
-      template: 'Новый приоритет: {priority}'
+      template: 'Новый приоритет: {priority}',
+      is_public: true,
+      order: 40
     }
   ]
 )

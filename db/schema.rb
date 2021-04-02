@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
     t.string "description"
     t.string "template"
     t.boolean "is_public", default: false
+    t.integer "order"
     t.index ["is_public"], name: "index_event_types_on_is_public"
     t.index ["name"], name: "index_event_types_on_name"
   end

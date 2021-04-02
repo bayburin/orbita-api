@@ -13,7 +13,8 @@ class EventType < ApplicationRecord
     close: 8,         # Заявка закрыта
     comment: 9,       # Добавлен комментарий
     add_files: 10,    # Добавлены файлы
-    add_tags: 11,     # Добавлены теги
-    priority: 12      # Изменен приоритет
+    del_files: 11,    # Удалены файлы
+    add_tags: 12,     # Добавлены теги
+    priority: 13      # Изменен приоритет
   }
 end

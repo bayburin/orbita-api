@@ -20,6 +20,7 @@ class HistoryBuilder < BaseBuilder
 
     model.event_type = event_type
     model.action = event_type.template
+    model.order = event_type.order
 
     terms = event_type.template.scan(/{(\w+)}/).flatten
     terms.each { |term| model.action.gsub!(/{#{term}}/, payload[term.to_sym]) }

@@ -5,7 +5,7 @@ module Histories
     create_event_types
 
     let(:user) { create(:admin) }
-    let(:history) { build(:history) }
+    let(:history) { build(:history, :workflow) }
     subject { described_class.new(user) }
 
     describe '#add_to_combine' do
@@ -30,7 +30,8 @@ module Histories
       let(:work) { create(:work) }
       before do
         subject.add(history)
-        subject.add(build(:history))
+        subject.add(build(:history, :workflow))
+        subject.add(build(:history, :created))
         subject.work = work
       end
 
@@ -46,7 +47,13 @@ module Histories
         expect(subject.histories.first.user).to eq user
       end
 
-      it { expect { subject.save! }.to change { History.count }.by(2) }
+      it 'sort histories by EventType' do
+        subject.save!
+
+        expect(subject.histories.first.event_type).to eq EventType.find_by(name: :created)
+      end
+
+      it { expect { subject.save! }.to change { History.count }.by(3) }
 
       context 'when storage has @worker_history object' do
         let(:add_user) { create(:manager) }
@@ -71,7 +78,7 @@ module Histories
           expect(subject.histories.select { |hist| hist.event_type_id == del_workers_type.id }.count).to eq 1
         end
 
-        it { expect { subject.save! }.to change { History.count }.by(4) }
+        it { expect { subject.save! }.to change { History.count }.by(5) }
       end
     end
   end

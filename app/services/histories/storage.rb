@@ -26,7 +26,7 @@ module Histories
       processing_workers
 
       History.transaction do
-        histories.each do |h|
+        histories.sort_by!(&:order).each do |h|
           h.work = work
           h.user = user
           h.save!

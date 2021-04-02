@@ -5,6 +5,7 @@ class CreateEventTypes < ActiveRecord::Migration[6.0]
       t.string :description
       t.string :template, limit: 255
       t.boolean :is_public, default: false, index: true
+      t.integer :order
     end
   end
 end
