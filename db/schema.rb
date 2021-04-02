@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_023818) do
+ActiveRecord::Schema.define(version: 2021_04_02_135257) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -110,6 +110,15 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "parameters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.string "name", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["claim_id"], name: "index_parameters_on_claim_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 45
     t.string "description"
@@ -195,6 +204,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_023818) do
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "messages", "works"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "parameters", "claims"
   add_foreign_key "source_snapshots", "claims"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "roles"

@@ -153,10 +153,10 @@ SdRequest.create(
         },
         invent_num: '766123'
       ),
-      attrs: {
-        'Номер наряда': '2323-ЛЗ от 05.03.2019',
-        'Количество копий': '3'
-      },
+      parameters: [
+        Parameter.create(name: 'Номер наряда', value: '2323-ЛЗ от 05.03.2019'),
+        Parameter.create(name: 'Количество копий', value: '3')
+      ],
       finished_at_plan: Time.zone.now + 2.days,
       works: [
         Work.create(group: Group.first, users: [User.first]),
@@ -183,11 +183,11 @@ SdRequest.create(
         },
         invent_num: '155784'
       ),
-      attrs: {
-        'Тип': 'Системный блок',
-        'Инв. №': '765122',
-        'Модель': 'system product name / 16 Гб / nvidia geforce gt 730 / intel(r) core(tm) i5-6400 cpu @ 2.70ghz / wd wd5000azlx-00k2t scsi disk device'
-      },
+      parameters: [
+        Parameter.create(name: 'Тип', value: 'Системный блок'),
+        Parameter.create(name: 'Инв. №', value: '765122'),
+        Parameter.create(name: 'Модель', value: 'system product name / 16 Гб / nvidia geforce gt 730 / intel(r) core(tm) i5-6400 cpu @ 2.70ghz / wd wd5000azlx-00k2t scsi disk device')
+      ],
       finished_at_plan: Time.zone.now + 5.days
     }
   ]

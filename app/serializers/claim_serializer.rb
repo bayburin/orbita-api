@@ -1,6 +1,7 @@
 class ClaimSerializer < ActiveModel::Serializer
-  attributes :id, :type, :description, :status, :priority, :attrs, :runtime
+  attributes :id, :type, :description, :status, :priority, :runtime
 
+  has_many :parameters
   has_many :works
   has_one :source_snapshot
 

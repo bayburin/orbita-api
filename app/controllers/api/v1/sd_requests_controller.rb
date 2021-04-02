@@ -7,7 +7,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request, include: ['works.group', 'works.workers.user']
+      render json: create.sd_request, include: ['*', 'works.workers.user']
     else
       render json: create.error, status: :bad_request
     end
@@ -22,7 +22,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if update.success?
-      render json: update.sd_request, include: ['works.group', 'works.workers.user']
+      render json: update.sd_request, include: ['*', 'works.workers.user']
     else
       render json: update.error, status: :bad_request
     end
@@ -40,7 +40,12 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       :description,
       :priority,
       :finished_at_plan,
-      attrs: {},
+      parameters: [
+        :id,
+        :claim_id,
+        :name,
+        :value
+      ],
       source_snapshot: [
         :id_tn,
         :tn,

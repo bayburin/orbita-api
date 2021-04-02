@@ -4,7 +4,6 @@ FactoryBot.define do
     source_snapshot { build(:source_snapshot) }
     status { nil }
     priority { nil }
-    attrs { {} }
     rating { nil }
     finished_at_plan { Claim.default_finished_at_plan }
     finished_at { nil }
