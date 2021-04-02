@@ -15,7 +15,7 @@ class WorkForm < Reform::Form
     params { required(:group_id).filled(:int?) }
 
     rule(:group_id) do
-      key.failure(:already_exist) if Work.where(group_id: value, claim_id: form.claim_id).exists?
+      key.failure(:already_exist) if Work.where.not(id: form.model.id).where(group_id: value, claim_id: form.claim_id).exists?
     end
   end
 
@@ -32,7 +32,7 @@ class WorkForm < Reform::Form
     if item
       item
     else
-      work_obj[:add_workers] << fragment[:user_id]
+      work_obj[:add_workers] << fragment[:user_id] unless fragment[:user_id] == current_user.id
       workers.append(Worker.new)
     end
   end

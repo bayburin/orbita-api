@@ -28,7 +28,13 @@ RSpec.describe WorkForm, type: :model do
     end
 
     context 'when its a new object, but such group_id already exist' do
-      before { subject.validate(claim_id: work.claim_id, group_id: work.group_id) }
+      subject do
+        described_class.new(Work.new).tap do |form|
+          form.history_store = history_store_dbl
+          form.current_user = user
+        end
+      end
+      before { subject.validate(id: work.id + 1, claim_id: work.claim_id, group_id: work.group_id) }
 
       it { expect(subject.errors.messages).to include(:group_id) }
     end
@@ -42,25 +48,20 @@ RSpec.describe WorkForm, type: :model do
       attributes_for(:work).merge(
         group_id: new_user.group_id,
         workers: [
+          { user_id: user.id },
           { user_id: new_user.id },
           { user_id: del_user.id, _destroy: true }
         ]
       )
     end
-
-    it 'add new worker to @work_obj' do
+    before do
       subject.work_obj = { add_workers: [], del_workers: [] }
       subject.validate(params)
-
-      expect(subject.instance_variable_get(:@work_obj)[:add_workers]).to include(new_user.id)
     end
 
-    it 'add removed workers to @work_obj' do
-      subject.work_obj = { add_workers: [], del_workers: [] }
-      subject.validate(params)
-
-      expect(subject.instance_variable_get(:@work_obj)[:del_workers]).to include(del_user.id)
-    end
+    it { expect(subject.instance_variable_get(:@work_obj)[:add_workers]).to include(new_user.id) }
+    it { expect(subject.instance_variable_get(:@work_obj)[:del_workers]).to include(del_user.id) }
+    it { expect(subject.instance_variable_get(:@work_obj)[:add_workers]).not_to include(subject.current_user.id) }
   end
 
   describe '#popualate_workflows!' do
