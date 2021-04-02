@@ -1,5 +1,11 @@
 ru:
   activerecord:
+    attributes:
+      claim:
+        priorities:
+          low: 'Низкий'
+          default: 'Стандартный'
+          high: 'Высокий'
     errors:
       messages:
         record_invalid: 'Возникли ошибки: %{errors}'
