@@ -4,12 +4,6 @@ module Events
     include Interactor::Organizer
     include Requirements
 
-    organize FindOrCreateWork, CloseClaim, Histories::CreateClose
-
-    around do |interactor|
-      ActiveRecord::Base.transaction do
-        interactor.call
-      end
-    end
+    organize FindOrCreateWork, CloseClaim
   end
 end

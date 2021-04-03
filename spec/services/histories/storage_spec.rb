@@ -6,7 +6,8 @@ module Histories
 
     let(:user) { create(:admin) }
     let(:history) { build(:history, :workflow) }
-    subject { described_class.new(user) }
+    let(:work) { create(:work) }
+    subject { described_class.new(user, work) }
 
     describe '#add_to_combine' do
       [:add_workers, :del_workers].each do |type|
@@ -27,12 +28,10 @@ module Histories
     end
 
     describe '#save!' do
-      let(:work) { create(:work) }
       before do
         subject.add(history)
         subject.add(build(:history, :workflow))
         subject.add(build(:history, :created))
-        subject.work = work
       end
 
       it 'set work' do

@@ -12,12 +12,6 @@ RSpec.describe EventBuilder do
     end
     subject { described_class.new }
 
-    describe '#claim_id=' do
-      before { subject.claim_id = attr['claim_id'] }
-
-      it { expect(subject.model.claim).to eq claim }
-    end
-
     describe '#claim=' do
       before { subject.claim = claim }
 

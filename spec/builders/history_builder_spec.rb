@@ -44,9 +44,9 @@ RSpec.describe HistoryBuilder do
       let(:message) { 'Test message' }
 
       it 'copy template from event_type and replace attributes' do
-        subject.set_event_type :workflow, message: message
+        subject.set_event_type :workflow, workflow: message
 
-        expect(subject.model.action).to eq event_type.template.gsub!(/{message}/, message)
+        expect(subject.model.action).to eq event_type.template.gsub!(/{workflow}/, message)
       end
     end
   end

@@ -2,9 +2,10 @@ require 'rails_helper'
 
 module Events
   RSpec.describe Create do
-    subject { described_class.call(user: user, params: params) }
+    subject { described_class.call(claim: claim, user: user, params: params) }
 
     describe '.call' do
+      let(:claim) { create(:claim) }
       let(:user) { create(:admin) }
       let(:sw_dbl) { double(:sw, register: true, call: true) }
       let(:params) { { foo: :bar } }
@@ -15,6 +16,7 @@ module Events
 
       it 'register all event types' do
         expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
+        expect(sw_dbl).to receive(:register).with('comment', CommentEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
 
         subject

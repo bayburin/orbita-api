@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :workflow do
       name { :workflow }
-      template { 'Make workflow {message}' }
+      template { 'Make workflow {workflow}' }
       order { 60 }
     end
 
@@ -46,7 +46,7 @@ FactoryBot.define do
 
     trait :comment do
       name { :comment }
-      template { 'Make comment {message}' }
+      template { 'Make comment {comment}' }
       order { 100 }
     end
 

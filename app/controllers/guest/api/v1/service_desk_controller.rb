@@ -23,7 +23,7 @@ class Guest::Api::V1::ServiceDeskController < Guest::Api::V1::BaseController
       :invent_num,
       :rating,
       additional: [:comment],
-      files: %i[filename file]
+      files: [:filename, :file]
     )
   end
 end

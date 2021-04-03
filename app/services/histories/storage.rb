@@ -4,9 +4,10 @@ module Histories
     attr_reader :histories
     attr_accessor :work, :user
 
-    def initialize(user)
+    def initialize(user, work = nil)
       @histories = []
       @user = user
+      @work = work
       @tmp = { add_workers: [], del_workers: [] }
     end
 

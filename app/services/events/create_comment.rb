@@ -1,23 +1,23 @@
 module Events
   # Создает запись хода работы в таблице messages на основании полученного события Event.
-  class CreateWorkflow
+  class CreateComment
     include Interactor
 
-    delegate :event, :history_store, :workflow, to: :context
+    delegate :event, :history_store, :comment, to: :context
 
     def call
-      context.workflow = event.work.workflows.build(
+      context.comment = event.claim.comments.build(
         message: event.payload['message'],
         sender: event.user
       )
 
       history_store.work = event.work
-      history_store.add(Histories::WorkflowType.new(workflow: event.payload['message']).build)
+      history_store.add(Histories::CommentType.new(comment: event.payload['message']).build)
 
-      if workflow.save
+      if comment.save
         history_store.save!
       else
-        context.fail!(error: workflow.errors.full_messages)
+        context.fail!(error: comment.errors.full_messages)
       end
     end
   end

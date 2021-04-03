@@ -7,7 +7,10 @@ module Events
         context.fail!(error: 'Заявка не найдена') unless context.event.claim
         context.fail!(error: 'Пользователь не найден') unless context.event.user
 
-        interactor.call
+        context.history_store = Histories::Storage.new(context.event.user)
+        ActiveRecord::Base.transaction do
+          interactor.call
+        end
       end
     end
   end

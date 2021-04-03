@@ -4,7 +4,7 @@ RSpec.describe Api::V1::EventsController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
-    let(:params) { { event: { foo: :bar } } }
+    let(:params) { { event: { claim_id: create(:claim).id } } }
     before { allow(Events::Create).to receive(:call).and_return(create_dbl) }
 
     context 'when interactor finished with success' do

@@ -2,14 +2,11 @@ require 'rails_helper'
 
 module Events
   RSpec.describe WorkflowEvent do
-    let(:user) { create(:admin) }
-    let(:claim) { create(:claim) }
-    let(:event_dbl) { double(:event, claim: claim, user: user) }
-    subject(:context) { described_class.call(event: event_dbl) }
+    let(:event) { instance_double('Event', claim: create(:claim), user: create(:manager)) }
+    subject(:context) { described_class.call(event: event) }
     before do
       allow(FindOrCreateWork).to receive(:call!).and_return(true)
       allow(CreateWorkflow).to receive(:call!).and_return(true)
-      allow(Histories::CreateWorkflow).to receive(:call!).and_return(true)
     end
 
     describe '.call' do

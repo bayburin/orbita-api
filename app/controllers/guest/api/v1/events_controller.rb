@@ -1,6 +1,7 @@
 class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
   def create
     create = Events::Create.call(
+      claim: Claim.find(event_params[:claim_id]),
       user: current_user,
       params: event_params
     )
