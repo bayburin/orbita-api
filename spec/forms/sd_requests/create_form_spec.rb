@@ -132,7 +132,7 @@ module SdRequests
 
     describe '#processing_history' do
       let(:history_dbl) { instance_double(History) }
-      before { allow_any_instance_of(Histories::CreateType).to receive(:build).and_return(history_dbl) }
+      before { allow_any_instance_of(Histories::OpenType).to receive(:build).and_return(history_dbl) }
 
       it 'add created history to history_store' do
         expect(history_store_dbl).to receive(:add).with(history_dbl)

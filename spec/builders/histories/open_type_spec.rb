@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Histories
-  RSpec.describe CreateType do
+  RSpec.describe OpenType do
     describe '#build' do
       let(:history_yield_dbl) { double(:history) }
       let(:history) { instance_double('History') }
@@ -11,7 +11,7 @@ module Histories
       end
 
       it 'call "set_event_type" method' do
-        expect(history_yield_dbl).to receive(:set_event_type).with('created')
+        expect(history_yield_dbl).to receive(:set_event_type).with('open')
 
         subject.build
       end

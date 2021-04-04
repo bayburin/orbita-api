@@ -196,7 +196,7 @@ SdRequest.create(
 EventType.create(
   [
     {
-      name: :created,
+      name: :open,
       description: 'Событие создания заявки/кейса',
       template: 'Заявка создана',
       is_public: true,

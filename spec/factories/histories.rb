@@ -3,10 +3,10 @@ FactoryBot.define do
     work { build(:work) }
     user { build(:admin) }
 
-    transient { event_type_name { :created } }
+    transient { event_type_name { :open } }
 
-    trait :created do
-      transient { event_type_name { :created } }
+    trait :open do
+      transient { event_type_name { :open } }
     end
 
     trait :workflow do

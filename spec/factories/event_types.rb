@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :event_type do
     description { 'Make some action' }
 
-    trait :created do
-      name { :created }
+    trait :open do
+      name { :open }
       template { 'Create claim' }
       order { 10 }
     end

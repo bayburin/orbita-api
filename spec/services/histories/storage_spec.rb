@@ -31,7 +31,7 @@ module Histories
       before do
         subject.add(history)
         subject.add(build(:history, :workflow))
-        subject.add(build(:history, :created))
+        subject.add(build(:history, :open))
       end
 
       it 'set work' do
@@ -49,7 +49,7 @@ module Histories
       it 'sort histories by EventType' do
         subject.save!
 
-        expect(subject.histories.first.event_type).to eq EventType.find_by(name: :created)
+        expect(subject.histories.first.event_type).to eq EventType.find_by(name: :open)
       end
 
       it { expect { subject.save! }.to change { History.count }.by(3) }

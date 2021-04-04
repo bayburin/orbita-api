@@ -3,7 +3,7 @@ class EventType < ApplicationRecord
   has_many :histories, dependent: :nullify
 
   enum name: {
-    created: 1,       # Заявка создана
+    open: 1,          # Заявка создана
     workflow: 2,      # Выполнено действие
     status: 3,        # Изменен статус
     add_workers: 4,   # Добавлены исполнители

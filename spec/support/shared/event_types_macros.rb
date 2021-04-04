@@ -1,7 +1,7 @@
 module EventTypesMacros
   def create_event_types
     before do
-      create(:event_type, :created)
+      create(:event_type, :open)
       create(:event_type, :workflow)
       create(:event_type, :comment)
       create(:event_type, :add_workers)

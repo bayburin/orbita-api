@@ -68,7 +68,7 @@ module SdRequests
     end
 
     def processing_history
-      history_store.add(Histories::CreateType.new.build)
+      history_store.add(Histories::OpenType.new.build)
       super
     end
   end

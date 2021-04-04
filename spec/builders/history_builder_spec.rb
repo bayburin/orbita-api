@@ -17,10 +17,10 @@ RSpec.describe HistoryBuilder do
   end
 
   describe '#set_event_type' do
-    let!(:event_type) { create(:event_type, :created) }
+    let!(:event_type) { create(:event_type, :open) }
 
     it 'set event_type' do
-      subject.set_event_type :created
+      subject.set_event_type :open
 
       expect(subject.model.event_type).to eq event_type
     end
@@ -28,13 +28,13 @@ RSpec.describe HistoryBuilder do
     it { expect { subject.set_event_type :test }.to raise_error(RuntimeError) }
 
     it 'copy template from event_type' do
-      subject.set_event_type :created
+      subject.set_event_type :open
 
       expect(subject.model.action).to eq event_type.template
     end
 
     it 'set order attribute' do
-      subject.set_event_type :created
+      subject.set_event_type :open
 
       expect(subject.model.order).to eq event_type.order
     end
