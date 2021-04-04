@@ -8,7 +8,7 @@ class Guest::Api::V1::SdRequestsController < Guest::Api::V1::BaseController
     if create.success?
       render json: create.sd_request
     else
-      render json: create.error, status: :unprocessable_entity
+      render json: create.error, status: :bad_request
     end
   end
 
