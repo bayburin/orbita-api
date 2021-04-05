@@ -47,7 +47,6 @@ module OrbitaCenter
     config.autoload_paths << Rails.root.join('app', 'interactors', 'concerns').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'claim').to_s
     config.autoload_paths << Rails.root.join('app', 'models', 'message').to_s
-    config.autoload_paths << Rails.root.join('app', 'models', 'employee').to_s
     config.autoload_paths << Rails.root.join('lib', 'modules').to_s
     config.autoload_paths << Rails.root.join('lib', 'values').to_s
     config.autoload_paths << Rails.root.join('lib', 'values', 'coerce').to_s

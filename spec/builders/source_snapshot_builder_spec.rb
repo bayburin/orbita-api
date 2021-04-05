@@ -8,24 +8,16 @@ RSpec.describe SourceSnapshotBuilder do
     subject { described_class.new }
 
     describe '#user_credentials=' do
-      let(:user_info) do
-        {
-          lastName: 'Last',
-          firstName: 'First',
-          middleName: 'Middle',
-          employeePositions: [{ personnelNo: 1, departmentForAccounting: 700 }],
-          employeeContact: { login: 'TestAD' }
-        }.as_json
-      end
+      let(:user_info) { build(:employee).as_json }
       before do
-        allow_any_instance_of(Employees::Loader).to receive(:load).with(attr[:id_tn]).and_return(user_info)
+        allow_any_instance_of(Employees::Loader).to receive(:load).with(attr[:id_tn]).and_return(user_info.deep_symbolize_keys)
         subject.user_credentials = attr[:id_tn]
       end
 
       it { expect(subject.model.id_tn).to eq attr[:id_tn] }
-      it { expect(subject.model.tn).to eq user_info['employeePositions'][0]['personnelNo'] }
+      it { expect(subject.model.tn).to eq user_info['employeePositions'].first['personnelNo'] }
       it { expect(subject.model.fio).to eq "#{user_info['lastName']} #{user_info['firstName']} #{user_info['middleName']}" }
-      it { expect(subject.model.dept).to eq user_info['employeePositions'][0]['departmentForAccounting'] }
+      it { expect(subject.model.dept).to eq user_info['employeePositions'].first['departmentForAccounting'] }
     end
 
     describe '#host_credentials=' do
