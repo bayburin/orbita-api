@@ -8,11 +8,11 @@ class SourceSnapshotBuilder < BaseBuilder
 
   # Загружает данные по пользователю из БД НСИ.
   def user_credentials=(id_tn)
-    user_info = Employees::Loader.new(:load).load(id_tn)
+    employee_info = Employees::Loader.new(:load).load(id_tn)
     attrs = { id_tn: id_tn }
 
-    if user_info
-      employee = Employee.new(user_info)
+    if employee_info
+      employee = EmployeeInfo.new(employee_info)
       attrs.merge!(
         tn: employee.employeePositions.first.personnelNo,
         fio: employee.fio,

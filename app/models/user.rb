@@ -15,10 +15,10 @@ class User < ApplicationRecord
     user = employee_user
     return unless user
 
-    user_info = Employees::Loader.new(:load).load(id_tn)
-    raise 'Не удалось загрузить данные о пользователе.' unless user_info
+    employee_info = Employees::Loader.new(:load).load(id_tn)
+    raise 'Не удалось загрузить данные о пользователе.' unless employee_info
 
-    user.fill_by_employee(Employee.new(user_info))
+    user.fill_by_employee_info(EmployeeInfo.new(employee_info))
     user
   end
 
@@ -60,12 +60,12 @@ class User < ApplicationRecord
     claim.works.includes(:workers).any? { |work| work.workers.any? { |worker| worker.user_id == id } }
   end
 
-  def fill_by_employee(employee)
-    self.tn = employee.employeePositions.first.personnelNo
-    self.id_tn = employee.id
-    self.login = employee.employeeContact.login
-    self.fio = employee.fio
-    self.work_tel = employee.employeeContact.phone.first
-    self.email = employee.employeeContact.email.first
+  def fill_by_employee_info(employee_info)
+    self.tn = employee_info.employeePositions.first.personnelNo
+    self.id_tn = employee_info.id
+    self.login = employee_info.employeeContact.login
+    self.fio = employee_info.fio
+    self.work_tel = employee_info.employeeContact.phone.first
+    self.email = employee_info.employeeContact.email.first
   end
 end

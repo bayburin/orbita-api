@@ -8,9 +8,9 @@ RSpec.describe SourceSnapshotBuilder do
     subject { described_class.new }
 
     describe '#user_credentials=' do
-      let(:user_info) { build(:employee).as_json }
+      let(:user_info) { build(:employee_info).as_json }
       before do
-        allow_any_instance_of(Employees::Loader).to receive(:load).with(attr[:id_tn]).and_return(user_info.deep_symbolize_keys)
+        allow_any_instance_of(Employees::Loader).to receive(:load).with(attr[:id_tn]).and_return(user_info)
         subject.user_credentials = attr[:id_tn]
       end
 

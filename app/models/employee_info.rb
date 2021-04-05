@@ -1,5 +1,7 @@
 # Класс, описывающий объект из БД НСИ
-class Employee < Dry::Struct
+class EmployeeInfo < Dry::Struct
+  transform_keys(&:to_sym)
+
   attribute :lastName, Types::Fio
   attribute :firstName, Types::Fio
   attribute :middleName, Types::Fio

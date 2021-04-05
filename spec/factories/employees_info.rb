@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :employee do
+  factory :employee_info do
     initialize_with { new(attributes) }
 
     lastName { Faker::Name.last_name }
@@ -8,11 +8,11 @@ FactoryBot.define do
     id { Faker::Number.number(digits: 5) }
     dateOfBirth { Faker::Date.in_date_period }
     sex { 'М' }
-    employeePositions { [build(:employee_position)] }
-    employeeContact factory: :employee_contact
+    employeePositions { [build(:employee_info_position)] }
+    employeeContact factory: :employee_info_contact
   end
 
-  factory :employee_contact do
+  factory :employee_info_contact, class: EmployeeInfo::EmployeeContact do
     initialize_with { new(attributes) }
 
     id { Faker::Number.number(digits: 5) }
@@ -22,7 +22,7 @@ FactoryBot.define do
     login { 'AdLogin' }
   end
 
-  factory :employee_position do
+  factory :employee_info_position, class: EmployeeInfo::EmployeePosition do
     initialize_with { new(attributes) }
 
     employeeId { Faker::Number.number(digits: 5) }

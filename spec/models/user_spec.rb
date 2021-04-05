@@ -15,9 +15,9 @@ RSpec.describe User, type: :model do
     subject { described_class.authenticate_employee(id_tn) }
     before do
       allow(User).to receive(:find_by).and_return(employee)
-      allow(employee).to receive(:fill_by_employee)
+      allow(employee).to receive(:fill_by_employee_info)
       allow_any_instance_of(Employees::Loader).to receive(:load).and_return(user_info)
-      allow(Employee).to receive(:new).with(user_info).and_return(employee_dbl)
+      allow(EmployeeInfo).to receive(:new).with(user_info).and_return(employee_dbl)
     end
 
     it { expect(subject.id).to eq employee.id }
@@ -46,8 +46,8 @@ RSpec.describe User, type: :model do
       it { expect { subject }.to raise_error(RuntimeError) }
     end
 
-    it 'call #fill_by_employee method' do
-      expect(employee).to receive(:fill_by_employee).with(employee_dbl)
+    it 'call #fill_by_employee_info method' do
+      expect(employee).to receive(:fill_by_employee_info).with(employee_dbl)
 
       subject
     end
@@ -106,13 +106,13 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#fill_by_employee' do
+  describe '#fill_by_employee_info' do
     let(:attrs) { attributes_for(:admin) }
     let(:positions) { [double(:position, personnelNo: attrs[:tn])] }
     let(:contact) { double(:contact, login: attrs[:login], phone: [attrs[:work_tel]], email: [attrs[:email]]) }
-    let(:employee) { double(:employee, id: attrs[:id_tn], employeePositions: positions, employeeContact: contact, fio: attrs[:fio]) }
+    let(:employee_info) { double(:employee, id: attrs[:id_tn], employeePositions: positions, employeeContact: contact, fio: attrs[:fio]) }
     subject { described_class.new }
-    before { subject.fill_by_employee(employee) }
+    before { subject.fill_by_employee_info(employee_info) }
 
     it { expect(subject.tn).to eq attrs[:tn] }
     it { expect(subject.id_tn).to eq attrs[:id_tn] }

@@ -19,7 +19,7 @@ FactoryBot.define do
     # end
   end
 
-  factory :admin_, parent: :user do
+  factory :admin, parent: :user do
     after(:build) do |user, _ev|
       user.role = Role.find_by(name: :admin) || create(:admin_role)
     end
@@ -31,7 +31,7 @@ FactoryBot.define do
     end
   end
 
-  factory :employee_user, parent: :user do
+  factory :employee, parent: :user do
     after(:build) do |user, _ev|
       user.role = Role.find_by(name: :employee) || create(:employee_role)
     end
