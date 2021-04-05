@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :worker do
-    work { build(:work) }
-    user { build(:manager) }
+    work
+    user factory: :admin
   end
 end

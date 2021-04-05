@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :source_snapshot do
+    claim
     id_tn { Faker::Number.number(digits: 6) }
     tn { Faker::Number.number(digits: 6) }
     fio { Faker::Name.name }

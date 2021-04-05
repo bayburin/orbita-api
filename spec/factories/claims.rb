@@ -1,12 +1,15 @@
 FactoryBot.define do
   factory :claim do
     description { 'test description' }
-    source_snapshot { build(:source_snapshot) }
     status { nil }
     priority { nil }
     rating { nil }
     finished_at_plan { Claim.default_finished_at_plan }
     finished_at { nil }
+
+    after(:build) do |claim, _ev|
+      claim.source_snapshot ||= build(:source_snapshot, claim: claim)
+    end
   end
 
   factory :sd_request, parent: :claim, class: SdRequest do

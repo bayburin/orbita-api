@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :history do
-    work { build(:work) }
-    user { build(:admin) }
+    work
+    user factory: :admin
 
     transient { event_type_name { :open } }
 

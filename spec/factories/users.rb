@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    group { build(:group) }
+    group
     id_tn { Faker::Number.number(digits: 6) }
     tn { Faker::Number.number(digits: 6) }
     login { 'LoginAD' }
@@ -13,10 +13,6 @@ FactoryBot.define do
     refresh_token { 'fake_refresh_token' }
     expires_in { Faker::Number.number(digits: 6) }
     token_type { 'Bearer' }
-
-    # after(:build) do |user, _ev|
-    #   user.group = Group.first || create(:group)
-    # end
   end
 
   factory :admin, parent: :user do

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :work do
-    claim { build(:claim) }
-    group { build(:group) }
+    claim
+    group
     title { 'Test title' }
     status { nil }
     attrs { {} }
