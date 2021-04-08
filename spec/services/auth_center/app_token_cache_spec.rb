@@ -6,7 +6,7 @@ module AuthCenter
 
     describe '::token' do
       context 'when token saved into redis' do
-        let(:token) { { access_token: 'fake-token' } }
+        let(:token) { build(:auth_center_token) }
         before { allow(ReadCache.redis).to receive(:get).and_return(Oj.dump(token)) }
 
         it { expect(subject.token).to be_instance_of AuthCenterToken }
@@ -21,7 +21,7 @@ module AuthCenter
     end
 
     describe '::token=' do
-      let(:token) { { token: '123' } }
+      let(:token) { build(:auth_center_token) }
 
       it 'call ReadCache.redis.set method' do
         expect(ReadCache.redis).to receive(:set).with(subject::TOKEN_NAME, Oj.dump(token))

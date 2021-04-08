@@ -22,14 +22,7 @@ RSpec.describe SourceSnapshotBuilder do
 
     describe '#host_credentials=' do
       let(:user) { create(:admin) }
-      let(:host_info) do
-        {
-          name: 'custom_name',
-          ip: '192.168.1.2',
-          mac: 'asdzc123',
-          os: 'W7E'
-        }.as_json
-      end
+      let(:host_info) { attributes_for(:source_snapshot_host) }
       let(:host_info_loader_dbl) { double(:host_info_loader, load: host_info) }
       before { allow(AuthCenter::HostInfoLoader).to receive(:new).and_return(host_info_loader_dbl) }
 

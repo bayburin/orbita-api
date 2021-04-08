@@ -1,15 +1,12 @@
 module Snapshot
-  class User
+  class User < Dry::Struct
     include ActiveModel::Serialization
-    include Virtus.value_object
 
-    values do
-      attribute :id_tn, Integer
-      attribute :tn, Integer
-      attribute :fio, Fio
-      attribute :dept, Integer
-      attribute :user_attrs, Hash, default: {}
-      attribute :domain_user, String
-    end
+    attribute :id_tn, Types::Integer.optional
+    attribute :tn, Types::Integer.optional
+    attribute :fio, Types::Fio.optional
+    attribute :dept, Types::Integer.optional
+    attribute :user_attrs, Types::Hash.optional.default({}.freeze)
+    attribute :domain_user, Types::String.optional
   end
 end

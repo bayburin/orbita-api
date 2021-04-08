@@ -10,13 +10,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'repond with all users' do
-      get :index
+      get :index, format: :json
 
       expect(response.body).to have_json_size(User.count)
     end
 
     it 'respond with success status' do
-      get :index
+      get :index, format: :json
 
       expect(response.status).to eq 200
     end

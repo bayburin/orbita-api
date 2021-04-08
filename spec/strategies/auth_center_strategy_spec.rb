@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe AuthCenterStrategy, type: :request do
   describe 'GET /api/v1/welcome' do
     let!(:user) { create(:admin) }
-    let(:user_info) { { id_tn: user.id_tn } }
-    let(:access_token) { 'fake-token' }
+    let(:user_info) { user.as_json(include: :auth_center_token) }
+    let(:access_token) { user.auth_center_token.access_token }
     let(:headers) { { Authorization: "Bearer #{access_token}" }.as_json }
 
     it 'call "success!" method with User instance for AuthCenterStrategy instance' do

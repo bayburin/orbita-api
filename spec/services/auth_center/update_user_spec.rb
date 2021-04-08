@@ -12,7 +12,8 @@ module AuthCenter
         email: user.email + 'new'
       }
     end
-    let(:params) { { user_info: user.as_json } }
+    let(:auth_data) { build(:auth_center_token) }
+    let(:params) { { user_info: user, auth_data: auth_data } }
     subject(:context) { described_class.call(params) }
 
     describe '.call' do

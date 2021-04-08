@@ -1,11 +1,9 @@
-class AuthCenterToken
+class AuthCenterToken < Dry::Struct
   include ActiveModel::Serialization
-  include Virtus.value_object
+  transform_keys(&:to_sym)
 
-  values do
-    attribute :access_token, String
-    attribute :refresh_token, String
-    attribute :expires_in, String
-    attribute :token_type, String
-  end
+  attribute :access_token, Types::String.optional
+  attribute :refresh_token, Types::String.optional
+  attribute :expires_in, Types::Coercible::Integer.optional
+  attribute :token_type, Types::String.optional
 end

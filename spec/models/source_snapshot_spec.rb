@@ -8,9 +8,7 @@ RSpec.describe SourceSnapshot, type: :model do
   end
 
   describe '#user=' do
-    let(:id_tn) { 12_345 }
-    let(:fio) { 'Test FIO' }
-    let(:user) { Snapshot::User.new(id_tn: id_tn, fio: fio) }
+    let(:user) { build(:source_snapshot_user) }
     before { subject.user = user }
 
     it { expect(subject.id_tn).to eq user.id_tn }
@@ -22,9 +20,7 @@ RSpec.describe SourceSnapshot, type: :model do
   end
 
   describe '#host=' do
-    let(:invent_num) { 12_345 }
-    let(:os) { 'Test OS' }
-    let(:host) { Snapshot::Host.new(invent_num: invent_num, os: os) }
+    let(:host) { build(:source_snapshot_host) }
     before { subject.host = host }
 
     it { expect(subject.invent_num).to eq host.invent_num }

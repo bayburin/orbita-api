@@ -14,7 +14,6 @@ Rails.application.routes.draw do
       post 'auth/token'
       post 'auth/revoke'
 
-      resources :works
       resources :claims, only: :index
       resources :sd_requests, only: [:create, :update]
       resources :events, only: :create

@@ -1,17 +1,13 @@
 module Snapshot
-  class Host
+  class Host < Dry::Struct
     include ActiveModel::Serialization
-    include Virtus.value_object
 
-    values do
-      attribute :dns, String
-      attribute :domain_user, String
-      attribute :source_ip, String
-      attribute :destination_ip, String
-      attribute :mac, String
-      attribute :invent_num, String
-      attribute :os, String
-      attribute :netbios, String
-    end
+    attribute? :dns, Types::String.optional
+    attribute? :source_ip, Types::String.optional
+    attribute? :destination_ip, Types::String.optional
+    attribute? :mac, Types::String.optional
+    attribute? :invent_num, Types::String.optional
+    attribute? :os, Types::String.optional
+    attribute? :netbios, Types::String.optional
   end
 end
