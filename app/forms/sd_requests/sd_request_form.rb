@@ -5,7 +5,7 @@ module SdRequests
 
     property :id
     property :priority, default: ->(**) { Claim.default_priority }
-    property :finished_at_plan, type: Types::Params::DateTime, default: ->(**) { Claim.default_finished_at_plan }
+    property :finished_at_plan, type: Types::Params::Time, default: ->(**) { Claim.default_finished_at_plan }
     collection :parameters, form: ParameterForm, populate_if_empty: Parameter
     collection :works, form: WorkForm, populator: :populate_works!
     collection :attachments, form: AttachmentForm
