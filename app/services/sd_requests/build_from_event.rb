@@ -11,6 +11,7 @@ module SdRequests
         # TODO: Здесь необходимо с помощью АСУ ФЭЗ расчитать sla.
         # cl.finished_at_plan = ticket.sla
       end
+      context.form = SdRequestForm.new(context.sd_request)
 
       params.merge!(source_snapshot: { id_tn: params[:id_tn] })
     end

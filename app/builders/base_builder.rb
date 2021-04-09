@@ -8,7 +8,7 @@ class BaseBuilder
     params.each do |attr_name, attr_val|
       if builder.respond_to?("#{attr_name}=")
         builder.send("#{attr_name}=", attr_val)
-      elsif builder.model.respond_to?(attr_name)
+      elsif builder.model.respond_to?("#{attr_name}=") && builder.model.attributes.keys.include?(attr_name.to_s)
         builder.model.send("#{attr_name}=", attr_val)
       end
     end

@@ -15,10 +15,12 @@ module SdRequests
       )
     end
     let(:id_tn) { 1234 }
+    let(:form_dbl) { instance_double('SdRequestForm') }
     subject(:context) { described_class.call(ticket: ticket, params: { id_tn: id_tn }) }
     before do
       allow(SdRequestBuilder).to receive(:build).and_yield(sd_request_dbl).and_return(sd_request)
       allow(sd_request_dbl).to receive(:ticket=)
+      allow(SdRequestForm).to receive(:new).and_return(form_dbl)
     end
 
     describe '.call' do
@@ -32,6 +34,14 @@ module SdRequests
       end
 
       it { expect(context.params[:source_snapshot][:id_tn]).to eq id_tn }
+
+      it 'create form instance' do
+        expect(SdRequestForm).to receive(:new).with(sd_request)
+
+        context
+      end
+
+      it { expect(context.form).to be form_dbl }
     end
   end
 end
