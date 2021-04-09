@@ -2,9 +2,8 @@ require 'rails_helper'
 
 module ServiceDesk
   RSpec.describe LoadTicketData do
-    let(:ticket_identity) { 123 }
-    let(:params) { { ticket_identity: ticket_identity } }
-    let(:body) { { id: 1 } }
+    let(:params) { { ticket_identity: 123 } }
+    let(:body) { build(:sd_ticket) }
     let(:error) { { error: 'test error' } }
     let(:response_dbl) { double(:response, success?: true, body: body, error: error) }
     subject(:context) { described_class.call(params: params) }

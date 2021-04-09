@@ -4,16 +4,7 @@ module SdRequests
   RSpec.describe BuildFromEvent do
     let(:sd_request) { build(:sd_request) }
     let(:sd_request_dbl) { double(:sd_request) }
-    let(:ticket) do
-      ServiceDesk::Ticket.new(
-        identity: 1,
-        name: 'ticket-name',
-        service: {
-          id: 2,
-          name: 'service-name'
-        }
-      )
-    end
+    let(:ticket) { build(:sd_ticket) }
     let(:id_tn) { 1234 }
     let(:form_dbl) { instance_double('SdRequestForm') }
     subject(:context) { described_class.call(ticket: ticket, params: { id_tn: id_tn }) }
