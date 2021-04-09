@@ -8,7 +8,7 @@ module Events
 
     def call
       work = event.claim.find_or_initialize_work_by_user(event.user)
-      work.users << event.user unless work.workers.exists?(user_id: event.user.id)
+      work.workers.build(user_id: event.user.id) unless work.workers.exists?(user_id: event.user.id)
 
       if work.save
         event.work = work

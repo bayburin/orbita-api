@@ -40,6 +40,17 @@ module Events
 
           it { expect { context }.not_to change { Worker.count } }
         end
+
+        context 'when user has unsaved attributes' do
+          let!(:old_user_fio) { user.fio }
+          before { user.fio = 'Unsaved User Attribute' }
+
+          it 'does not update user attributes' do
+            context
+
+            expect(user.reload.fio).to eq old_user_fio
+          end
+        end
       end
     end
   end
