@@ -1,6 +1,7 @@
 module Snapshot
   class Host < Dry::Struct
     include ActiveModel::Serialization
+    transform_keys(&:to_sym)
 
     attribute? :dns, Types::String.optional
     attribute? :source_ip, Types::String.optional

@@ -1,8 +1,9 @@
 module Snapshot
   class User < Dry::Struct
     include ActiveModel::Serialization
+    transform_keys(&:to_sym)
 
-    attribute :id_tn, Types::Integer.optional
+    attribute :id_tn, Types::Coercible::Integer.optional
     attribute :tn, Types::Integer.optional
     attribute :fio, Types::Fio.optional
     attribute :dept, Types::Integer.optional

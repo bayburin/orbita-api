@@ -27,7 +27,7 @@ module SdRequests
       it { expect(context.params[:source_snapshot][:id_tn]).to eq id_tn }
 
       it 'create form instance' do
-        expect(SdRequestForm).to receive(:new).with(sd_request)
+        expect(CreateForm).to receive(:new).with(sd_request)
 
         context
       end

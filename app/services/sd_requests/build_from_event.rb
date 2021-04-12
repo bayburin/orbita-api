@@ -10,8 +10,9 @@ module SdRequests
         cl.ticket = ticket
         # TODO: Здесь необходимо с помощью АСУ ФЭЗ расчитать sla.
         # cl.finished_at_plan = ticket.sla
+        # TODO: Здесь необходимо обработать полученный список ответственных.
       end
-      context.form = SdRequestForm.new(context.sd_request)
+      context.form = CreateForm.new(context.sd_request)
 
       params.merge!(source_snapshot: { id_tn: params[:id_tn] })
     end

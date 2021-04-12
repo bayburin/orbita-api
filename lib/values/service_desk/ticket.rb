@@ -5,7 +5,8 @@ module ServiceDesk
 
     attribute :identity, Types::Integer.optional
     attribute :name, Types::String.optional
-    attribute? :sla, Types::Integer.optional
     attribute :service, Types::SdService.optional
+    attribute? :sla, Types::Integer.optional
+    attribute? :responsible_users, Types::Array.of(Types::Hash.schema(tn: Types::Coercible::Integer)).constructor { |arr| arr.map(&:symbolize_keys) }
   end
 end
