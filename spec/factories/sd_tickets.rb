@@ -4,7 +4,8 @@ FactoryBot.define do
 
     identity { 1 }
     name { 'fake identity name' }
-    sla { 123 }
     service factory: :sd_service
+    responsible_users { [ { tn: 1 }, { tn: 2 } ] }
+    sla { 123 }
   end
 end

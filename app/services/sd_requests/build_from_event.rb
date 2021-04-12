@@ -8,9 +8,9 @@ module SdRequests
     def call
       context.sd_request = SdRequestBuilder.build(params) do |cl|
         cl.ticket = ticket
+        cl.build_works_by_responsible_users(ticket.responsible_users)
         # TODO: Здесь необходимо с помощью АСУ ФЭЗ расчитать sla.
         # cl.finished_at_plan = ticket.sla
-        # TODO: Здесь необходимо обработать полученный список ответственных.
       end
       context.form = CreateForm.new(context.sd_request)
 
