@@ -250,12 +250,12 @@ EventType.create(
       is_public: true,
       order: 1000
     },
-    {
-      name: :comment,
-      description: 'Был добавлен комментарий',
-      template: 'Добавлен комментарий: {comment}',
-      order: 100
-    },
+    # {
+    #   name: :comment,
+    #   description: 'Был добавлен комментарий',
+    #   template: 'Добавлен комментарий: {comment}',
+    #   order: 100
+    # },
     {
       name: :add_files,
       description: 'Прикреплены новые файлы',

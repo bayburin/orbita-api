@@ -99,8 +99,6 @@ module SdRequests
       let!(:comment) { create(:comment, message: old_comment, claim: sd_request) }
       let(:old_comment) { 'old message' }
       let(:new_comment) { 'new message' }
-      let(:history_dbl) { double(:history) }
-      let(:comment_type_dbl) { instance_double('Histories::CommentType', build: history_dbl) }
       let(:params) do
         attributes_for(:sd_request).merge(
           finished_at_plan: '28 September',
@@ -110,25 +108,12 @@ module SdRequests
           ]
         )
       end
-      before { allow(Histories::CommentType).to receive(:new).with(comment: new_comment).and_return(comment_type_dbl) }
-
-      it 'add history with new comment' do
-        expect(history_store_dbl).to receive(:add).with(history_dbl)
-
-        subject.validate(params)
-      end
 
       it 'does not update comment which has id' do
         subject.validate(params)
         subject.save
 
         expect(comment.reload.message).to eq old_comment
-      end
-
-      it 'does not add history with comment which has id' do
-        expect(history_store_dbl).to receive(:add).exactly(1).times
-
-        subject.validate(params)
       end
     end
   end

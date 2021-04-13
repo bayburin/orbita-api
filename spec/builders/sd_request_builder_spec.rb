@@ -21,13 +21,16 @@ RSpec.describe SdRequestBuilder do
       let(:manager) { create(:manager) }
       let(:admin) { create(:admin) }
       let(:users) { [ { tn: manager.tn }, { tn: admin.tn }, { tn: 123 } ] }
-      before { subject.build_works_by_responsible_users(users) }
+      before do
+        subject.build_works_by_responsible_users(users)
+        subject.model.save
+      end
 
       it { expect(subject.model.works.length).to eq 2 }
       it { expect(subject.model.works.first.workers.length).to eq 1 }
       it { expect(subject.model.works.last.workers.length).to eq 1 }
-      it { expect(subject.model.works.first.users.first).to eq manager }
-      it { expect(subject.model.works.last.users.first).to eq admin }
+      it { expect(subject.model.works.find_by(group_id: manager.group_id).users.first).to eq manager }
+      it { expect(subject.model.works.find_by(group_id: admin.group_id).users.first).to eq admin }
     end
   end
 end

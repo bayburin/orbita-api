@@ -16,7 +16,6 @@ module Events
 
       it 'register all event types' do
         expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
-        expect(sw_dbl).to receive(:register).with('comment', CommentEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
 
         subject

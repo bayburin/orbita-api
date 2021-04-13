@@ -45,7 +45,6 @@ module SdRequests
     def populate_comments!(fragment:, **)
       return skip! if fragment[:id]
 
-      history_store.add(Histories::CommentType.new(comment: fragment[:message]).build)
       comments.append(Comment.new(sender: current_user))
     end
 

@@ -4,7 +4,6 @@ module Events
     def self.call(claim:, user:, params:)
       sw = Events::Switch.new
       sw.register('workflow', Events::WorkflowEvent)
-      sw.register('comment', Events::CommentEvent)
       sw.register('close', Events::CloseEvent)
 
       event = EventBuilder.build(params) do |builder|

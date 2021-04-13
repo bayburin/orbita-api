@@ -5,16 +5,4 @@ class WorkBuilder < BaseBuilder
 
     super()
   end
-
-  def title=(title)
-    model.title = title
-  end
-
-  def status=(status)
-    model.status = status
-  end
-
-  def attrs=(attrs)
-    model.attrs = attrs
-  end
 end
