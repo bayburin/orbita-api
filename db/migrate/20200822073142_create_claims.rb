@@ -9,7 +9,6 @@ class CreateClaims < ActiveRecord::Migration[6.0]
       t.text :description
       t.integer :status, limit: 1, index: true
       t.integer :priority, limit: 1, index: true
-      t.json :attrs
       t.integer :rating, limit: 1
       t.datetime :finished_at_plan
       t.datetime :finished_at

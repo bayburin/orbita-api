@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
     t.text "description"
     t.integer "status", limit: 1
     t.integer "priority", limit: 1
-    t.json "attrs"
     t.integer "rating", limit: 1
     t.datetime "finished_at_plan"
     t.datetime "finished_at"
@@ -60,8 +59,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
   create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "work_id", null: false
     t.bigint "user_id", null: false
-    t.text "action"
     t.bigint "event_type_id", null: false
+    t.text "action"
+    t.json "user_info"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_type_id"], name: "index_histories_on_event_type_id"
@@ -186,15 +186,11 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
   create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
     t.bigint "group_id", null: false
-    t.string "title", limit: 45
-    t.integer "status", limit: 1
-    t.json "attrs"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id", "group_id"], name: "index_works_on_claim_id_and_group_id", unique: true
     t.index ["claim_id"], name: "index_works_on_claim_id"
     t.index ["group_id"], name: "index_works_on_group_id"
-    t.index ["status"], name: "index_works_on_status"
   end
 
   add_foreign_key "attachments", "claims"
