@@ -12,6 +12,7 @@ FactoryBot.define do
     destination_ip { Faker::Internet.private_ip_v4_address }
     mac { Faker::Internet.mac_address }
     invent_num { '766123' }
+    host_location { '3-123' }
     netbios { 'fake_netbios' }
     os { Faker::Computer.os }
   end

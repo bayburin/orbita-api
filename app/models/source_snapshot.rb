@@ -28,6 +28,8 @@ class SourceSnapshot < ApplicationRecord
       destination_ip: destination_ip,
       mac: mac,
       invent_num: invent_num,
+      svt_item_id: svt_item_id,
+      location: host_location,
       os: os,
       netbios: netbios
     )
@@ -39,6 +41,7 @@ class SourceSnapshot < ApplicationRecord
     self.destination_ip = host.destination_ip
     self.mac = host.mac
     self.invent_num = host.invent_num
+    self.host_location = host.location
     self.os = host.os
     self.netbios = host.netbios
   end

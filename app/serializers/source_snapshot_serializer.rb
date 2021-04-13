@@ -1,5 +1,5 @@
 class SourceSnapshotSerializer < ActiveModel::Serializer
-  attributes :id, :user, :host
+  attributes :id, :svt_item_id, :user, :host
 
   def user
     ActiveModelSerializers::SerializableResource.new(object.user, root: 'user').serializable_hash

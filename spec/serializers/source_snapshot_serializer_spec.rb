@@ -4,7 +4,7 @@ RSpec.describe SourceSnapshotSerializer, type: :model do
   let(:claim) { create(:claim) }
   subject { described_class.new(claim.source_snapshot).to_json }
 
-  %w[id user host].each do |attr|
+  %w[id svt_item_id user host].each do |attr|
     it "has #{attr} attribute" do
       expect(subject).to have_json_path(attr)
     end
