@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_135257) do
+ActiveRecord::Schema.define(version: 2021_04_13_064630) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
     t.index ["ticket_identity"], name: "index_claims_on_ticket_identity"
   end
 
+  create_table "departments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "dept"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "event_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "name", limit: 1
     t.string "description"
@@ -51,8 +57,10 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
   end
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "department_id"
     t.string "name", limit: 45
     t.string "description"
+    t.index ["department_id"], name: "index_groups_on_department_id"
     t.index ["name"], name: "index_groups_on_name"
   end
 
@@ -194,6 +202,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_135257) do
   end
 
   add_foreign_key "attachments", "claims"
+  add_foreign_key "groups", "departments"
   add_foreign_key "histories", "event_types"
   add_foreign_key "histories", "users"
   add_foreign_key "histories", "works"

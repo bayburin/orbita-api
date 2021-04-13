@@ -1,5 +1,6 @@
 Claim.destroy_all
 User.destroy_all
+Department.destroy_all
 Group.destroy_all
 Role.destroy_all
 EventType.destroy_all
@@ -20,12 +21,21 @@ Role.create(
     { name: 'employee', description: 'Сотрудник предприятия' }
   ]
 )
+Department.create(
+  [
+    { dept: 712 },
+    { dept: 713 },
+    { dept: 714 },
+    { dept: 715 },
+    { dept: 821 }
+  ]
+)
 Group.create(
   [
-    { name: 7141, description: 'Сектор ИТ' },
-    { name: 7142, description: 'Ремонт ВТ' },
-    { name: 713, description: 'Отдел 713' },
-    { name: 821, description: 'Бюро 1431' },
+    { department: Department.find_by(dept: 714), name: 7141, description: 'Сектор ИТ' },
+    { department: Department.find_by(dept: 714), name: 7142, description: 'Ремонт ВТ' },
+    { department: Department.find_by(dept: 713), name: 713, description: 'Отдел 713' },
+    { department: Department.find_by(dept: 821), name: 821, description: 'Бюро 1431' },
     { name: 'employee', description: 'Пользователь' }
   ]
 )
