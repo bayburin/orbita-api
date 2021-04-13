@@ -6,7 +6,7 @@ class Guest::Api::V1::SdRequestsController < Guest::Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request
+      render json: { id: create.sd_request.id }
     else
       render json: create.error, status: :bad_request
     end
