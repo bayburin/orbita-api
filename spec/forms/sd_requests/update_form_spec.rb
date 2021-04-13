@@ -2,6 +2,8 @@ require 'rails_helper'
 
 module SdRequests
   RSpec.describe UpdateForm, type: :model do
+    create_event_types
+
     let!(:sd_request) { create(:sd_request) }
     let!(:time) { Time.zone.now }
     let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
@@ -15,6 +17,7 @@ module SdRequests
       allow(Claim).to receive(:default_finished_at_plan).and_return(time)
       described_class.new(sd_request).tap do |form|
         form.history_store = history_store_dbl
+        form.current_user = create(:employee)
       end
     end
 

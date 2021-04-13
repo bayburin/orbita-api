@@ -81,55 +81,6 @@ module SdRequests
       end
     end
 
-    describe '#validate' do
-      let!(:default_worker) { create(:admin, :default_worker) }
-      let(:user) { create(:admin, group: create(:group)) }
-      let(:work_params) { [{ group_id: user.group_id, workers: [{ user_id: user.id }] }] }
-
-      context 'when form valid' do
-        before { subject.validate(params.merge!(works: work_params)) }
-
-        it { expect { subject.save }.to change { Work.count }.by(2) }
-
-        it 'add users to new work' do
-          subject.save
-
-          expect(subject.model.works.first.workers.last.user).to eq(user)
-        end
-
-        it 'add current_user to user list' do
-          subject.save
-
-          expect(subject.model.works.any? { |work| work.workers.any? { |u| u.user_id == current_user.id } }).to be_truthy
-        end
-
-        context 'and when users array is not include uivt users' do
-          let(:work_params) { [] }
-
-          it { expect { subject.save }.to change { Work.count }.by(2) }
-
-          it 'add users with "is_default_worker" flag' do
-            subject.save
-
-            expect(subject.model.users).to include(default_worker)
-          end
-        end
-
-        context 'and when add multiple users with the same work' do
-          let(:new_user) { create(:admin, group: user.group) }
-          let(:work_params) { [{ group_id: user.group_id, workers: [{ user_id: user.id }, { user_id: new_user.id }] }] }
-
-          it { expect { subject.save }.to change { Work.count }.by(2) }
-
-          it 'return created groups' do
-            subject.save
-
-            expect(subject.model.works.as_json.count).to eq 2
-          end
-        end
-      end
-    end
-
     describe '#processing_history' do
       let(:history_dbl) { instance_double(History) }
       before { allow_any_instance_of(Histories::OpenType).to receive(:build).and_return(history_dbl) }
