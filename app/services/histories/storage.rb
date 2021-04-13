@@ -30,6 +30,7 @@ module Histories
         histories.sort_by!(&:order).each do |h|
           h.work = work
           h.user = user
+          h.user_info = user.as_json(only: [:id_tn, :tn, :fio, :login, :work_tel, :email])
           h.save!
         end
       end

@@ -46,6 +46,12 @@ module Histories
         expect(subject.histories.first.user).to eq user
       end
 
+      it 'set user_info' do
+        subject.save!
+
+        expect(subject.histories.first.user_info).to eq user.as_json(only: [:id_tn, :tn, :fio, :login, :work_tel, :email])
+      end
+
       it 'sort histories by EventType' do
         subject.save!
 
