@@ -3,10 +3,10 @@ module SdRequests
   class NotifyOnUpdate
     include Interactor
 
-    delegate :sd_request, to: :context
+    delegate :sd_request, :history_store, to: :context
 
     def call
-      SdRequests::UpdatedWorker.perform_async(sd_request.id)
+      SdRequests::UpdatedWorker.perform_async(sd_request.id) if history_store.histories.any?
     end
   end
 end
