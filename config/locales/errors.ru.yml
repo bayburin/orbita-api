@@ -7,4 +7,7 @@ ru:
         works:
           duplicate_groups: "имеются дублирующиеся группы"
         group_id:
-          already_exist: 'уже существует'
+          already_exist: "уже существует"
+        workflows:
+          sender_id:
+            invalid_group: "пользователь не может оставить сообщение для текущей группы"

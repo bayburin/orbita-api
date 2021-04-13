@@ -12,11 +12,20 @@ class WorkForm < Reform::Form
     option :form
     config.messages.backend = :i18n
 
-    params { required(:group_id).filled(:int?) }
+    params do
+      required(:group_id).filled(:int?)
+      # optional(:workflows)
+    end
 
     rule(:group_id) do
       key.failure(:already_exist) if Work.where.not(id: form.model.id).where(group_id: value, claim_id: form.claim_id).exists?
     end
+    # rule(:workflows).each do |index:|
+    #   next if value[:id]
+
+    #   key([:workflows, :sender_id, index]).failure(:invalid_group) if form.current_user.group_id != form.group_id
+    #   # base.failure('test message') if form.current_user.group_id != form.group_id
+    # end
   end
 
   # Обработка ответственных

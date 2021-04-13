@@ -38,6 +38,10 @@ RSpec.describe WorkForm, type: :model do
 
       it { expect(subject.errors.messages).to include(:group_id) }
     end
+
+    # context 'when workflow has invalid sender_id' do
+    #   it { expect(subject.errors.messages).to include(:group_id) }
+    # end
   end
 
   describe '#populate_workers!' do
