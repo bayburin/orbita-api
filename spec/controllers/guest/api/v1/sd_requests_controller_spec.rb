@@ -4,7 +4,7 @@ RSpec.describe Guest::Api::V1::SdRequestsController, type: :controller do
   sign_in_employee
 
   describe 'POST #create' do
-    let(:params) { { sd_request: { service_id: 1 } } }
+    let(:params) { { sd_request: { service_id: 1 }, id_tn: 123 } }
     let!(:sd_request) { create(:sd_request) }
     before { allow(Guest::SdRequests::Create).to receive(:call).and_return(create_form_dbl) }
 

@@ -1,7 +1,7 @@
 # Стратегия авторизации, проверяющая наличие пользователя в БД. если отсутствует, входит под гостевым пользователем.
 class ApiStrategy < Warden::Strategies::Base
   def valid?
-    access_token.present?
+    params_valid?
   end
 
   def authenticate!
@@ -15,7 +15,7 @@ class ApiStrategy < Warden::Strategies::Base
     end
   end
 
-  def access_token
-    request.headers['Authorization'].to_s.remove('Bearer ')
+  def params_valid?
+    params[:id_tn].present?
   end
 end

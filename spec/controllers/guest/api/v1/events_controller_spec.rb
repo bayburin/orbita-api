@@ -4,7 +4,7 @@ RSpec.describe Guest::Api::V1::EventsController, type: :controller do
   sign_in_employee
 
   describe 'POST #create' do
-    let(:params) { { claim_id: create(:claim).id } }
+    let(:params) { { claim_id: create(:claim).id, id_tn: 123 } }
     before { allow(Events::Create).to receive(:call).and_return(create_dbl) }
 
     context 'when interactor finished with success' do
