@@ -113,7 +113,7 @@ services:
     <<: *backend
     command: bundle exec anycable
     environment:
-      ANYCABLE_REDIS_URL: redis://redis:6379/0
+      ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
       ANYCABLE_DEBUG: 1
     ports:
