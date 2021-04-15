@@ -47,3 +47,5 @@ coverage
 vendor
 
 /config/credentials/production.key
+
+/config/credentials/staging.key
