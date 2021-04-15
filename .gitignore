@@ -45,3 +45,5 @@ coverage
 .vscode
 
 vendor
+
+/config/credentials/production.key
