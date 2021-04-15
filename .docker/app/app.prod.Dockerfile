@@ -64,7 +64,6 @@ RUN gem install bundler:${BUNDLER_VERSION}
 
 # Copy files
 COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /app/public /app/public
 COPY . .
 
 RUN mkdir -p tmp/pids
