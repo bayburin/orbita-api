@@ -90,6 +90,20 @@ ActiveRecord::Schema.define(version: 2021_04_13_064630) do
     t.index ["work_id"], name: "index_messages_on_work_id"
   end
 
+  create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "resource_owner_id", null: false
+    t.bigint "application_id", null: false
+    t.string "token", null: false
+    t.integer "expires_in", null: false
+    t.text "redirect_uri", null: false
+    t.datetime "created_at", null: false
+    t.datetime "revoked_at"
+    t.string "scopes", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
+    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
+  end
+
   create_table "oauth_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "resource_owner_id"
     t.bigint "application_id", null: false
@@ -209,6 +223,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_064630) do
   add_foreign_key "messages", "claims"
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "messages", "works"
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "parameters", "claims"
   add_foreign_key "source_snapshots", "claims"

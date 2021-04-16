@@ -1,0 +1,21 @@
+docker-build-master:
+  image: docker-hub.iss-reshetnev.ru/registry/docker:compose
+  stage: build
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "$ID_RSA" > ~/.ssh/id_ed25519
+    - chmod -R 700 ~/.ssh
+    - ssh-keyscan $STAGING_SERVER >> ~/.ssh/known_hosts
+    - ssh-keyscan $(getent hosts $STAGING_SERVER | cut -d' ' -f1) >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" $CI_REGISTRY --password-stdin
+    - cp $DOTENV .env
+    - cp $DATABASE config/database.yml
+  script:
+    - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy
+    - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME push
+    - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" pull
+    - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" down --remove-orphans
+    - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" up -d
+  only:
+    - develop

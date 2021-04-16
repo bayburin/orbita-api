@@ -1,21 +1,21 @@
 version: "3.9"
 
 x-app: &app
+  image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
   build:
     context: .
-    dockerfile: .docker/app/app.dev.Dockerfile
+    dockerfile: .docker/app/app.prod.Dockerfile
     args:
       RUBY_VERSION: 2.7.2
       BUNDLER_VERSION: 2.1.4
       RAILS_ROOT: /app
+      RAILS_ENV: staging
   tmpfs:
     - /tmp
 
 x-backend: &backend
   <<: *app
   volumes:
-    - .:/app:cached
-    - bundle:/usr/local/bundle
     - rails_cache:/app/tmp/cache
   environment:
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
@@ -28,27 +28,24 @@ x-backend: &backend
     - .env
 
 services:
-  runner:
-    <<: *backend
-    command: /bin/bash
-
   app:
     <<: *backend
     restart: unless-stopped
-    command: bash -c "rm -rf /app/tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    command: bundle exec puma -C config/puma.rb
+    entrypoint: .docker/entrypoint.sh
 
   nginx:
-    image: nginx:1.19.6-alpine
+    build:
+      context: .
+      dockerfile: .docker/nginx/nginx.Dockerfile
+      args:
+        RAILS_ROOT: /app
+        APP_HOSTNAME: orbita-center-test
+    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
     restart: unless-stopped
     ports:
-      - 9080:80
-      - 9443:443
-    volumes:
-      - type: bind
-        source: ./
-        target: /app
-      - ./.docker/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
-      - ./.docker/tls/:/etc/pki/tls/nginx/
+      - 80:80
+      - 443:443
     depends_on:
       - app
     stdin_open: true
@@ -59,27 +56,15 @@ services:
     volumes:
       - mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_DEV_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DEV_DATABASE}
-      MYSQL_USER: ${MYSQL_DEV_USER}
-      MYSQL_PASSWORD: ${MYSQL_DEV_PASSWORD}
-    restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
-
-  mysql_test:
-    image: mysql:5.7.33
-    volumes:
-      - mysql_test:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
-      MYSQL_USER: ${MYSQL_TEST_USER}
-      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
 
   redis:
-    image: redis:5.0.11
+    image: redis:5.0.12
     volumes:
       - redis:/data
     restart: always
@@ -90,12 +75,6 @@ services:
       - redis
     restart: unless-stopped
     command: bundle exec sidekiq -C config/sidekiq.yml
-
-  guard:
-    <<: *backend
-    depends_on:
-      - mysql_test
-    command: bundle exec guard
 
   ws:
     image: anycable/anycable-go:1.0
@@ -123,8 +102,6 @@ services:
       - ws
 
 volumes:
-  bundle:
   rails_cache:
   mysql:
-  mysql_test:
   redis:
