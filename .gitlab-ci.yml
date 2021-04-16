@@ -18,4 +18,4 @@ docker-build-master:
     - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" down --remove-orphans
     - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" up -d
   only:
-    - deploy
+    - develop
