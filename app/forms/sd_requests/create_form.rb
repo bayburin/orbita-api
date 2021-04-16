@@ -3,11 +3,23 @@ module SdRequests
   class CreateForm < SdRequestForm
     property :service_id
     property :ticket_identity
-    property :service_name, default: ->(**) { SdRequest.default_service_name }
-    property :ticket_name, default: ->(**) { SdRequest.default_ticket_name }
+    property :service_name
+    property :ticket_name
     property :description
-    property :status, default: ->(**) { Claim.default_status }
+    property :status
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
+
+    def service_name
+      super || SdRequest.default_service_name
+    end
+
+    def ticket_name
+      super || SdRequest.default_ticket_name
+    end
+
+    def status
+      super || Claim.default_status
+    end
 
     validation do
       config.messages.backend = :i18n
@@ -16,6 +28,14 @@ module SdRequests
         required(:description).filled
         required(:source_snapshot).filled
       end
+    end
+
+    def sync
+      result = super
+      result.service_name = service_name
+      result.ticket_name = ticket_name
+      result.status = status
+      result
     end
 
     # Обрабатывает источник заявки

@@ -1,4 +1,5 @@
 # Класс для обработки ФИО.
+# TODO: Удалить класс
 class Fio < Virtus::Attribute
   def coerce(value)
     return value unless value.is_a?(String)
