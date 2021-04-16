@@ -45,7 +45,7 @@ RSpec.describe SourceSnapshotBuilder do
 
       context 'when AuthCenter::AppToken failed' do
         before do
-          allow(host_info_loader_dbl).to receive(:load).and_return(nil)
+          allow(host_info_loader_dbl).to receive(:load).and_return([])
           subject.host_credentials = attr[:invent_num]
         end
 
