@@ -6,7 +6,7 @@ module ServiceDesk
     delegate :params, to: :context
 
     def call
-      response = Api.ticket(params[:ticket_identity])
+      response = Api.ticket_by_identity(params[:ticket_identity])
 
       if response.success?
         context.ticket = Ticket.new(response.body)
