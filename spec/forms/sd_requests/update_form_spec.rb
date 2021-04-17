@@ -10,7 +10,7 @@ module SdRequests
     let(:params) do
       attributes_for(:sd_request).merge(
         priority: 'low',
-        finished_at_plan: (Time.zone.now + 5.days).to_s
+        finished_at_plan: Time.zone.now + 5.days
       )
     end
     subject do
