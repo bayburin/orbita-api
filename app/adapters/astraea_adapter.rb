@@ -4,8 +4,9 @@ class AstraeaAdapter
 
   attr_reader :works
 
-  def initialize(kase)
+  def initialize(kase, current_user)
     @kase = kase
+    @current_user = current_user
 
     load_ticket if @kase.ticket_id
     build_works if @kase.users.any?
@@ -71,7 +72,37 @@ class AstraeaAdapter
 
   def build_works
     @works = @kase.users.group_by(&:group_id).map do |group_id, users|
-      { group_id: group_id, workers: users.map { |u| { user_id: u.id } } }
+      WorkBuilder.build(group_id: group_id).tap do |work|
+        work.workers.build(*(users.map { |u| { user_id: u.id } }))
+      end
+      # { group_id: group_id, workers: users.map { |u| { user_id: u.id } } }
     end
+
+    build_workflow unless workflow.empty?
+  end
+
+  def build_workflow
+    # current_work = works.find { |work| work[:group_id] == @current_user.group_id }
+    current_work = works.find { |work| work.group_id == @current_user.group_id }
+
+    if current_work
+      # current_work[:workflows] = [{ message: workflow }]
+      current_work.workflows.build(message: workflow)
+    else
+      # works.push(group_id: @current_user.group_id, workers: [{ user_id: @current_user.id }], workflows: [{ message: workflow }])
+      work = WorkBuilder.build(group_id: @current_user.group_id)
+      work.workers.build(user_id: @current_user.id)
+      work.workflows.build(message: workflow)
+      works << work
+    end
+  end
+
+  def workflow
+    analysis = @kase.messages.find { |message| message[:type] == 'analysis' }
+    measure = @kase.messages.find { |message| message[:type] == 'measure' }
+    workflow = ''
+    workflow += "Анализ: #{analysis[:info]}; " if analysis
+    workflow += "Меры: #{measure[:info]}" if measure
+    workflow
   end
 end

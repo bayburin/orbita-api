@@ -1,11 +1,10 @@
 class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   def create
     kase = Astraea::Kase.new(astraea_params)
-
     create = SdRequests::Create.call(
       current_user: current_user,
       form: SdRequests::CreateForm.new(SdRequest.new),
-      params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase)).as_json
+      params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user)).as_json
     )
 
     if create.success?
@@ -13,11 +12,6 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     else
       render json: { error: create.error }, status: :bad_request
     end
-
-    # render json: Astraea::SdRequestAdapter.new(astraea_params).sd_request_params
-
-    # kase = Astraea::Kase.new(astraea_params)
-    # render json: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase)).as_json
   end
 
   protected
