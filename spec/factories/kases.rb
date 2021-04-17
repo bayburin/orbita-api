@@ -13,7 +13,7 @@ FactoryBot.define do
     phone { '12-34' }
     time { 1618642512 }
     severity { 'low' }
-    users { [build(:manager).tn, build(:manager).tn] }
+    users { [create(:manager).tn, create(:manager).tn] }
     messages do
       [
         {
