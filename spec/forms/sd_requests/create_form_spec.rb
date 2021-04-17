@@ -31,12 +31,64 @@ module SdRequests
       it { expect(subject.errors.messages[:source_snapshot]).to include('не может быть пустым') }
     end
 
-    describe 'default values' do
-      it { expect(subject.service_name).to eq(SdRequest.default_service_name) }
-      it { expect(subject.ticket_name).to eq(SdRequest.default_ticket_name) }
-      it { expect(subject.status).to eq(Claim.default_status) }
-      it { expect(subject.priority).to eq(Claim.default_priority) }
-      it { expect(subject.finished_at_plan).to eq(time) }
+    describe '#service_name' do
+      it 'return default service_name if it is nil' do
+        subject.service_name = nil
+
+        expect(subject.service_name).to eq SdRequest.default_service_name
+      end
+
+      context 'when service_name is not null' do
+        let(:service_name) { 'test service' }
+        before { subject.service_name = service_name }
+
+        it { expect(subject.service_name).to eq service_name }
+      end
+    end
+
+    describe '#ticket_name' do
+      it 'return default ticket_name if it is nil' do
+        subject.ticket_name = nil
+
+        expect(subject.ticket_name).to eq SdRequest.default_ticket_name
+      end
+
+      context 'when ticket_name is not null' do
+        let(:ticket_name) { 'test ticket' }
+        before { subject.ticket_name = ticket_name }
+
+        it { expect(subject.ticket_name).to eq ticket_name }
+      end
+    end
+
+    describe '#status' do
+      it 'return default status if it is nil' do
+        subject.status = nil
+
+        expect(subject.status).to eq SdRequest.default_status
+      end
+
+      context 'when status is not null' do
+        let(:status) { 'approved' }
+        before { subject.status = status }
+
+        it { expect(subject.status).to eq status }
+      end
+    end
+
+    describe '#sync' do
+      context 'when some attributes is nil' do
+        before do
+          subject.service_name = nil
+          subject.ticket_name = nil
+          subject.status = nil
+          subject.sync
+        end
+
+        it { expect(subject.model.service_name).to eq SdRequest.default_service_name }
+        it { expect(subject.model.ticket_name).to eq SdRequest.default_ticket_name }
+        it { expect(subject.model.status).to eq SdRequest.default_status.to_s }
+      end
     end
 
     describe '#populate_source_snapshot!' do
