@@ -70,9 +70,8 @@ class AstraeaAdapter
   end
 
   def build_works
-    @works = []
-    @kase.users.group_by { |u| u.group_id }.each do |group_id, users|
-      @works << { group_id: group_id, workers: users.map { |u| { user_id: u.id } } }
+    @works = @kase.users.group_by(&:group_id).map do |group_id, users|
+      { group_id: group_id, workers: users.map { |u| { user_id: u.id } } }
     end
   end
 end
