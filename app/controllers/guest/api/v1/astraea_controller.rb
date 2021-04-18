@@ -1,7 +1,7 @@
 class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   def create
     kase = Astraea::Kase.new(astraea_params)
-    create = SdRequests::Create.call(
+    create = Guest::Astraea::Create.call(
       current_user: current_user,
       form: SdRequests::CreateForm.new(SdRequest.new),
       params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user)).as_json
