@@ -8,6 +8,8 @@ class Claim < ApplicationRecord
   has_many :parameters, dependent: :destroy
   has_one :source_snapshot, dependent: :destroy
 
+  belongs_to :application, optional: true, class_name: 'Doorkeeper::Application'
+
   enum priority: { default: 1, low: 2, high: 3 }, _suffix: true
 
   def self.default_finished_at_plan

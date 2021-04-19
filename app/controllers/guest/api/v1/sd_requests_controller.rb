@@ -2,6 +2,7 @@ class Guest::Api::V1::SdRequestsController < Guest::Api::V1::BaseController
   def create
     create = Guest::SdRequests::Create.call(
       current_user: current_user,
+      doorkeeper_token: doorkeeper_token,
       params: sd_request_params
     )
 
@@ -16,6 +17,7 @@ class Guest::Api::V1::SdRequestsController < Guest::Api::V1::BaseController
 
   def sd_request_params
     params.permit(
+      :integration_id, # ID заявки во внешней системе
       :id_tn, # id_tn пользователя, запросившего услугу (в твоем случае это пользователь, который прислал служебку, например)
       :ticket_identity, # Идентификатор типа заявки
       :description, # Свободное описание заявки,

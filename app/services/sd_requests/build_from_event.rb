@@ -3,12 +3,13 @@ module SdRequests
   class BuildFromEvent
     include Interactor
 
-    delegate :params, :ticket, to: :context
+    delegate :params, :ticket, :doorkeeper_token, to: :context
 
     def call
       context.sd_request = SdRequestBuilder.build(params) do |cl|
         cl.ticket = ticket
         cl.build_works_by_responsible_users(ticket.responsible_users)
+        cl.application_id = doorkeeper_token.application.id
         # TODO: Здесь необходимо с помощью АСУ ФЭЗ расчитать sla.
         # cl.finished_at_plan = ticket.sla
       end

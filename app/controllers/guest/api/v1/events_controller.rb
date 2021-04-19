@@ -1,7 +1,8 @@
 class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
   def create
+    claim = Claim.find_by(integration_id: params[:integration_id], application_id: doorkeeper_token.application.id)
     create = Events::Create.call(
-      claim: Claim.find(event_params[:claim_id]),
+      claim: claim,
       user: current_user,
       params: event_params
     )
@@ -17,7 +18,7 @@ class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
 
   def event_params
     params.permit(
-      :claim_id,
+      :integration_id,
       :id_tn,
       :event_type,
       payload: {}

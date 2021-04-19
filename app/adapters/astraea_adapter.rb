@@ -12,7 +12,7 @@ class AstraeaAdapter
     build_works if @kase.users.any?
   end
 
-  def id
+  def integration_id
     @kase.case_id
   end
 

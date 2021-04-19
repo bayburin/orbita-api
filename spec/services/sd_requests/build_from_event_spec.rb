@@ -7,10 +7,13 @@ module SdRequests
     let(:ticket) { build(:sd_ticket) }
     let(:id_tn) { 1234 }
     let(:form_dbl) { instance_double('SdRequestForm') }
-    subject(:context) { described_class.call(ticket: ticket, params: { id_tn: id_tn }) }
+    let(:application_id) { 123 }
+    let(:token_dbl) { double(:token, application: double(:application, id: application_id)) }
+    subject(:context) { described_class.call(ticket: ticket, params: { id_tn: id_tn }, doorkeeper_token: token_dbl) }
     before do
       allow(SdRequestBuilder).to receive(:build).and_yield(sd_request_dbl).and_return(sd_request)
       allow(sd_request_dbl).to receive(:ticket=)
+      allow(sd_request_dbl).to receive(:application_id=)
       allow(SdRequestForm).to receive(:new).and_return(form_dbl)
     end
 
@@ -26,6 +29,12 @@ module SdRequests
 
       it 'call #build_works_by_responsible_users method' do
         expect(sd_request_dbl).to receive(:build_works_by_responsible_users).with(ticket.responsible_users)
+
+        context
+      end
+
+      it 'set #application_id' do
+        expect(sd_request_dbl).to receive(:application_id=).with(application_id)
 
         context
       end

@@ -7,13 +7,11 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
     let(:params) { { id_tn: 123, sd_request: attributes_for(:astraea_kase) } }
     let!(:sd_request) { create(:sd_request) }
     let(:create_form_dbl) { double(:create_form, success?: true, sd_request: sd_request, error: 'errors') }
-    before do
-      allow(Guest::Astraea::Create).to receive(:call).and_return(create_form_dbl)
-    end
+    before { allow(Guest::Astraea::Create).to receive(:call).and_return(create_form_dbl) }
 
     context 'when form saved data' do
       it 'call SdRequests::Create.call method' do
-        expect(Guest::Astraea::Create).to receive(:call).and_return(create_form_dbl)
+        expect(Guest::Astraea::Create).to receive(:call)
 
         post :create, params: params, as: :json
       end

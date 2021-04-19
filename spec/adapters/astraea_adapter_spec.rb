@@ -5,7 +5,7 @@ RSpec.describe AstraeaAdapter do
   let!(:kase) { build(:astraea_kase) }
   subject { described_class.new(kase, current_user) }
 
-  it { expect(subject.id).to eq kase.case_id }
+  it { expect(subject.integration_id).to eq kase.case_id }
   it { expect(subject.description).to eq kase.desc }
   it { expect(subject.priority).to eq kase.severity }
   it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time) }
