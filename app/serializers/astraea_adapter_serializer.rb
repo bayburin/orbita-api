@@ -6,11 +6,11 @@ class AstraeaAdapterSerializer < ActiveModel::Serializer
   has_many :comments
 
   class SourceSnapshotSerializer < ActiveModel::Serializer
-    attributes :svt_item_id, :invent_num, :id_tn, :user_attrs
+    attributes :id, :svt_item_id, :invent_num, :id_tn, :user_attrs
   end
 
   class WorkSerializer < ActiveModel::Serializer
-    attributes :group_id, :workers, :workflows
+    attributes :id, :group_id, :workers, :workflows
 
     def workers
       ActiveModelSerializers::SerializableResource.new(object.workers, each_serializer: WorkerSerializer).serializable_hash
@@ -21,15 +21,15 @@ class AstraeaAdapterSerializer < ActiveModel::Serializer
     end
 
     class WorkerSerializer < ActiveModel::Serializer
-      attributes :user_id
+      attributes :id, :user_id, :_destroy
     end
 
     class WorkflowSerializer < ActiveModel::Serializer
-      attributes :message
+      attributes :id, :message
     end
   end
 
   class CommentSerializer < ActiveModel::Serializer
-    attributes :message
+    attributes :id, :message
   end
 end

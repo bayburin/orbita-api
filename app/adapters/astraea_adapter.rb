@@ -11,12 +11,14 @@ class AstraeaAdapter
 
   attr_reader :works
 
-  def initialize(kase, current_user)
+  def initialize(kase, current_user, sd_request = nil)
     @kase = kase
     @current_user = current_user
+    @sd_request = sd_request
 
     load_ticket if @kase.ticket_id
     build_works if @kase.users.any?
+    build_workflow_message
   end
 
   def integration_id
@@ -82,38 +84,64 @@ class AstraeaAdapter
   end
 
   def build_works
+    if @sd_request
+      process_existing_works
+    else
+      build_new_works
+    end
+
+    build_workflow unless @workflow_message.empty?
+  end
+
+  def process_existing_works
+    removed_users = @sd_request.users - @kase.users - [@current_user]
+    new_users = @kase.users - [@current_user] - @sd_request.users
+
+    @works = @sd_request.works.map do |work|
+      work.workers = work.workers.to_a
+      work.workers.select { |w| removed_users.uniq.map(&:id).include?(w.user_id) }.each { |u| u._destroy = true }
+      work
+    end
+    @kase.users.group_by(&:group_id).each do |group_id, _users|
+      work = works.find { |w| w.group_id = group_id }
+
+      if work
+        work.workers.build(new_users.uniq.filter_map { |u| { user_id: u.id } if u.group_id == group_id })
+      else
+        works << WorkBuilder.build(group_id: group_id).tap do |w|
+          w.workers.build(new_users.uniq.filter_map { |u| { user_id: u.id } if u.group_id == group_id })
+        end
+      end
+    end
+  end
+
+  def build_new_works
     @works = @kase.users.group_by(&:group_id).map do |group_id, users|
       WorkBuilder.build(group_id: group_id).tap do |work|
         work.workers.build(users.uniq.map { |u| { user_id: u.id } })
       end
-      # { group_id: group_id, workers: users.map { |u| { user_id: u.id } } }
     end
-
-    build_workflow unless workflow.empty?
   end
 
   def build_workflow
-    # current_work = works.find { |work| work[:group_id] == @current_user.group_id }
     current_work = works.find { |work| work.group_id == @current_user.group_id }
 
     if current_work
-      # current_work[:workflows] = [{ message: workflow }]
-      current_work.workflows.build(message: workflow)
+      current_work.workflows.build(message: @workflow_message)
     else
-      # works.push(group_id: @current_user.group_id, workers: [{ user_id: @current_user.id }], workflows: [{ message: workflow }])
       work = WorkBuilder.build(group_id: @current_user.group_id)
       work.workers.build(user_id: @current_user.id)
-      work.workflows.build(message: workflow)
+      work.workflows.build(message: @workflow_message)
       works << work
     end
   end
 
-  def workflow
+  def build_workflow_message
     analysis = @kase.messages.find { |message| message[:type] == 'analysis' }
     measure = @kase.messages.find { |message| message[:type] == 'measure' }
-    workflow = ''
-    workflow += "Анализ: #{analysis[:info]}; " if analysis
-    workflow += "Меры: #{measure[:info]}" if measure
-    workflow
+    @workflow_message = ''
+    @workflow_message += "Анализ: #{analysis[:info]}; " if analysis
+    @workflow_message += "Меры: #{measure[:info]}" if measure
+    @workflow_message
   end
 end
