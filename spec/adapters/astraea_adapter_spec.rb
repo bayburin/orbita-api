@@ -10,6 +10,32 @@ RSpec.describe AstraeaAdapter do
   it { expect(subject.priority).to eq kase.severity }
   it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time) }
 
+  describe '#status' do
+    context 'when status_id is equal 1' do
+      let!(:kase) { build(:astraea_kase, status_id: 1) }
+
+      it { expect(subject.status).to eq :opened }
+    end
+
+    context 'when status_id is equal 2' do
+      let!(:kase) { build(:astraea_kase, status_id: 2) }
+
+      it { expect(subject.status).to eq :at_work }
+    end
+
+    context 'when status_id is equal 3' do
+      let!(:kase) { build(:astraea_kase, status_id: 3) }
+
+      it { expect(subject.status).to eq :done }
+    end
+
+    context 'when status_id is equal 5' do
+      let!(:kase) { build(:astraea_kase, status_id: 5) }
+
+      it { expect(subject.status).to eq :canceled }
+    end
+  end
+
   describe '#source_snapshot' do
     it { expect(subject.source_snapshot).to be_instance_of(SourceSnapshot) }
     it { expect(subject.source_snapshot.svt_item_id).to eq kase.item_id }

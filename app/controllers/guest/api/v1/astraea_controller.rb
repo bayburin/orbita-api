@@ -15,6 +15,24 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     end
   end
 
+  def update
+    # sd_request = SdRequest.find_by(integration_id: params[:id], application_id: doorkeeper_token.application.id)
+    kase = Astraea::Kase.new(astraea_params)
+    # update = Guest::Astraea::Update.call(
+    #   current_user: current_user,
+    #   form: SdRequests::UpdateForm.new(sd_request),
+    #   params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user)).as_json
+    # )
+
+    # if update.success?
+    #   render json: { message: I18n.t('controllers.api.v1.events.processed_successfully') }
+    # else
+    #   render json: { error: create.error }, status: :bad_request
+    # end
+
+    render json: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user)).as_json
+  end
+
   protected
 
   def astraea_params

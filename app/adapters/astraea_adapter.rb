@@ -2,6 +2,13 @@
 class AstraeaAdapter
   include ActiveModel::Serializers::JSON
 
+  STATUSES = {
+    'Не обработано': :opened,
+    'В работе': :at_work,
+    'Выполнено': :done,
+    'Отклонено': :canceled
+  }.freeze
+
   attr_reader :works
 
   def initialize(kase, current_user)
@@ -34,6 +41,10 @@ class AstraeaAdapter
 
   def description
     @kase.desc
+  end
+
+  def status
+    STATUSES[@kase.status_id.to_sym]
   end
 
   def priority
