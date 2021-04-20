@@ -14,6 +14,7 @@ module SdRequests
       allow(SdRequestBuilder).to receive(:build).and_yield(sd_request_dbl).and_return(sd_request)
       allow(sd_request_dbl).to receive(:ticket=)
       allow(sd_request_dbl).to receive(:application_id=)
+      allow(sd_request_dbl).to receive(:status=)
       allow(SdRequestForm).to receive(:new).and_return(form_dbl)
     end
 
@@ -27,14 +28,20 @@ module SdRequests
         context
       end
 
-      it 'call #build_works_by_responsible_users method' do
+      it 'call build_works_by_responsible_users method' do
         expect(sd_request_dbl).to receive(:build_works_by_responsible_users).with(ticket.responsible_users)
 
         context
       end
 
-      it 'set #application_id' do
+      it 'set application_id' do
         expect(sd_request_dbl).to receive(:application_id=).with(application_id)
+
+        context
+      end
+
+      it 'set at_work status' do
+        expect(sd_request_dbl).to receive(:status=).with(:at_work)
 
         context
       end

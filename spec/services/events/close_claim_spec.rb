@@ -3,7 +3,7 @@ require 'rails_helper'
 module Events
   RSpec.describe CloseClaim do
     let!(:close_event_type) { create(:event_type, :close) }
-    let(:claim) { create(:claim) }
+    let(:claim) { create(:sd_request) }
     let(:work) { create(:work, claim: claim) }
     let(:event_dbl) { instance_double('Event', claim: claim, work: work) }
     let(:history_store_dbl) { instance_double('Histories::Storage', add: true, save!: true) }
@@ -25,6 +25,12 @@ module Events
         context
 
         expect(event_dbl.claim.finished_at).to eq time
+      end
+
+      it 'set done status' do
+        context
+
+        expect(event_dbl.claim.done_status?).to be_truthy
       end
 
       it 'add history to history_store' do
