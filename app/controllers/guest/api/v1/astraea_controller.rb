@@ -32,6 +32,7 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
       :phone, # телефон, если ввели вручную
       :time, # время закрытия по плану
       :severity, # приоритет
+      :status_id,
       users: [], # массив табельных номеров исполнителей
       messages: [
         :type, # типы: analysis, measure, comment
@@ -42,29 +43,6 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   end
 
 =begin
-Пример запроса:
-{
-	"id_tn": 12880,
-	"sd_request": {
-		"case_id": "104",
-		"user_tn": "17935",
-		"id_tn": "19750",
-		"host_id": "765769",
-		"desc": "Новая заявка с астреи",
-		"item_id": "100008643",
-		"phone": "12-34",
-		"time": 1618642512,
-		"severity": "6",
-		"users": [20072, 6283],
-		"messages": [
-			{
-				"type": "comment",
-				"info": "Комментарий с астреи"
-			}
-		]
-	}
-}
-
 При изменении:
 id_tn
 sd_request: {
