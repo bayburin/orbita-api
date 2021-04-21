@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :sd_requests, only: :create
         resources :service_desk, only: :create
         resources :events, only: :create
+        resources :astraea, only: [:create, :update]
       end
     end
   end

@@ -7,6 +7,7 @@ RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
   it { is_expected.to have_many(:parameters).dependent(:destroy) }
+  it { is_expected.to belong_to(:application).optional.class_name('Doorkeeper::Application') }
 
   describe '.default_finished_at_plan' do
     let!(:time) { Time.parse('2020-08-20 10:00:15') }

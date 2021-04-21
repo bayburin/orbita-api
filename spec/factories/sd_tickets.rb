@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :sd_ticket, class: ServiceDesk::Ticket do
     initialize_with { new(attributes) }
 
+    id { 3 }
     identity { 1 }
     name { 'fake identity name' }
     service factory: :sd_service

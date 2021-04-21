@@ -1,6 +1,6 @@
 # Класс заявки от пользователя
 class SdRequest < Claim
-  enum status: { opened: 1, at_work: 2, canceled: 3, approved: 4, reopened: 5 }, _suffix: true
+  enum status: { opened: 1, at_work: 2, canceled: 3, done: 4 }, _suffix: true
 
   def self.default_service_name
     'Техподдержка'

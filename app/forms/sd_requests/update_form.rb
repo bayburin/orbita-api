@@ -1,6 +1,8 @@
 module SdRequests
   # Описывает форму, которая обновляет заявку.
   class UpdateForm < SdRequestForm
+    property :status
+
     protected
 
     def processing_history

@@ -13,7 +13,7 @@ class CreateSourceSnapshots < ActiveRecord::Migration[6.0]
       t.string :destination_ip, limit: 15
       t.string :mac, limit: 48
       t.string :invent_num, limit: 64
-      t.integer :svt_item_id
+      t.integer :svt_item_id, limit: 8
       t.string :host_location
       t.string :os, limit: 64
       t.string :netbios, limit: 15

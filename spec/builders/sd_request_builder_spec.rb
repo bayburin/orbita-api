@@ -7,6 +7,10 @@ RSpec.describe SdRequestBuilder do
     let(:attr) { attributes_for(:sd_request, attrs: { foo: :bar }) }
     subject { described_class.new }
 
+    it { expect(subject.respond_to?(:ticket=)).to be_truthy }
+    it { expect(subject.respond_to?(:application_id=)).to be_truthy }
+    it { expect(subject.respond_to?(:status=)).to be_truthy }
+
     describe '#add_works' do
       let(:work) { build(:work) }
 

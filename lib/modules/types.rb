@@ -6,4 +6,5 @@ module Types
   end
   Email = String.constrained(format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
   SdService = Types.Constructor(ServiceDesk::Service)
+  User = Types.Constructor(User)
 end
