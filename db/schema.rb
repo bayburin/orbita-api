@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_073250) do
   end
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "integration_id"
+    t.bigint "integration_id"
     t.bigint "application_id"
     t.integer "service_id"
     t.string "service_name"

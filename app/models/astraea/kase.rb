@@ -12,7 +12,7 @@ module Astraea
     attribute? :ticket_id, Types::Coercible::Integer.optional
     attribute :item_id, Types::Coercible::Integer # штрих-код
     attribute :phone, Types::String.optional # телефон, если ввели вручную
-    attribute :time, Types::Integer # время закрытия по плану (timestamp)
+    attribute :time, Types::Coercible::Integer # время закрытия по плану (timestamp)
     attribute :severity, Types::String.enum('high' => '3', 'default' => '4', 'low' => '6') # приоритет
     attribute :status_id, Types::String.enum('Не обработано' => 1, 'В работе' => 2, 'Выполнено' => 3, 'Отклонено' => 5) # статус
     attribute :users, Types::Instance(ActiveRecord::Relation).constructor { |tns| User.where(tn: tns) } # массив табельных номеров исполнителей

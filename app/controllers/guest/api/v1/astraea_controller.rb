@@ -16,7 +16,9 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   end
 
   def update
-    sd_request = SdRequest.find_by(integration_id: params[:id], application_id: doorkeeper_token.application.id)
+    sd_request = SdRequest
+                   .includes(comments: :sender, works: [:group, workers: :user, workflows: :sender])
+                   .find_by(integration_id: params[:id], application_id: doorkeeper_token.application.id)
     kase = Astraea::Kase.new(astraea_params)
     update = Guest::Astraea::Update.call(
       current_user: current_user,
@@ -48,7 +50,7 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
       :phone, # телефон, если ввели вручную
       :time, # время закрытия по плану
       :severity, # приоритет
-      :status_id,
+      :status_id, # статус
       users: [], # массив табельных номеров исполнителей
       messages: [
         :type, # типы: analysis, measure, comment
@@ -57,26 +59,4 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
       ],
     )
   end
-
-=begin
-При изменении:
-id_tn
-sd_request: {
-      :case_id,
-      :severity,
-      :user_tn # табельный пользователя
-      :host_id # инвентарный
-      :item_id # штрих-код
-      :phone # телефон, если ввели вручную
-      messages: [
-        :type, # типы: analysis, measure, comment
-        :date, # дата создания
-        :info # сообщение
-      ],
-      :time # время контроля
-      users: [
-        :user_id # табельный исполнителя
-      ]
-}
-=end
 end
