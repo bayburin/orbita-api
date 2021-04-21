@@ -1,5 +1,10 @@
 version: "3.9"
 
+x-common-labels: &common-labels
+  project-name: "orbita-center"
+  environment: "production"
+  maintainer: "bayburin@iss-reshetnev.ru"
+
 x-app: &app
   image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
   build:
@@ -12,6 +17,8 @@ x-app: &app
       RAILS_ENV: production
   tmpfs:
     - /tmp
+  labels:
+    <<: *common-labels
 
 x-backend: &backend
   <<: *app
@@ -50,6 +57,8 @@ services:
       - app
     stdin_open: true
     tty: true
+    labels:
+      <<: *common-labels
 
   mysql:
     image: mysql:5.7.33
