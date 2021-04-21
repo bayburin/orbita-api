@@ -27,10 +27,8 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     if update.success?
       render json: { message: I18n.t('controllers.api.v1.events.processed_successfully') }
     else
-      render json: { error: create.error }, status: :bad_request
+      render json: { error: update.error }, status: :bad_request
     end
-
-    # render json: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user, sd_request)).as_json
   end
 
   protected

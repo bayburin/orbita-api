@@ -21,12 +21,6 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
 
         expect(response.status).to eq 200
       end
-
-      # it 'respond with created model' do
-      #   post :create, params: params, as: :json
-
-      #   expect(parse_json(response.body)['id']).to eq create_form_dbl.sd_request.id
-      # end
     end
 
     context 'when form finished with fail' do
@@ -42,6 +36,46 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
         post :create, params: params, as: :json
 
         expect(response.body).to eq({ error: create_form_dbl.error }.to_json)
+      end
+    end
+  end
+
+  describe 'PUT #update' do
+    let!(:sd_request) { create(:sd_request, integration_id: 123) }
+    let(:params) { { id: sd_request.integration_id, id_tn: 123, sd_request: attributes_for(:astraea_kase) } }
+    let(:update_form_dbl) { double(:update_form, success?: true, sd_request: sd_request, error: 'errors') }
+    before do
+      allow(SdRequest).to receive(:find_by).and_return(sd_request)
+      allow(Guest::Astraea::Update).to receive(:call).and_return(update_form_dbl)
+    end
+
+    context 'when form saved data' do
+      it 'call SdRequests::Update.call method' do
+        expect(Guest::Astraea::Update).to receive(:call)
+
+        put :update, params: params, as: :json
+      end
+
+      it 'respond with success status' do
+        put :update, params: params, as: :json
+
+        expect(response.status).to eq 200
+      end
+    end
+
+    context 'when form finished with fail' do
+      before { allow(update_form_dbl).to receive(:success?).and_return(false) }
+
+      it 'respond with error status' do
+        put :update, params: params, as: :json
+
+        expect(response.status).to eq 400
+      end
+
+      it 'respond with error' do
+        put :update, params: params, as: :json
+
+        expect(response.body).to eq({ error: update_form_dbl.error }.to_json)
       end
     end
   end

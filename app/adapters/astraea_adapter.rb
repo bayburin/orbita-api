@@ -18,7 +18,6 @@ class AstraeaAdapter
 
     load_ticket if @kase.ticket_id
     build_works if @kase.users.any?
-    build_workflow_message
   end
 
   def integration_id
@@ -84,13 +83,15 @@ class AstraeaAdapter
   end
 
   def build_works
+    build_workflow_message
+
     if @sd_request
       process_existing_works
     else
       build_new_works
     end
 
-    build_workflow unless @workflow_message.empty?
+    build_workflow unless @workflow_message.to_s.empty?
   end
 
   def process_existing_works
@@ -102,8 +103,8 @@ class AstraeaAdapter
       work.workers.select { |w| removed_users.uniq.map(&:id).include?(w.user_id) }.each { |u| u._destroy = true }
       work
     end
-    @kase.users.group_by(&:group_id).each do |group_id, _users|
-      work = works.find { |w| w.group_id = group_id }
+    new_users.group_by(&:group_id).each do |group_id, _users|
+      work = works.find { |w| w.group_id == group_id }
 
       if work
         work.workers.build(new_users.uniq.filter_map { |u| { user_id: u.id } if u.group_id == group_id })

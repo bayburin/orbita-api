@@ -15,8 +15,16 @@ RSpec.describe AstraeaAdapterSerializer, type: :model do
     it { expect(subject).to have_json_path("source_snapshot/#{attr}") }
   end
 
+  it { expect(subject).to have_json_path('works/0/id') }
   it { expect(subject).to have_json_path('works/0/group_id') }
+
+  it { expect(subject).to have_json_path('works/0/workers/0/id') }
   it { expect(subject).to have_json_path('works/0/workers/0/user_id') }
+  it { expect(subject).to have_json_path('works/0/workers/0/_destroy') }
+
+  it { expect(subject).to have_json_path('works/2/workflows/0/id') }
   it { expect(subject).to have_json_path('works/2/workflows/0/message') }
+
+  it { expect(subject).to have_json_path('comments/0/id') }
   it { expect(subject).to have_json_path('comments/0/message') }
 end

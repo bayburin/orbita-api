@@ -13,7 +13,7 @@ FactoryBot.define do
   end
 
   factory :sd_request, parent: :claim, class: SdRequest do
-    integrate_id { nil }
+    integration_id { nil }
     application_id { nil }
     service_id { 1 }
     ticket_identity { 2 }

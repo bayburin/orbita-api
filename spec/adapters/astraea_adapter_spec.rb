@@ -79,17 +79,13 @@ RSpec.describe AstraeaAdapter do
 
       it { expect(subject.works.length).to eq kase.users.length }
       it { expect(subject.works.find { |w| w.group_id == current_user.group_id }.workflows.length).to eq 1 }
-      # it { expect(subject.works.find { |w| w[:group_id] == current_user.group_id }[:workflows].length).to eq 1 }
       it { expect(subject.works.find { |w| w.group_id == current_user.group_id }.workflows.first.message).to eq 'Анализ: fake analysis; Меры: fake measure' }
-      # it { expect(subject.works.find { |w| w[:group_id] == current_user.group_id }[:workflows].first[:message]).to eq 'Анализ: fake analysis; Меры: fake measure' }
     end
 
     context 'when current_user is not exist into users array' do
       it { expect(subject.works.length).to eq kase.users.length + 1 }
       it { expect(subject.works.last.workflows.length).to eq 1 }
-      # it { expect(subject.works.last[:workflows].length).to eq 1 }
       it { expect(subject.works.last.workflows.first.message).to eq 'Анализ: fake analysis; Меры: fake measure' }
-      # it { expect(subject.works.last[:workflows].first[:message]).to eq 'Анализ: fake analysis; Меры: fake measure' }
 
       context 'and when message has only comment type' do
         let(:messages) { [{ type: 'comment', info: 'fake comment' }] }
@@ -97,6 +93,20 @@ RSpec.describe AstraeaAdapter do
 
         it { expect(subject.works.last.workflows.length).to eq 0 }
       end
+    end
+
+    context 'when @sd_request exist' do
+      let!(:remove_user) { create(:manager) }
+      let!(:new_user) { create(:manager) }
+      let!(:sd_request) { create(:sd_request) }
+      let(:kase) { build(:astraea_kase, users: [create(:manager).tn, create(:manager).tn, new_user.tn]) }
+      let!(:work1) { create(:work, claim: sd_request, group: remove_user.group, workers: [build(:worker, user: remove_user)]) }
+      let!(:work2) { create(:work, claim: sd_request, group: new_user.group, workers: []) }
+      subject { described_class.new(kase, current_user, sd_request) }
+
+      it { expect(subject.works.find { |w| w.id == work1.id }.workers.first._destroy).to eq true }
+      it { expect(subject.works.length).to eq sd_request.works.length + kase.users.length }
+      it { expect(subject.works.find { |w| w.id == work2.id }.workers.find { |w| w.user_id == new_user.id }).to be_truthy  }
     end
   end
 end
