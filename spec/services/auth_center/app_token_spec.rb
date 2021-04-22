@@ -2,7 +2,8 @@ require 'rails_helper'
 
 module AuthCenter
   RSpec.describe AppToken do
-    let(:body) { 'fake-body' }
+    let(:body) { attributes_for(:auth_center_token) }
+    let(:token) { AuthCenterToken.new(body) }
     let(:response) { double(:response, success?: true, body: body) }
     subject(:context) { described_class.call }
     before { allow(AuthCenter::AppTokenCache).to receive(:token).and_return(body) }
@@ -13,7 +14,7 @@ module AuthCenter
 
       context 'when token does not exist' do
         before do
-          allow(AuthCenter::AppTokenCache).to receive(:token)
+          allow(AuthCenter::AppTokenCache).to receive(:token).and_return(nil, token)
           allow(Api).to receive(:app_token).and_return(response)
         end
 
@@ -23,9 +24,7 @@ module AuthCenter
           context
         end
 
-        it 'save response body into "token" context' do
-          expect(context.token).to eq body
-        end
+        it { expect(context.token).to eq token }
 
         it 'save token into redis' do
           expect(AuthCenter::AppTokenCache).to receive(:token=).with(body)

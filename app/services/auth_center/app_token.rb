@@ -11,8 +11,8 @@ module AuthCenter
 
       response = Api.app_token
       if response.success?
-        context.token = response.body
-        AppTokenCache.token = token
+        AppTokenCache.token = response.body
+        context.token = AppTokenCache.token
       else
         context.fail!(error: response.body)
       end
