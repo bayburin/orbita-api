@@ -89,6 +89,16 @@ module SdRequests
         it { expect(subject.model.ticket_name).to eq SdRequest.default_ticket_name }
         it { expect(subject.model.status).to eq SdRequest.default_status.to_s }
       end
+
+      context 'when description has many spaces' do
+        let(:description) { '   some spaces     ' }
+        before do
+          subject.description = description
+          subject.sync
+        end
+
+        it { expect(subject.model.description).to eq description.strip }
+      end
     end
 
     describe '#populate_source_snapshot!' do

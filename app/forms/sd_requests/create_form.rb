@@ -9,6 +9,10 @@ module SdRequests
     property :status
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
 
+    def description=(value)
+      super value.strip
+    end
+
     def service_name
       super || SdRequest.default_service_name
     end
