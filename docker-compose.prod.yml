@@ -15,10 +15,10 @@ x-app: &app
       BUNDLER_VERSION: 2.1.4
       RAILS_ROOT: /app
       RAILS_ENV: production
+    labels:
+      <<: *common-labels
   tmpfs:
     - /tmp
-  labels:
-    <<: *common-labels
 
 x-backend: &backend
   <<: *app
@@ -48,6 +48,8 @@ services:
       args:
         RAILS_ROOT: /app
         APP_HOSTNAME: orbita-center-test
+      labels:
+        <<: *common-labels
     image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
     restart: unless-stopped
     ports:
@@ -57,8 +59,6 @@ services:
       - app
     stdin_open: true
     tty: true
-    labels:
-      <<: *common-labels
 
   mysql:
     image: mysql:5.7.33
@@ -96,6 +96,7 @@ services:
       ANYCABLE_DEBUG: 1
     depends_on:
       - redis
+    restart: unless-stopped
 
   anycable:
     <<: *backend
@@ -109,6 +110,7 @@ services:
     depends_on:
       - redis
       - ws
+    restart: unless-stopped
 
 volumes:
   rails_cache:
