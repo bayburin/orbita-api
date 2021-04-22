@@ -29,6 +29,7 @@ module AuthCenter
       end
     rescue RuntimeError => e
       Rails.logger.warn { e }
+      [] # Возвращает пустой массив, так как ЦА возвращает пустой массив, если не может найти ничего по хосту.
     end
 
     protected

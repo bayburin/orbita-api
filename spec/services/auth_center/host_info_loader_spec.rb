@@ -12,7 +12,7 @@ module AuthCenter
       let(:value) { '12345' }
       let(:access_token) { 'fake-token' }
       let(:token_dbl) { double(:token, access_token: access_token) }
-      let(:app_token_dbl) { double(:app_token, success?: true, token: token_dbl) }
+      let(:app_token_dbl) { double(:app_token, success?: true, token: token_dbl, errors: 'fake-error') }
       before do
         allow(AppToken).to receive(:call).and_return(app_token_dbl)
         allow(AuthCenter::Api).to receive(:host_info).and_return(response)
@@ -48,7 +48,7 @@ module AuthCenter
         end
       end
 
-      context 'when UserRequestSwitcher.request finished with failure' do
+      context 'when AuthCenter::Api finished with failure' do
         let(:response) { double('response', status: 401, body: data, success?: false) }
 
         it 'calls #load max times' do
@@ -62,6 +62,12 @@ module AuthCenter
 
           subject.load(value)
         end
+      end
+
+      context 'when AppToken.token finished with failure' do
+        before { allow(app_token_dbl).to receive(:success?).and_return(false) }
+
+        it { expect(subject.load(value)).to eq [] }
       end
 
       it 'returns occured data' do

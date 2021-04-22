@@ -41,7 +41,7 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
   end
 
   describe 'PUT #update' do
-    let!(:sd_request) { create(:sd_request, integration_id: 123) }
+    let!(:sd_request) { create(:sd_request, integration_id: 456, application_id: access_token.application.id) }
     let(:params) { { id: sd_request.integration_id, id_tn: 123, sd_request: attributes_for(:astraea_kase) } }
     let(:update_form_dbl) { double(:update_form, success?: true, sd_request: sd_request, error: 'errors') }
     before do
