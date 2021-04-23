@@ -19,6 +19,11 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     sd_request = SdRequest
                    .includes(comments: :sender, works: [:group, workers: :user, workflows: :sender])
                    .find_by(integration_id: params[:id], application_id: doorkeeper_token.application.id)
+    unless sd_request
+      render json: { message: I18n.t('controllers.api.v1.sd_requests.not_found') }, status: :not_found
+      return
+    end
+
     kase = Astraea::Kase.new(astraea_params)
     update = Guest::Astraea::Update.call(
       current_user: current_user,

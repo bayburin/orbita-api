@@ -49,6 +49,16 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
       allow(Guest::Astraea::Update).to receive(:call).and_return(update_form_dbl)
     end
 
+    context 'when claim not found' do
+      before { allow(SdRequest).to receive_message_chain(:includes, :find_by).and_return(nil) }
+
+      it 'respond with 404 status' do
+        put :update, params: params, as: :json
+
+        expect(response.status).to eq 404
+      end
+    end
+
     context 'when form saved data' do
       it 'call SdRequests::Update.call method' do
         expect(Guest::Astraea::Update).to receive(:call)
