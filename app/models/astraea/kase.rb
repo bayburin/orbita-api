@@ -6,7 +6,7 @@ module Astraea
     attribute :case_id, Types::Coercible::Integer
     attribute :user_tn, Types::Coercible::Integer # табельный пользователя
     attribute :id_tn, Types::Coercible::Integer # id_tn пользователя
-    attribute :host_id, Types::String # инвентарный
+    attribute :host_id, Types::String.optional # инвентарный
     attribute? :desc, Types::String # описание
     attribute? :service_id, Types::Coercible::Integer.optional
     attribute? :ticket_id, Types::Coercible::Integer.optional
