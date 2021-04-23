@@ -6,7 +6,7 @@ class WorkForm < Reform::Form
   collection :workers, form: WorkerForm, populator: :populate_workers!
   collection :workflows, form: MessageForm, populator: :populate_workflows!
 
-  attr_accessor :current_user, :history_store, :work_obj
+  attr_accessor :current_user, :history_store, :employee_user
 
   validation do
     option :form
@@ -32,7 +32,8 @@ class WorkForm < Reform::Form
   def populate_workers!(fragment:, **)
     item = workers.find { |worker| worker.user_id == fragment[:user_id].to_i }
 
-    if fragment[:_destroy].to_s == 'true'
+    # Запретить удалять из группы гостевого пользователя, так как гостевой пользователь в группе один и если он есть в заявке, значит он ее создал и не может быть исключен из нее
+    if fragment[:_destroy].to_s == 'true' && employee_user.group_id != group_id
       history_store.add_to_combine(:del_workers, fragment[:user_id]) if item
       workers.delete(item)
       return skip!

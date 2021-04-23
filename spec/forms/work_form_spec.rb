@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe WorkForm, type: :model do
   let!(:work) { create(:work) }
+  let!(:employee_user) { create(:employee) }
   let(:user) { create(:admin) }
   let(:history_store_dbl) { instance_double('Histories::Storage', add: true, add_to_combine: true) }
   let(:params) { { work: work.as_json } }
@@ -9,6 +10,7 @@ RSpec.describe WorkForm, type: :model do
     described_class.new(work).tap do |form|
       form.history_store = history_store_dbl
       form.current_user = user
+      form.employee_user = User.employee_user
     end
   end
 
@@ -32,6 +34,7 @@ RSpec.describe WorkForm, type: :model do
         described_class.new(Work.new).tap do |form|
           form.history_store = history_store_dbl
           form.current_user = user
+          form.employee_user = User.employee_user
         end
       end
       before { subject.validate(id: work.id + 1, claim_id: work.claim_id, group_id: work.group_id) }
@@ -63,6 +66,19 @@ RSpec.describe WorkForm, type: :model do
     it { expect(history_store_dbl).to receive(:add_to_combine).with(:add_workers, new_user.id) }
     it { expect(history_store_dbl).to receive(:add_to_combine).with(:del_workers, del_user.id) }
     it { expect(history_store_dbl).not_to receive(:add_to_combine).with(:add_workers, subject.current_user.id) }
+
+    context 'when worker is employee worker' do
+      let!(:work) { create(:work, group_id: employee_user.group_id) }
+      let!(:worker) { create(:worker, user: employee_user, work: work) }
+      let(:params) do
+        w = work.as_json
+        w['workers'] = [worker.as_json.merge('_destroy' => true)]
+        w
+      end
+      before { subject.validate(params.deep_symbolize_keys) }
+
+      it { expect(subject.workers.length).to eq 1 }
+    end
   end
 
   describe '#popualate_workflows!' do

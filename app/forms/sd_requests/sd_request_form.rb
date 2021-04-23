@@ -55,6 +55,7 @@ module SdRequests
       (item || works.append(Work.new)).tap do |w|
         w.current_user = current_user
         w.history_store = history_store
+        w.employee_user = User.employee_user
       end
     end
 

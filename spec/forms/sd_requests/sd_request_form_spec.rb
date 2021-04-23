@@ -131,13 +131,9 @@ module SdRequests
       end
       before { subject.validate(params) }
 
-      it 'set current_user to each WorkForm object' do
-        expect(subject.works.first.current_user).to eq current_user
-      end
-
-      it 'set history_store to each WorkForm object' do
-        expect(subject.works.first.history_store).to eq history_store_dbl
-      end
+      it { expect(subject.works.first.current_user).to eq current_user }
+      it { expect(subject.works.first.history_store).to eq history_store_dbl }
+      it { expect(subject.works.first.employee_user).to eq User.employee_user }
     end
 
     describe '#populate_comments!' do
