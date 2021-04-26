@@ -15,10 +15,10 @@ class EmployeeInfo < Dry::Struct
   end
   attribute :employeeContact do
     attribute :id, Types::Integer # id_tn
-    attribute :position, Types::String # Расположение
-    attribute :phone, Types::Array.of(Types::String)
-    attribute :email, Types::Array.of(Types::Email)
-    attribute :login, Types::String # AD Login
+    attribute? :position, Types::String # Расположение
+    attribute? :phone, Types::Array.of(Types::String)
+    attribute? :email, Types::Array.of(Types::Email)
+    attribute? :login, Types::String # AD Login
   end
 
   def fio
