@@ -24,4 +24,12 @@ class EmployeeInfo < Dry::Struct
   def fio
     "#{lastName} #{firstName} #{middleName}"
   end
+
+  def first_phone
+    employeeContact.phone&.first
+  end
+
+  def first_email
+    employeeContact.email&.first
+  end
 end

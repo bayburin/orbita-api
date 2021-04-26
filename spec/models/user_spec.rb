@@ -107,18 +107,15 @@ RSpec.describe User, type: :model do
   end
 
   describe '#fill_by_employee_info' do
-    let(:attrs) { attributes_for(:admin) }
-    let(:positions) { [double(:position, personnelNo: attrs[:tn])] }
-    let(:contact) { double(:contact, login: attrs[:login], phone: [attrs[:work_tel]], email: [attrs[:email]]) }
-    let(:employee_info) { double(:employee, id: attrs[:id_tn], employeePositions: positions, employeeContact: contact, fio: attrs[:fio]) }
+    let(:employee_info) { build(:employee_info) }
     subject { described_class.new }
     before { subject.fill_by_employee_info(employee_info) }
 
-    it { expect(subject.tn).to eq attrs[:tn] }
-    it { expect(subject.id_tn).to eq attrs[:id_tn] }
-    it { expect(subject.login).to eq attrs[:login] }
-    it { expect(subject.fio).to eq attrs[:fio] }
-    it { expect(subject.work_tel).to eq attrs[:work_tel] }
-    it { expect(subject.email).to eq attrs[:email] }
+    it { expect(subject.tn).to eq employee_info.employeePositions.first.personnelNo }
+    it { expect(subject.id_tn).to eq employee_info.id }
+    it { expect(subject.login).to eq employee_info.employeeContact.login }
+    it { expect(subject.fio).to eq employee_info.fio }
+    it { expect(subject.work_tel).to eq employee_info.first_phone }
+    it { expect(subject.email).to eq employee_info.first_email }
   end
 end
