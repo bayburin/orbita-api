@@ -53,7 +53,7 @@ class AstraeaAdapter
   end
 
   def finished_at_plan
-    Time.zone.at(@kase.time)
+    @kase.time ? Time.zone.at(@kase.time) : @sd_request.finished_at_plan
   end
 
   def source_snapshot

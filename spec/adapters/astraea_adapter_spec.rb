@@ -8,7 +8,18 @@ RSpec.describe AstraeaAdapter do
   it { expect(subject.integration_id).to eq kase.case_id }
   it { expect(subject.description).to eq kase.desc }
   it { expect(subject.priority).to eq kase.severity }
-  it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time) }
+
+  describe '#finished_at_plan' do
+    it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time) }
+
+    context 'when time is nil' do
+      let!(:sd_request) { create(:sd_request) }
+      let!(:kase) { build(:astraea_kase, time: nil) }
+      subject { described_class.new(kase, current_user, sd_request) }
+
+      it { expect(subject.finished_at_plan).to eq sd_request.finished_at_plan }
+    end
+  end
 
   describe '#status' do
     context 'when status_id is equal 1' do
