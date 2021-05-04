@@ -1,4 +1,11 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
+  def index
+    render(
+      json: SdRequest.includes(works: [:group, { workers: :user, histories: :event_type }]).order(id: :desc).limit(25),
+      include: ['works.histories.event_type', 'works.group', 'works.workers.user.fio']
+    )
+  end
+
   def create
     create = SdRequests::Create.call(
       current_user: current_user,
