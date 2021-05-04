@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   root to: 'application#welcome'
 
+  mount ActionCable.server => '/cable'
+
   namespace :api, constraints: { format: 'json' } do
     namespace :v1 do
       get 'welcome', to: 'base#welcome'
