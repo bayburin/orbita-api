@@ -3,6 +3,7 @@ class ClaimSerializer < ActiveModel::Serializer
 
   has_many :parameters
   has_many :works
+  has_many :comments
   has_one :source_snapshot
 
   def runtime

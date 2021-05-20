@@ -333,7 +333,7 @@ EventType.create(
     },
     {
       name: :workflow,
-      description: 'Было выполнило действие для решения проблемы',
+      description: 'Было выполнено действие для решения проблемы',
       template: 'Выполнено действие: {workflow}',
       is_public: true,
       order: 60

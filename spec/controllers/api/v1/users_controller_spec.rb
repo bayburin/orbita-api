@@ -12,7 +12,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it 'repond with all users' do
       get :index, format: :json
 
-      expect(response.body).to have_json_size(User.count)
+      expect(response.body).to have_json_size(User.count).at_path('users')
     end
 
     it 'respond with success status' do

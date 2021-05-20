@@ -10,15 +10,18 @@ class AstraeaAdapterSerializer < ActiveModel::Serializer
   end
 
   class WorkSerializer < ActiveModel::Serializer
-    attributes :id, :group_id, :workers, :workflows
+    attributes :id, :group_id
 
-    def workers
-      ActiveModelSerializers::SerializableResource.new(object.workers, each_serializer: WorkerSerializer).serializable_hash
-    end
+    # def workers
+    #   ActiveModelSerializers::SerializableResource.new(object.workers, each_serializer: WorkerSerializer).serializable_hash
+    # end
 
-    def workflows
-      ActiveModelSerializers::SerializableResource.new(object.workflows, each_serializer: WorkflowSerializer).serializable_hash
-    end
+    # def workflows
+    #   ActiveModelSerializers::SerializableResource.new(object.workflows, each_serializer: WorkflowSerializer).serializable_hash
+    # end
+
+    has_many :workers
+    has_many :workflows
 
     class WorkerSerializer < ActiveModel::Serializer
       attributes :id, :user_id, :_destroy

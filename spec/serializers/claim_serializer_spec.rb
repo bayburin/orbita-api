@@ -4,7 +4,7 @@ RSpec.describe ClaimSerializer, type: :model do
   let(:claim) { create(:claim) }
   subject { described_class.new(claim).to_json }
 
-  %w[id type description status priority runtime parameters works source_snapshot].each do |attr|
+  %w[id type description status priority runtime parameters works source_snapshot comments].each do |attr|
     it "has #{attr} attribute" do
       expect(subject).to have_json_path(attr)
     end

@@ -26,7 +26,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with created model' do
         post :create, params: params
 
-        expect(parse_json(response.body)['id']).to eq create_form_dbl.sd_request.id
+        expect(parse_json(response.body)['sd_request']['id']).to eq create_form_dbl.sd_request.id
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
       it 'respond with updated model' do
         put :update, params: params
 
-        expect(parse_json(response.body)['id']).to eq update_form_dbl.sd_request.id
+        expect(parse_json(response.body)['sd_request']['id']).to eq update_form_dbl.sd_request.id
       end
     end
 

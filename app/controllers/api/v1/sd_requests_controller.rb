@@ -1,8 +1,15 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def index
+    sd_requests = SdRequest
+                    .includes(:comments, works: [:group, :workers, histories: :event_type])
+                    .order(id: :desc)
+                    .page(params[:page])
+                    .per(params[:perPage])
+
     render(
-      json: SdRequest.includes(works: [:group, { workers: :user, histories: :event_type }]).order(id: :desc).limit(25),
-      include: ['works.histories.event_type', 'works.group', 'works.workers.user.fio']
+      json: sd_requests,
+      include: ['comments', 'works.histories.event_type', 'works.group', 'works.workers'],
+      meta: pagination_dict(sd_requests)
     )
   end
 

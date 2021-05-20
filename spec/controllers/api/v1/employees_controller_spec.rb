@@ -5,14 +5,20 @@ RSpec.describe Api::V1::EmployeesController, type: :controller do
 
   describe 'GET #index' do
     let(:params) { { key: 'personnelNo', value: '1234' } }
-    let(:api_response) { { data: [] }.as_json }
+    let(:api_response) { { data: [{ fio: 'first' }, { fio: 'second' }] } }
 
-    before(:each) { allow_any_instance_of(Employees::Loader).to receive(:load).and_return(api_response) }
+    before(:each) { allow_any_instance_of(Employees::Loader).to receive(:load).and_return(api_response.as_json) }
 
     it 'call Employees::Loader.load method' do
       expect_any_instance_of(Employees::Loader).to receive(:load).with(field: params[:key], term: params[:value])
 
       get :index, params: params
+    end
+
+    it 'respond with finded data' do
+      get :index
+
+      expect(parse_json(response.body)['employees']).to eq api_response[:data].as_json
     end
 
     it 'respond with success status if Employees::Loader.load method return data' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AstraeaAdapterSerializer, type: :model do
   let(:kase) { build(:astraea_kase) }
   let(:current_user) { create(:manager) }
-  subject { described_class.new(AstraeaAdapter.new(kase, current_user)).to_json }
+  subject { described_class.new(AstraeaAdapter.new(kase, current_user)).to_json(include: ['*', 'works.workers', 'works.workflows']) }
 
   %w[integration_id service_id service_name ticket_identity ticket_name description status priority finished_at_plan].each do |attr|
     it "has #{attr} attribute" do
