@@ -6,4 +6,8 @@ class AuthCenterToken < Dry::Struct
   attribute? :refresh_token, Types::String.optional
   attribute :expires_in, Types::Coercible::Integer.optional
   attribute :token_type, Types::String.optional
+
+  def exist?
+    access_token.to_s.present?
+  end
 end

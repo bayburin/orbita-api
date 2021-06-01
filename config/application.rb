@@ -50,6 +50,7 @@ module OrbitaCenter
     config.autoload_paths << Rails.root.join('lib', 'modules').to_s
     config.autoload_paths << Rails.root.join('lib', 'values').to_s
     config.autoload_paths << Rails.root.join('lib', 'values', 'coerce').to_s
+    config.autoload_paths << Rails.root.join('lib', 'resources').to_s
 
     config.active_job.queue_adapter = :sidekiq
 

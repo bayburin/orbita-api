@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   namespace :api, constraints: { format: 'json' } do
     namespace :v1 do
       get 'welcome', to: 'base#welcome'
+      get 'init', to: 'base#init'
       post 'auth/token'
       post 'auth/revoke'
 

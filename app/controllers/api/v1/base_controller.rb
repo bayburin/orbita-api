@@ -5,6 +5,12 @@ class Api::V1::BaseController < ApplicationController
     render json: { message: 'v1' }
   end
 
+  def init
+    init = Init.new(users: User.all, groups: Group.all, event_types: EventType.all)
+
+    render json: init, serializer: InitSerializer
+  end
+
   protected
 
   def pagination_dict(collection)
