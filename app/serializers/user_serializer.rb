@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :role_id, :group_id, :tn, :id_tn, :fio, :work_tel, :mobile_tel, :email, :is_vacation
+  attributes :id, :role_id, :group_id, :tn, :id_tn, :fio, :work_tel, :mobile_tel, :email, :is_vacation, :is_default_worker
   attribute :auth_center_token, if: :auth_token?
 
   belongs_to :role

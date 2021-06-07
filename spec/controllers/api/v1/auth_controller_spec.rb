@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AuthController, type: :controller do
   describe 'POST #token' do
-    let(:params) { { auth: { code: 'fake-code' } } }
+    let(:params) { { code: 'fake-code' } }
     let(:jwt) { 'fake-jwt' }
     let(:result) { double(:result, success?: true, jwt: jwt) }
 
     before { allow(Users::Authorize).to receive(:call).and_return(result) }
 
     it 'call Users::Authorize command' do
-      expect(Users::Authorize).to receive(:call).with(code: params[:auth][:code]).and_return(result)
+      expect(Users::Authorize).to receive(:call).with(code: params[:code]).and_return(result)
 
       post :token, params: params, format: :json
     end

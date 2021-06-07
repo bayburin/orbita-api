@@ -95,8 +95,10 @@ class AstraeaAdapter
   end
 
   def process_existing_works
-    removed_users = @sd_request.users - @kase.users - [@current_user]
-    new_users = @kase.users - [@current_user] - @sd_request.users
+    # removed_users = @sd_request.users - @kase.users - [@current_user]
+    removed_users = @sd_request.users.reject { |u| @kase.users.any? { |k_u| k_u.id == u.id } || u.id == @current_user.id }
+    # new_users = @kase.users - [@current_user] - @sd_request.users
+    new_users = @kase.users.reject { |u| u.id == @current_user.id || @sd_request.users.any? { |sd_u| sd_u.id == u.id  } }
 
     @works = @sd_request.works.map do |work|
       work.workers = work.workers.to_a

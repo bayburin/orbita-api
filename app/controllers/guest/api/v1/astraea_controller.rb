@@ -29,7 +29,7 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     update = Guest::Astraea::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),
-      params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user, sd_request)).as_json
+      params: AstraeaAdapterSerializer.new(AstraeaAdapter.new(kase, current_user, sd_request)).as_json(include: ['*', 'works.workers', 'works.workflows'])
     )
 
     if update.success?
