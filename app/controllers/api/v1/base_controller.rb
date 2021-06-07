@@ -6,7 +6,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def init
-    init = Init.new(users: User.all, groups: Group.all, event_types: EventType.all)
+    init = Init.new(users: User.all, groups: Group.all, event_types: EventType.all, applications: Doorkeeper::Application.all)
 
     render json: init, serializer: InitSerializer
   end
