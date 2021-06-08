@@ -1,14 +1,14 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def index
     sd_requests = SdRequest
-                    .includes(:comments, works: [:workers, :histories])
+                    .includes(:source_snapshot, :comments, works: [:workers, :histories])
                     .order(id: :desc)
                     .page(params[:page])
                     .per(params[:perPage])
 
     render(
       json: sd_requests,
-      include: ['comments', 'works.histories', 'works.workers'],
+      include: ['source_snapshot', 'comments', 'works.histories', 'works.workers'],
       meta: pagination_dict(sd_requests)
     )
   end

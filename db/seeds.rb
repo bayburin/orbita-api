@@ -11,7 +11,7 @@ Doorkeeper::Application.create(
   [
     { name: 'Техподдержка', redirect_uri: '', scopes: '' },
     { name: 'Astraea', redirect_uri: '', scopes: '' },
-    { name: 'Приложение оператора архива КД', redirect_uri: '', scopes: '' }
+    { name: 'Архив КД', redirect_uri: '', scopes: '' }
   ]
 )
 
