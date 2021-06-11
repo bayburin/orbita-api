@@ -1,10 +1,8 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def index
-    sd_requests = SdRequest
-                    .includes(:source_snapshot, :comments, works: [:workers, :histories])
-                    .order(id: :desc)
-                    .page(params[:page])
-                    .per(params[:perPage])
+    sd_requests = FindSdRequestsQuery
+                    .new(SdRequest.includes(:source_snapshot, :comments, works: [:workers, :histories]))
+                    .call(params)
 
     render(
       json: sd_requests,

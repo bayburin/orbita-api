@@ -1,17 +1,17 @@
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
-require "active_storage/engine"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "action_mailbox/engine"
-require "action_text/engine"
-require "action_view/railtie"
-require "action_cable/engine"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
+require 'active_storage/engine'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'action_mailbox/engine'
+require 'action_text/engine'
+require 'action_view/railtie'
+require 'action_cable/engine'
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -24,10 +24,10 @@ module OrbitaCenter
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    ENV['http_proxy'] = ""
-    ENV['https_proxy'] = ""
-    ENV['HTTP_PROXY'] = ""
-    ENV['HTTPS_PROXY'] = ""
+    ENV['http_proxy'] = ''
+    ENV['https_proxy'] = ''
+    ENV['HTTP_PROXY'] = ''
+    ENV['HTTPS_PROXY'] = ''
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -51,6 +51,7 @@ module OrbitaCenter
     config.autoload_paths << Rails.root.join('lib', 'values').to_s
     config.autoload_paths << Rails.root.join('lib', 'values', 'coerce').to_s
     config.autoload_paths << Rails.root.join('lib', 'resources').to_s
+    config.autoload_paths << Rails.root.join('lib', 'queries').to_s
 
     config.active_job.queue_adapter = :sidekiq
 
