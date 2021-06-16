@@ -6,6 +6,8 @@ class FindSdRequestsQuery < SdRequestsQuery
     @scope = filter_by_id(filters['id'])
     @scope = filter_by_created_at(filters['created_at'])
     @scope = filter_by_status(filters['status'])
+    @scope = filter_by_service_id(filters['service_id'])
+    @scope = filter_by_ticket_identity(filters['ticket_identity'])
     @scope = filter_by_description(filters['description'])
     @scope = filter_by_priority(filters['priority'])
     @scope = filter_by_users(filters['users'])
@@ -28,6 +30,14 @@ class FindSdRequestsQuery < SdRequestsQuery
 
   def filter_by_status(status)
     status.present? ? scope.where(status: status) : scope
+  end
+
+  def filter_by_service_id(service_id)
+    service_id.present? ? scope.where(service_id: service_id) : scope
+  end
+
+  def filter_by_ticket_identity(ticket_identity)
+    ticket_identity.present? ? scope.where(ticket_identity: ticket_identity) : scope
   end
 
   def filter_by_description(desc)

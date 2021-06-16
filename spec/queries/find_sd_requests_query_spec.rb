@@ -32,6 +32,22 @@ RSpec.describe FindSdRequestsQuery do
       it { expect(subject.call(params).first.status).to eq 'done' }
     end
 
+    context 'with filter by service_id' do
+      let(:filters) { { service_id: 123 } }
+      before { create(:sd_request, service_id: 123) }
+
+      it { expect(subject.call(params).length).to eq 1 }
+      it { expect(subject.call(params).first.service_id).to eq 123 }
+    end
+
+    context 'with filter by ticket_identity' do
+      let(:filters) { { ticket_identity: 321 } }
+      before { create(:sd_request, ticket_identity: 321) }
+
+      it { expect(subject.call(params).length).to eq 1 }
+      it { expect(subject.call(params).first.ticket_identity).to eq 321 }
+    end
+
     context 'with filter by description' do
       let(:description) { 'fake description' }
       let(:filters) { { description: 'fake' } }
