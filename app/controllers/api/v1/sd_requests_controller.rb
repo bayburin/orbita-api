@@ -11,6 +11,19 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
   end
 
+  def show
+    sd_request = SdRequest.where(id: params[:id]).includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories]).first
+
+    if sd_request
+      render(
+        json: sd_request,
+        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers'],
+      )
+    else
+      render json: { sd_request: nil }, status: 404
+    end
+  end
+
   def create
     create = SdRequests::Create.call(
       current_user: current_user,

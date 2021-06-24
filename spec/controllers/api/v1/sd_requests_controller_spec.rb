@@ -3,6 +3,30 @@ require 'rails_helper'
 RSpec.describe Api::V1::SdRequestsController, type: :controller do
   sign_in_user
 
+  describe 'POST #show', focus: true do
+    let!(:sd_request) { create(:sd_request) }
+    let(:params) { { id: sd_request.id } }
+
+    it 'respond with sd_request' do
+      get :show, params: params
+
+      expect(parse_json(response.body)['sd_request']['id']).to eq sd_request.id
+    end
+
+    it 'respond with success status' do
+      get :show, params: params
+
+      expect(response.status).to eq 200
+    end
+
+    context 'when sd_request was not found' do
+      before { get :show, params: { id: 123 } }
+
+      it { expect(parse_json(response.body)['sd_request']).to be_nil }
+      it { expect(response.status).to eq 404 }
+    end
+  end
+
   describe 'POST #create' do
     let(:params) { { sd_request: { service_id: 1 } } }
     let!(:sd_request) { create(:sd_request) }
