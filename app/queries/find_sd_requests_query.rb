@@ -11,7 +11,7 @@ class FindSdRequestsQuery < SdRequestsQuery
     @scope = filter_by_description(filters['description'])
     @scope = filter_by_priority(filters['priority'])
     @scope = filter_by_users(filters['users'])
-    @scope = paginate(params[:page], params[:per_page])
+    @scope = paginate(params[:page], params[:perPage])
   end
 
   private
