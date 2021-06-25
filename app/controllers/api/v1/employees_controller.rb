@@ -8,4 +8,14 @@ class Api::V1::EmployeesController < Api::V1::BaseController
       render json: { message: 'НСИ не доступен' }, status: :service_unavailable
     end
   end
+
+  def show
+    data = Employees::Loader.new(:load).load(params[:id])
+
+    if data
+      render json: { employee: data }
+    else
+      render json: { message: 'НСИ не доступен' }, status: :service_unavailable
+    end
+  end
 end

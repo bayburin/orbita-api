@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :sd_requests, only: [:index, :show, :create, :update]
       resources :events, only: :create
       resources :users, only: :index
-      resources :employees, only: :index
+      resources :employees, only: [:index, :show]
     end
   end
 
