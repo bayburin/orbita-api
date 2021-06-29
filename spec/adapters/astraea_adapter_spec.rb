@@ -50,6 +50,7 @@ RSpec.describe AstraeaAdapter do
   describe '#source_snapshot' do
     it { expect(subject.source_snapshot).to be_instance_of(SourceSnapshot) }
     it { expect(subject.source_snapshot.svt_item_id).to eq kase.item_id }
+    it { expect(subject.source_snapshot.barcode).to eq kase.barcode }
     it { expect(subject.source_snapshot.invent_num).to eq kase.host_id }
     it { expect(subject.source_snapshot.id_tn).to eq kase.id_tn }
     it { expect(subject.source_snapshot.user_attrs).to eq({ phone: kase.phone }.as_json) }

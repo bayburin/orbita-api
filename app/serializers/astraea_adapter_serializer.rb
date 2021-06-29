@@ -6,7 +6,7 @@ class AstraeaAdapterSerializer < ActiveModel::Serializer
   has_many :comments
 
   class SourceSnapshotSerializer < ActiveModel::Serializer
-    attributes :svt_item_id, :invent_num, :id_tn, :user_attrs
+    attributes :svt_item_id, :barcode, :invent_num, :id_tn, :user_attrs
   end
 
   class WorkSerializer < ActiveModel::Serializer

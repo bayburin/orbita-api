@@ -29,6 +29,7 @@ class SourceSnapshot < ApplicationRecord
       mac: mac,
       invent_num: invent_num,
       svt_item_id: svt_item_id,
+      barcode: barcode,
       location: host_location,
       os: os,
       netbios: netbios

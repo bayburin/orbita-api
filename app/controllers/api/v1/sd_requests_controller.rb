@@ -77,6 +77,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         :fio,
         :dept,
         :svt_item_id,
+        :barcode,
         :invent_num,
         { user_attrs: {} }
       ],

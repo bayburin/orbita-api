@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_073250) do
+ActiveRecord::Schema.define(version: 2021_06_29_043238) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_073250) do
     t.string "mac", limit: 48
     t.string "invent_num", limit: 64
     t.integer "svt_item_id"
+    t.bigint "barcode"
     t.string "host_location"
     t.string "os", limit: 64
     t.string "netbios", limit: 15

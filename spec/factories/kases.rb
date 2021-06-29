@@ -10,6 +10,7 @@ FactoryBot.define do
     service_id { nil }
     ticket_id { nil }
     item_id { 123 }
+    barcode { 456 }
     phone { '12-34' }
     time { 1618642512 }
     severity { 'low' }

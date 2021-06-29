@@ -59,6 +59,7 @@ class AstraeaAdapter
   def source_snapshot
     snapshot = SourceSnapshotBuilder.build(
       svt_item_id: @kase.item_id,
+      barcode: @kase.barcode,
       invent_num: @kase.host_id,
       id_tn: @kase.id_tn
     )

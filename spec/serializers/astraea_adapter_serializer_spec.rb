@@ -11,7 +11,7 @@ RSpec.describe AstraeaAdapterSerializer, type: :model do
     end
   end
 
-  %w[svt_item_id invent_num id_tn user_attrs].each do |attr|
+  %w[svt_item_id barcode invent_num id_tn user_attrs].each do |attr|
     it { expect(subject).to have_json_path("source_snapshot/#{attr}") }
   end
 

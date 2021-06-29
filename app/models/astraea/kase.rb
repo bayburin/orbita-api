@@ -10,7 +10,8 @@ module Astraea
     attribute? :desc, Types::String # описание
     attribute? :service_id, Types::Coercible::Integer.optional
     attribute? :ticket_id, Types::Coercible::Integer.optional
-    attribute :item_id, Types::Coercible::Integer.optional # штрих-код
+    attribute :item_id, Types::Coercible::Integer.optional # id ВТ (раньше был штрих-кодом)
+    attribute? :barcode, Types::Coercible::Integer.optional # штрих-код
     attribute :phone, Types::String.optional # телефон, если ввели вручную
     attribute :time, Types::Coercible::Integer.optional # время закрытия по плану (timestamp)
     attribute :severity, Types::String.enum('high' => '3', 'default' => '4', 'low' => '6') # приоритет

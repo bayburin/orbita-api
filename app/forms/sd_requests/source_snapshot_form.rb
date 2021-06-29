@@ -14,6 +14,7 @@ module SdRequests
     property :mac
     property :invent_num
     property :svt_item_id
+    property :barcode
     property :os
 
     validation do
