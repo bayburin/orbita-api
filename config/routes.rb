@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'welcome', to: 'base#welcome'
       get 'init', to: 'base#init'
+      get 'svt/find_by_barcode/:barcode', to: 'svt#find_by_barcode'
       post 'auth/token'
       post 'auth/revoke'
 

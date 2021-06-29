@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::SdRequestsController, type: :controller do
   sign_in_user
 
-  describe 'POST #show' do
+  describe 'GET #show' do
     let!(:sd_request) { create(:sd_request) }
     let(:params) { { id: sd_request.id } }
 
