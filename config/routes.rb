@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get 'welcome', to: 'base#welcome'
       get 'init', to: 'base#init'
       get 'svt/find_by_barcode/:barcode', to: 'svt#find_by_barcode'
+      get 'auth_center/show_host', to: 'auth_center#show_host'
       post 'auth/token'
       post 'auth/revoke'
 

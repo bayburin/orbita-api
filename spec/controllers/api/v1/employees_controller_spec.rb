@@ -48,20 +48,20 @@ RSpec.describe Api::V1::EmployeesController, type: :controller do
     it 'respond with finded data' do
       get :show, params: params
 
-      expect(parse_json(response.body)['employee']).to eq api_response.as_json
+      expect(parse_json(response.body)).to eq api_response.as_json
+    end
+
+    it 'respond with empty object if data not found' do
+      allow_any_instance_of(Employees::Loader).to receive(:load).and_return(nil)
+      get :show, params: params
+
+      expect(parse_json(response.body)).to eq({})
     end
 
     it 'respond with success status if Employees::Loader.load method return data' do
       get :show, params: params
 
       expect(response.status).to eq 200
-    end
-
-    it 'respond with 503 status if Employees::Loader.load method return nil' do
-      allow_any_instance_of(Employees::Loader).to receive(:load).and_return(nil)
-      get :show, params: params
-
-      expect(response.status).to eq 503
     end
   end
 end

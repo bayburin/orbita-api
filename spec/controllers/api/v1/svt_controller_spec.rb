@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::SvtController, type: :controller do
   sign_in_user
 
-  describe 'GET #show' do
+  describe 'GET #find_by_barcode' do
     let(:params) { { barcode: 123 } }
     let(:body) { { foo: :bar } }
     let(:response_dbl) { double(:svt_response, body: body.as_json, status: 200) }
