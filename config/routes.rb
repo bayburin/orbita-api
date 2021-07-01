@@ -20,7 +20,9 @@ Rails.application.routes.draw do
       post 'auth/revoke'
 
       resources :claims, only: :index
-      resources :sd_requests, only: [:index, :show, :create, :update]
+      resources :sd_requests, only: [:index, :show, :create, :update] do
+        resources :parameters, only: [:index]
+      end
       resources :events, only: :create
       resources :users, only: :index
       resources :employees, only: [:index, :show]
