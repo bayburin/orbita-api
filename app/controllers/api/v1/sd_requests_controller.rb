@@ -32,14 +32,14 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request, include: ['*', 'works.workers.user']
+      render json: create.sd_request, include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers']
     else
       render json: create.error, status: :bad_request
     end
   end
 
   def update
-    sd_request = SdRequest.includes(comments: :sender, works: [:group, workers: :user, workflows: :sender]).find(params[:id])
+    sd_request = SdRequest.includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories]).find(params[:id])
     update = SdRequests::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),
@@ -47,7 +47,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if update.success?
-      render json: update.sd_request, include: ['*', 'works.workers.user']
+      render json: update.sd_request, include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers']
     else
       render json: update.error, status: :bad_request
     end
