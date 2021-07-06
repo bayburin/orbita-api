@@ -10,14 +10,14 @@ RSpec.describe AstraeaAdapter do
   it { expect(subject.priority).to eq kase.severity }
 
   describe '#finished_at_plan' do
-    it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time) }
+    it { expect(subject.finished_at_plan).to eq Time.zone.at(kase.time).to_s }
 
     context 'when time is nil' do
       let!(:sd_request) { create(:sd_request) }
       let!(:kase) { build(:astraea_kase, time: nil) }
       subject { described_class.new(kase, current_user, sd_request) }
 
-      it { expect(subject.finished_at_plan).to eq sd_request.finished_at_plan }
+      it { expect(subject.finished_at_plan).to eq sd_request.finished_at_plan.to_s }
     end
   end
 
