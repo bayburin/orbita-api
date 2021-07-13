@@ -12,12 +12,15 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   end
 
   def show
-    sd_request = SdRequest.where(id: params[:id]).includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories]).first
+    sd_request = SdRequest
+                   .where(id: params[:id])
+                   .includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories, :workflows])
+                   .first
 
     if sd_request
       render(
         json: sd_request,
-        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers'],
+        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers', 'works.workflows'],
       )
     else
       render json: { sd_request: nil }, status: 404
@@ -32,14 +35,24 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if create.success?
-      render json: create.sd_request, include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers']
+      render(
+        json: create.sd_request,
+        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers', 'works.workflows']
+      )
     else
       render json: create.error, status: :bad_request
     end
   end
 
   def update
-    sd_request = SdRequest.includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories]).find(params[:id])
+    sd_request = SdRequest
+                   .includes(
+                     :source_snapshot,
+                     :parameters,
+                     comments: :sender,
+                     works: [:group, :histories, workflows: :sender, workers: :user]
+                    )
+                   .find(params[:id])
     update = SdRequests::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),
@@ -47,7 +60,10 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     )
 
     if update.success?
-      render json: update.sd_request, include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers']
+      render(
+        json: update.sd_request,
+        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers', 'works.workflows']
+      )
     else
       render json: update.error, status: :bad_request
     end

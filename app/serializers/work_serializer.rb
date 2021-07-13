@@ -3,6 +3,7 @@ class WorkSerializer < ActiveModel::Serializer
 
   has_many :workers
   has_many :histories
+  has_many :workflows, each_serializer: MessageSerializer
 
   belongs_to :group
 end

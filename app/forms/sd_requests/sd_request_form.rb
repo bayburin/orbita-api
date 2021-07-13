@@ -84,7 +84,7 @@ module SdRequests
 
       # Добавляет "исполнителей по умолчанию", если в списке исполнителей отсутствуют работники УИВТ.
       employee = User.employee_user
-      user_instances.push(*User.default_workers) if User.where(id: user_ids).includes(:role).none? { |user| user.role_id != employee.role_id }
+      user_instances.push(*User.default_workers) if User.where(id: user_ids).none? { |user| user.role_id != employee.role_id }
 
       # Конечная обработка массива user_instances.
       user_instances.group_by(&:group_id).each do |group_id, user_arr|
