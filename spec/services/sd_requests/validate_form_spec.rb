@@ -5,11 +5,10 @@ module SdRequests
     let(:sd_request) { build(:sd_request) }
     let(:user) { create(:admin) }
     let(:params) { { foo: :bar, attachments: [{ attachment: 'fake-attachment' }] } }
-    let(:new_files) { [] }
     let(:history_store_dbl) { instance_double('Histories::Storage') }
     let(:error_dbl) { double(:error, messages: []) }
     let(:form_dbl) { instance_double('SdRequestForm', validate: true, errors: error_dbl) }
-    subject(:context) { described_class.call(params: params, current_user: user, form: form_dbl, new_files: new_files) }
+    subject(:context) { described_class.call(params: params, current_user: user, form: form_dbl, new_files: nil) }
     before do
       allow(form_dbl).to receive(:current_user=)
       allow(form_dbl).to receive(:history_store=)

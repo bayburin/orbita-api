@@ -11,7 +11,7 @@ module SdRequests
       form.history_store = history_store
 
       # Добавляет новые файлы
-      if new_files.any?
+      if new_files&.any?
         new_attachments = new_files.map { |file| { attachment: file } }
         params[:attachments].concat(new_attachments)
         Rails.logger.debug "FILES: #{params[:attachments]}".red
