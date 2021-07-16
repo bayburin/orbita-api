@@ -136,6 +136,16 @@ module SdRequests
       it { expect(subject.works.first.employee_user).to eq User.employee_user }
     end
 
+    describe '#popualte_attachments!' do
+      let!(:attachment) { create(:attachment, claim_id: sd_request.id) }
+      let(:params) do
+        attributes_for(:sd_request).merge(attachments: [attachment.as_json.merge(_destroy: true)])
+      end
+      before { subject.validate(params.deep_symbolize_keys) }
+
+      it { expect(subject.attachments.length).to be_zero }
+    end
+
     describe '#populate_comments!' do
       let!(:comment) { create(:comment, message: old_comment, claim: sd_request) }
       let(:old_comment) { 'old message' }

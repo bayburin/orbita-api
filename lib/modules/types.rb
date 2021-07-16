@@ -7,4 +7,5 @@ module Types
   Email = String.constrained(format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
   SdService = Types.Constructor(ServiceDesk::Service)
   User = Types.Constructor(User)
+  UploadedAttachment = Types.Instance(AttachmentUploader) | Types.Instance(ActionDispatch::Http::UploadedFile)
 end

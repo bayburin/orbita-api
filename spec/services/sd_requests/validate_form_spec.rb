@@ -4,11 +4,12 @@ module SdRequests
   RSpec.describe ValidateForm do
     let(:sd_request) { build(:sd_request) }
     let(:user) { create(:admin) }
-    let(:params) { { foo: :bar } }
+    let(:params) { { foo: :bar, attachments: [{ attachment: 'fake-attachment' }] } }
+    let(:new_files) { [] }
     let(:history_store_dbl) { instance_double('Histories::Storage') }
     let(:error_dbl) { double(:error, messages: []) }
     let(:form_dbl) { instance_double('SdRequestForm', validate: true, errors: error_dbl) }
-    subject(:context) { described_class.call(params: params, current_user: user, form: form_dbl) }
+    subject(:context) { described_class.call(params: params, current_user: user, form: form_dbl, new_files: new_files) }
     before do
       allow(form_dbl).to receive(:current_user=)
       allow(form_dbl).to receive(:history_store=)
@@ -34,6 +35,26 @@ module SdRequests
         expect(form_dbl).to receive(:history_store=).with(history_store_dbl)
 
         context
+      end
+
+      context 'when new_files array has any file' do
+        let(:file) do
+          ActionDispatch::Http::UploadedFile.new(
+            filename: 'fake-file',
+            type: 'text/plain',
+            tempfile: File.open(Rails.root.join('spec', 'uploads', 'test_file.txt'))
+          )
+        end
+        let(:new_files) { [{ attachment: file }] }
+        before do
+          params[:attachments] = params[:attachments].concat(new_files)
+        end
+
+        it 'add new files to params' do
+          expect(form_dbl).to receive(:validate).with(params)
+
+          context
+        end
       end
 
       it 'call validate form' do

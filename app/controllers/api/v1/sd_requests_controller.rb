@@ -56,7 +56,8 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     update = SdRequests::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),
-      params: sd_request_params
+      params: sd_request_params,
+      new_files: params[:new_attachments] || []
     )
 
     if update.success?
@@ -72,7 +73,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   protected
 
   def sd_request_params
-    params.require(:sd_request).permit(
+    ActionController::Parameters.new(JSON.parse(params[:sd_request])).permit(
       :id,
       :service_id,
       :service_name,

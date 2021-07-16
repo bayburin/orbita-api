@@ -3,12 +3,20 @@ module SdRequests
   class ValidateForm
     include Interactor
 
-    delegate :history_store, :form, :current_user, :params, to: :context
+    delegate :history_store, :form, :current_user, :params, :new_files, to: :context
 
     def call
       context.history_store = Histories::Storage.new(current_user)
       form.current_user = current_user
       form.history_store = history_store
+
+      # Добавляет новые файлы
+      if new_files.any?
+        new_attachments = new_files.map { |file| { attachment: file } }
+        params[:attachments].concat(new_attachments)
+        Rails.logger.debug "FILES: #{params[:attachments]}".red
+      end
+
       context.fail!(error: form.errors.messages) unless form.validate(params)
     end
   end

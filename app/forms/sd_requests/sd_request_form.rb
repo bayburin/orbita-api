@@ -10,7 +10,7 @@ module SdRequests
     property :finished_at_plan
     collection :parameters, form: ParameterForm, populate_if_empty: Parameter
     collection :works, form: WorkForm, populator: :populate_works!
-    collection :attachments, form: AttachmentForm
+    collection :attachments, form: AttachmentForm, populator: :populate_attachments!
     collection :comments, form: MessageForm, populator: :populate_comments!
 
     attr_accessor :current_user, :history_store
@@ -57,6 +57,19 @@ module SdRequests
         w.history_store = history_store
         w.employee_user = User.employee_user
       end
+    end
+
+    def populate_attachments!(fragment:, **)
+      item = attachments.find { |attachment| attachment.id == fragment[:id].to_i }
+
+      if fragment[:_destroy].to_s == 'true'
+        p 'HERE'
+        attachments.delete(item)
+
+        return skip!
+      end
+
+      item || attachments.append(Attachment.new)
     end
 
     # Обработка списка комментариев

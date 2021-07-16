@@ -28,7 +28,12 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:params) { { sd_request: { service_id: 1 } } }
+    let(:params) do
+      {
+        sd_request: { service_id: 1 }.to_json,
+        new_attachments: []
+      }
+    end
     let!(:sd_request) { create(:sd_request) }
     before { allow(SdRequests::Create).to receive(:call).and_return(create_form_dbl) }
 
@@ -73,7 +78,13 @@ RSpec.describe Api::V1::SdRequestsController, type: :controller do
 
   describe 'PUT #update' do
     let!(:sd_request) { create(:sd_request) }
-    let(:params) { { id: sd_request.id, sd_request: { service_id: 2 } } }
+    let(:params) do
+      {
+        id: sd_request.id,
+        sd_request: { service_id: 2 }.to_json,
+        new_attachments: []
+      }
+    end
     let(:error) { { foo: 'bar' } }
     let(:update_form_dbl) { double(:update_form, success?: true, sd_request: sd_request, error: error) }
     before { allow(SdRequests::Update).to receive(:call).and_return(update_form_dbl) }

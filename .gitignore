@@ -40,6 +40,7 @@ db/sphinx
 .env
 .ruby-version
 /public/uploads
+spec/uploads
 coverage
 .rubocop.yml
 .vscode

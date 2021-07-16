@@ -1,5 +1,6 @@
 ru:
   dry_validation:
+    or: "или"
     errors:
       filled?: "не может быть пустым"
       int?: "должен быть числом"
@@ -11,3 +12,6 @@ ru:
         workflows:
           sender_id:
             invalid_group: "пользователь не может оставить сообщение для текущей группы"
+        attachment:
+          type?: "должен быть файл"
+          must_be_less_than_or_equal_to: "должен быть меньше или равен %{size} МБ"
