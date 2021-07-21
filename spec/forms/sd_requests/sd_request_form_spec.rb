@@ -137,13 +137,37 @@ module SdRequests
     end
 
     describe '#popualte_attachments!' do
-      let!(:attachment) { create(:attachment, claim_id: sd_request.id) }
+      let(:new_file) { Rack::Test::UploadedFile.new(File.open(Rails.root.join('spec', 'uploads', 'test_file.txt'))) }
+      let(:new_attachment) { { attachment: nil } }
+      let(:del_attachment) { create(:attachment, claim_id: sd_request.id) }
       let(:params) do
-        attributes_for(:sd_request).merge(attachments: [attachment.as_json.merge(_destroy: true)])
+        attrs = attributes_for(:sd_request).merge(
+          attachments: [
+            new_attachment.as_json,
+            del_attachment.as_json.merge(_destroy: 'true')
+          ]
+        )
+        attrs[:attachments][0]['attachment'] = new_file
+        attrs
       end
-      before { subject.validate(params.deep_symbolize_keys) }
 
-      it { expect(subject.attachments.length).to be_zero }
+      it 'should add new attachment' do
+        subject.validate(params.deep_symbolize_keys)
+
+        expect(subject.attachments.length).to be 1
+      end
+
+      it 'should call add_to_combine method with new attachment for history_store' do
+        expect(history_store_dbl).to receive(:add_to_combine).with(:add_files, new_file.original_filename)
+
+        subject.validate(params.deep_symbolize_keys)
+      end
+
+      it 'should call add_to_combine method with destroyed attachment for history_store' do
+        expect(history_store_dbl).to receive(:add_to_combine).with(:del_files, del_attachment.attachment.file.filename)
+
+        subject.validate(params.deep_symbolize_keys)
+      end
     end
 
     describe '#populate_comments!' do

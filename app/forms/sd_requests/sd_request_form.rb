@@ -63,13 +63,18 @@ module SdRequests
       item = attachments.find { |attachment| attachment.id == fragment[:id].to_i }
 
       if fragment[:_destroy].to_s == 'true'
-        p 'HERE'
+        history_store.add_to_combine(:del_files, item.model.attachment.file.filename) if item
         attachments.delete(item)
 
         return skip!
       end
 
-      item || attachments.append(Attachment.new)
+      if item
+        item
+      else
+        history_store.add_to_combine(:add_files, fragment[:attachment].original_filename)
+        attachments.append(Attachment.new)
+      end
     end
 
     # Обработка списка комментариев

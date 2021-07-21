@@ -19,7 +19,9 @@ Rails.application.routes.draw do
       post 'auth/token'
       post 'auth/revoke'
 
-      resources :claims, only: :index
+      resources :claims, only: :index do
+        resources :attachments, only: [:show]
+      end
       resources :sd_requests, only: [:index, :show, :create, :update] do
         resources :parameters, only: [:index]
       end

@@ -14,13 +14,13 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
   def show
     sd_request = SdRequest
                    .where(id: params[:id])
-                   .includes(:source_snapshot, :parameters, :comments, works: [:workers, :histories, :workflows])
+                   .includes(:source_snapshot, :parameters, :comments, :attachments, works: [:workers, :histories, :workflows])
                    .first
 
     if sd_request
       render(
         json: sd_request,
-        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers', 'works.workflows'],
+        include: ['source_snapshot', 'parameters', 'comments', 'attachments', 'works.histories', 'works.workers', 'works.workflows'],
       )
     else
       render json: { sd_request: nil }, status: 404
@@ -49,6 +49,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
                    .includes(
                      :source_snapshot,
                      :parameters,
+                     :attachments,
                      comments: :sender,
                      works: [:group, :histories, workflows: :sender, workers: :user]
                     )
@@ -63,7 +64,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     if update.success?
       render(
         json: update.sd_request,
-        include: ['source_snapshot', 'comments', 'parameters', 'works.histories', 'works.workers', 'works.workflows']
+        include: ['source_snapshot', 'comments', 'parameters', 'attachments', 'works.histories', 'works.workers', 'works.workflows']
       )
     else
       render json: update.error, status: :bad_request
@@ -110,6 +111,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         id
         claim_id
         attachment
+        _destroy
       ]
     )
   end

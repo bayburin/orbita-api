@@ -4,6 +4,7 @@ class ClaimSerializer < ActiveModel::Serializer
   has_many :parameters
   has_many :works
   has_many :comments, each_serializer: MessageSerializer
+  has_many :attachments
   has_one :source_snapshot
 
   def runtime

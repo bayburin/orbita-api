@@ -8,7 +8,7 @@ module Histories
       @histories = []
       @user = user
       @work = work
-      @tmp = { add_workers: [], del_workers: [] }
+      @tmp = { add_workers: [], del_workers: [], add_files: [], del_files: [] }
     end
 
     # Добавляет payload во временное хранилище данных.
@@ -41,10 +41,16 @@ module Histories
     def processing_workers
       add(Histories::AddWorkerType.new(workers: users(@tmp[:add_workers])).build) if @tmp[:add_workers].any?
       add(Histories::DelWorkerType.new(workers: users(@tmp[:del_workers])).build) if @tmp[:del_workers].any?
+      add(Histories::AddFilesType.new(files: files(@tmp[:add_files])).build) if @tmp[:add_files].any?
+      add(Histories::DelFilesType.new(files: files(@tmp[:del_files])).build) if @tmp[:del_files].any?
     end
 
     def users(ids)
       User.where(id: ids).map(&:fio_initials).join(', ')
+    end
+
+    def files(filenames)
+      filenames.join(', ')
     end
   end
 end
