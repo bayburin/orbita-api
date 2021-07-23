@@ -422,6 +422,13 @@ EventType.create(
       template: 'Новый приоритет: {priority}',
       is_public: true,
       order: 40
+    },
+    {
+      name: :add_self,
+      description: 'Исполнитель подключился к работе',
+      template: 'Подключился к работе',
+      is_public: true,
+      order: 15
     }
   ]
 )

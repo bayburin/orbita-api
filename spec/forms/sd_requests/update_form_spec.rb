@@ -26,9 +26,17 @@ module SdRequests
     describe '#processing_history' do
       let(:history_postpone_dbl) { instance_double(History) }
       let(:history_priority_dbl) { instance_double(History) }
+      let(:history_add_self_dbl) { instance_double(History) }
       before do
         allow_any_instance_of(Histories::PostponeType).to receive(:build).and_return(history_postpone_dbl)
         allow_any_instance_of(Histories::PriorityType).to receive(:build).and_return(history_priority_dbl)
+        allow_any_instance_of(Histories::AddSelfType).to receive(:build).and_return(history_add_self_dbl)
+      end
+
+      it 'add to history_storage event with :add_self type' do
+        expect(subject.history_store).to receive(:add).with(history_add_self_dbl)
+
+        subject.validate(params)
       end
 
       it 'add created "postpone" history to history_store' do

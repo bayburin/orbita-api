@@ -15,6 +15,7 @@ class EventType < ApplicationRecord
     add_files: 10,    # Добавлены файлы
     del_files: 11,    # Удалены файлы
     add_tags: 12,     # Добавлены теги
-    priority: 13      # Изменен приоритет
+    priority: 13,     # Изменен приоритет
+    add_self: 14      # Текущий исполнитель подключился к работе
   }
 end

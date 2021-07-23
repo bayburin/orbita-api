@@ -73,5 +73,11 @@ FactoryBot.define do
       template { 'Priority claim to {priority}' }
       order { 40 }
     end
+
+    trait :add_self do
+      name { :add_self }
+      template { 'Add Self' }
+      order { 15 }
+    end
   end
 end

@@ -12,6 +12,7 @@ module EventTypesMacros
       create(:event_type, :add_files)
       create(:event_type, :add_tags)
       create(:event_type, :priority)
+      create(:event_type, :add_self)
     end
   end
 end
