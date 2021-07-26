@@ -161,6 +161,15 @@ names = group_names.map { |group| group[:group] }
 groups = Group.where(name: names)
 groups.each { |group| group.update(description: group_names.find { |g| g[:group].to_s == group.name }[:name]) }
 
+Group.find_by(name: 'УИВТ').update(description: 'Управление информатики и вычислительной техники')
+Group.find_by(name: '712').update(description: 'Отдел автоматизации финансово-экономических задач')
+Group.find_by(name: '713').update(description: 'Отдел автоматизации задач управления производством')
+Group.find_by(name: '714').update(description: 'Отдел технических средств и ремонта вычислительной техники')
+Group.find_by(name: '715').update(description: 'Отдел САПР и автоматизированных систем технологической подготовки производства')
+Group.find_by(name: '821').update(description: 'Отдел научно-технической документации')
+Group.find_by(name: '8211').update(description: 'Бюро электронного документоооборота')
+Group.find_by(name: '8212').update(description: 'Копировально-множительное бюро')
+
 # Group.create(
 #   [
 #     { department: Department.find_by(dept: 714), name: 7141, description: 'Сектор ИТ' },
