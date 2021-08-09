@@ -21,9 +21,12 @@ module SdRequests
       config.messages.backend = :i18n
 
       params do
-        required(:id_tn).filled(:int?)
-        required(:tn).filled(:int?)
+        required(:tn)
         required(:fio).filled
+      end
+
+      rule(:tn) do
+        key.failure(:int?) unless /^[^0][0-9]+$/.match?(value.to_s)
       end
     end
   end
