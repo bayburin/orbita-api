@@ -1,5 +1,5 @@
 # Адаптер для преобразования заявки из Astraea в Орбиту.
-class AstraeaAdapter
+class SdRequestAdapter
   include ActiveModel::Serializers::JSON
 
   STATUSES = {

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AstraeaAdapter do
+RSpec.describe SdRequestAdapter do
   let!(:current_user) { create(:manager) }
   let!(:kase) { build(:astraea_kase) }
   subject { described_class.new(kase, current_user) }
