@@ -25,7 +25,7 @@ class FindSdRequestsQuery < SdRequestsQuery
   end
 
   def filter_by_created_at(date)
-    date.present? ? scope.where('DATE(created_at) = ?', Date.parse(date)) : scope
+    date.present? ? scope.where('DATE(claims.created_at) = ?', Date.parse(date)) : scope
   end
 
   def filter_by_status(status)
