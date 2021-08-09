@@ -25,5 +25,19 @@ module Svt
         expect(subject.find_by_barcode(123)).to be_instance_of(Faraday::Response)
       end
     end
+
+    describe '::query_items' do
+      let(:params) { { foo: 'bar' } }
+
+      it 'sends :get request with required params' do
+        subject.query_items(params)
+
+        expect(WebMock).to have_requested(:get, "#{ENV['SVT_URL']}/api/v2/invent/search_items?foo=bar")
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.query_items(params)).to be_instance_of(Faraday::Response)
+      end
+    end
   end
 end

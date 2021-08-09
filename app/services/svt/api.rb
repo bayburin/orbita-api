@@ -10,6 +10,15 @@ module Svt
       def find_by_barcode(barcode)
         connect.get("api/v2/invent/items/#{barcode}")
       end
+
+      # Возвращает данные о ВТ в соответствии с фильтрами
+      def query_items(filters)
+        connect.get('api/v2/invent/search_items') do |req|
+          filters.each do |key, value|
+            req.params[key] = value
+          end
+        end
+      end
     end
   end
 end
