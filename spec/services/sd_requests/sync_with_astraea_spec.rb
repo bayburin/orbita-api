@@ -74,6 +74,12 @@ module SdRequests
           expect(sd_request.application_id).to be_nil
         end
       end
+
+      context 'when Astraea::Api raise connection error', focus: true do
+        before { allow(Astraea::Api).to receive(:create_sd_request).and_raise(Faraday::ConnectionFailed, 'Failed to open TCP connection') }
+
+        it { expect(context).to be_a_success }
+      end
     end
   end
 end
