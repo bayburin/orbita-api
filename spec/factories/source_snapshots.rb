@@ -5,7 +5,7 @@ FactoryBot.define do
     tn { Faker::Number.number(digits: 6) }
     fio { Faker::Name.name }
     dept { 714 }
-    user_attrs { { email: 'bayburin' } }
+    user_attrs { { phone: '12-34', email: 'bayburin' } }
     dns { Faker::Internet.domain_name }
     domain_user { Faker::Internet.domain_word }
     source_ip { Faker::Internet.ip_v4_address }

@@ -31,7 +31,8 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     create = SdRequests::Create.call(
       current_user: current_user,
       form: SdRequests::CreateForm.new(SdRequest.new),
-      params: sd_request_params
+      params: sd_request_params,
+      new_files: params[:new_attachments] || []
     )
 
     if create.success?

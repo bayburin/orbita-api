@@ -13,7 +13,7 @@ module SdRequests
       # Добавляет новые файлы
       if new_files&.any?
         new_attachments = new_files.map { |file| { attachment: file } }
-        params[:attachments].concat(new_attachments)
+        (params[:attachments] ||= []).concat(new_attachments)
       end
 
       context.fail!(error: form.errors.messages) unless form.validate(params)

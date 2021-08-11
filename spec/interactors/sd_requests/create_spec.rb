@@ -7,6 +7,7 @@ module SdRequests
       allow(ValidateForm).to receive(:call!).and_return(true)
       allow(Save).to receive(:call!).and_return(true)
       allow(NotifyOnCreate).to receive(:call!).and_return(true)
+      allow(SyncWithAstraea).to receive(:call!).and_return(true)
     end
 
     describe '.call' do

@@ -3,6 +3,6 @@ module SdRequests
   class Create
     include Interactor::Organizer
 
-    organize ValidateForm, Save, NotifyOnCreate
+    organize ValidateForm, Save, NotifyOnCreate, SyncWithAstraea
   end
 end

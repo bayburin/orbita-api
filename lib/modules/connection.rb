@@ -6,6 +6,14 @@ module Connection
 
   API_ENDPOINT = 'http://api_url_not_defined'.freeze
 
+  def multipart_connect
+    Faraday.new(url: api_const) do |faraday|
+      faraday.response :logger, Rails.logger, { bodies: true, log_level: :debug }
+      faraday.request :multipart
+      faraday.adapter Faraday.default_adapter
+    end
+  end
+
   def connect
     Faraday.new(url: api_const) do |faraday|
       faraday.response :logger, Rails.logger
@@ -21,6 +29,14 @@ module Connection
   end
 
   module ClassMethods
+    def multipart_connect
+      Faraday.new(url: api_const) do |faraday|
+        faraday.response :logger, Rails.logger
+        faraday.request :multipart
+        faraday.adapter Faraday.default_adapter
+      end
+    end
+
     def connect
       Faraday.new(url: api_const) do |faraday|
         faraday.response :logger, Rails.logger
