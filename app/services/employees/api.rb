@@ -44,6 +44,14 @@ module Employees
           req.params['search'] = "#{field}=='*#{str}*'"
         end
       end
+
+      # Получается список работников по списку параметров
+      def search(token, filters)
+        connect.get('emp') do |req|
+          req.headers['X-Auth-Token'] = token
+          req.params['search'] = filters
+        end
+      end
     end
   end
 end

@@ -18,6 +18,10 @@ module Employees
         # Требуется объект вида { field: 'fullname', term: 'FIO' }
         # Возвращает массив
         Api.load_users_like(token, search_attr[:field], search_attr[:term])
+      when :by_filters
+        # Требуется строка с фильтрами вида
+        # Возвращает массив
+        Api.search(token, search_attr)
       else
         raise 'Неизвестный тип поиска'
       end

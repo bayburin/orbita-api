@@ -1,9 +1,9 @@
 class Api::V1::EmployeesController < Api::V1::BaseController
   def index
-    data = Employees::Loader.new(:by_any).load(field: params[:key], term: params[:value])
+    search = Employees::Search.call(filters: JSON.parse(params[:filters]))
 
-    if data
-      render json: { employees: data['data'] }
+    if search.success?
+      render json: { employees: search.employees }
     else
       render json: { message: 'НСИ не доступен' }, status: :service_unavailable
     end

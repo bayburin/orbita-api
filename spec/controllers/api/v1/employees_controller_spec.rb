@@ -4,31 +4,33 @@ RSpec.describe Api::V1::EmployeesController, type: :controller do
   sign_in_user
 
   describe 'GET #index' do
-    let(:params) { { key: 'personnelNo', value: '1234' } }
-    let(:api_response) { { data: [{ fio: 'first' }, { fio: 'second' }] } }
-    before(:each) { allow_any_instance_of(Employees::Loader).to receive(:load).and_return(api_response.as_json) }
+    let(:filters) { { key: 'personnelNo', value: '1234' } }
+    let(:params) { { filters: { key: 'personnelNo', value: '1234' }.to_json } }
+    let(:data) { [{ fio: 'first' }, { fio: 'second' }] }
+    let(:search_dbl) { double('search', success?: true, employees: data.as_json) }
+    before(:each) { allow(Employees::Search).to receive(:call).and_return(search_dbl) }
 
-    it 'call Employees::Loader.load method' do
-      expect_any_instance_of(Employees::Loader).to receive(:load).with(field: params[:key], term: params[:value])
+    it 'call Employees::Search method' do
+      expect(Employees::Search).to receive(:call).with(filters: filters.as_json)
 
       get :index, params: params
     end
 
     it 'respond with finded data' do
-      get :index
+      get :index, params: params
 
-      expect(parse_json(response.body)['employees']).to eq api_response[:data].as_json
+      expect(parse_json(response.body)['employees']).to eq data.as_json
     end
 
     it 'respond with success status if Employees::Loader.load method return data' do
-      get :index
+      get :index, params: params
 
       expect(response.status).to eq 200
     end
 
-    it 'respond with 503 status if Employees::Loader.load method return nil' do
-      allow_any_instance_of(Employees::Loader).to receive(:load).and_return(nil)
-      get :index
+    it 'respond with 503 status if Employees::Search class finished with failure' do
+      allow(search_dbl).to receive(:success?).and_return(false)
+      get :index, params: params
 
       expect(response.status).to eq 503
     end

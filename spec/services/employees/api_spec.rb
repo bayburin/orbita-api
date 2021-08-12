@@ -85,5 +85,20 @@ module Employees
         expect(subject.load_users_like(token, :personnelNo, 12_345)).to be_instance_of(Faraday::Response)
       end
     end
+
+    describe '::search' do
+      let(:filters) { "foo='bar'" }
+
+      it 'sends :get request with required params and headers' do
+        subject.search(token, filters)
+
+        expect(WebMock).to have_requested(:get, "#{ENV['EMPLOYEE_DATABASE_URL']}/emp?search=#{filters}")
+                             .with(headers: { 'X-Auth-Token': token })
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.search(token, filters)).to be_instance_of(Faraday::Response)
+      end
+    end
   end
 end
