@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AstraeaFormAdapter do
+  let(:time) { Time.parse('2021-08-15 10:00:00') }
   let(:source_snapshot) { create(:source_snapshot) }
   let(:worker) { create(:worker) }
   let(:workflow) { create(:workflow) }
@@ -9,6 +10,7 @@ RSpec.describe AstraeaFormAdapter do
   let(:form) { SdRequests::CreateForm.new(sd_request) }
   let(:user) { create(:admin) }
   subject { described_class.new(form, user) }
+  before { allow(Time.zone).to receive(:now).and_return(time) }
 
   it { expect(subject.case_id).to eq form.integration_id }
   it { expect(subject.user_id).to eq source_snapshot.tn }

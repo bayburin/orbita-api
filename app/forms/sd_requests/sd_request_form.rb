@@ -30,10 +30,6 @@ module SdRequests
       super || Claim.default_priority
     end
 
-    def finished_at_plan
-      super || Claim.default_finished_at_plan
-    end
-
     def validate(params)
       result = super(params)
       processing_users
@@ -44,7 +40,6 @@ module SdRequests
     def sync
       result = super
       result.priority = priority
-      result.finished_at_plan = finished_at_plan
       result
     end
 

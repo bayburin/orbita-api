@@ -42,21 +42,6 @@ module SdRequests
       end
     end
 
-    describe '#finished_at_plan' do
-      it 'return default finished_at_plan if it is nil' do
-        subject.finished_at_plan = nil
-
-        expect(subject.finished_at_plan).to eq Claim.default_finished_at_plan
-      end
-
-      context 'when finished_at_plan is not null' do
-        let(:finished_at_plan) { Time.zone.now - 10.days }
-        before { subject.finished_at_plan = finished_at_plan }
-
-        it { expect(subject.finished_at_plan).to eq finished_at_plan }
-      end
-    end
-
     describe '#validate' do
       let!(:default_worker) { create(:admin, :default_worker) }
       let(:user) { create(:admin, group: create(:group)) }
@@ -117,7 +102,6 @@ module SdRequests
         end
 
         it { expect(subject.model.priority).to eq Claim.default_priority.to_s }
-        it { expect(subject.model.finished_at_plan).to eq Claim.default_finished_at_plan }
       end
     end
 

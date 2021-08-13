@@ -84,6 +84,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       :description,
       :priority,
       :finished_at_plan,
+      :sla,
       parameters: [
         :id,
         :claim_id,

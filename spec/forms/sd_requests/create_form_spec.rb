@@ -18,6 +18,7 @@ module SdRequests
         form.history_store = history_store_dbl
       end
     end
+    before { allow_any_instance_of(JobInfo::CalculateClaimEndTime).to receive(:calculate).and_return('new-date') }
 
     it { expect(described_class).to be < SdRequestForm }
 
@@ -76,9 +77,26 @@ module SdRequests
       end
     end
 
+    # describe '#finished_at_plan' do
+    #   it { expect(subject.finished_at_plan).to eq 'new-date' }
+
+    #   context 'when JobInfo::CalculateClaimEndTime return nil' do
+    #     let(:time) { Time.parse('2021-08-15 10:00:00') }
+    #     before do
+    #       allow_any_instance_of(JobInfo::CalculateClaimEndTime).to receive(:calculate).and_return(nil)
+    #       allow(Claim).to receive(:default_finished_at_plan).and_return(time)
+    #     end
+
+    #     it { expect(subject.finished_at_plan).to eq Claim.default_finished_at_plan }
+    #   end
+    # end
+
     describe '#sync' do
       context 'when some attributes is nil' do
+        let(:time) { Time.parse('2021-08-15 10:00:00') }
         before do
+          allow_any_instance_of(JobInfo::CalculateClaimEndTime).to receive(:calculate).and_return(nil)
+          allow(Claim).to receive(:default_finished_at_plan).and_return(time)
           subject.service_name = nil
           subject.ticket_name = nil
           subject.status = nil
@@ -88,6 +106,7 @@ module SdRequests
         it { expect(subject.model.service_name).to eq SdRequest.default_service_name }
         it { expect(subject.model.ticket_name).to eq SdRequest.default_ticket_name }
         it { expect(subject.model.status).to eq SdRequest.default_status.to_s }
+        it { expect(subject.model.finished_at_plan).to eq time }
       end
 
       context 'when description has many spaces' do
@@ -98,6 +117,28 @@ module SdRequests
         end
 
         it { expect(subject.model.description).to eq description.strip }
+      end
+
+      describe '#finished_at_plan' do
+        let(:job_info_dbl) { instance_double(JobInfo::CalculateClaimEndTime, calculate: 'new-date') }
+        let(:time) { Time.parse('2021-08-15 10:00:00') }
+        before do
+          subject.validate({ sla: 1 })
+          allow(Time.zone).to receive(:now).and_return(time)
+          allow(JobInfo::CalculateClaimEndTime).to receive(:new).with(subject.current_user.tn, time, subject.sla).and_return(job_info_dbl)
+        end
+
+        it 'calls JobInfo::CalculateClaimEndTime' do
+          expect(job_info_dbl).to receive(:calculate)
+
+          subject.sync
+        end
+
+        it 'save date into "finished_at_plan" attribute' do
+          subject.sync
+
+          expect(subject.finished_at_plan).to eq 'new-date'
+        end
       end
     end
 

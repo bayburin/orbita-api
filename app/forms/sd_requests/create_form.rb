@@ -8,6 +8,7 @@ module SdRequests
     property :description
     property :status
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
+    property :sla, virtual: true
 
     def description=(value)
       super value.strip
@@ -25,6 +26,14 @@ module SdRequests
       super || Claim.default_status
     end
 
+    def finished_at_plan
+      if sla
+        JobInfo::CalculateClaimEndTime.new(current_user.tn, Time.zone.now, sla).calculate || Claim.default_finished_at_plan
+      else
+        Claim.default_finished_at_plan
+      end
+    end
+
     validation do
       config.messages.backend = :i18n
 
@@ -39,6 +48,7 @@ module SdRequests
       result.service_name = service_name
       result.ticket_name = ticket_name
       result.status = status
+      result.finished_at_plan = finished_at_plan
       result
     end
 
