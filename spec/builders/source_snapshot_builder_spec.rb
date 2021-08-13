@@ -43,9 +43,21 @@ RSpec.describe SourceSnapshotBuilder do
         end
       end
 
-      context 'when AuthCenter::AppToken failed' do
+      context 'when AuthCenter::AppToken return empty array' do
         before do
           allow(host_info_loader_dbl).to receive(:load).and_return([])
+          subject.host_credentials = attr[:invent_num]
+        end
+
+        it { expect(subject.model.dns).to be_nil }
+        it { expect(subject.model.source_ip).to be_nil }
+        it { expect(subject.model.mac).to be_nil }
+        it { expect(subject.model.os).to be_nil }
+      end
+
+      context 'when AuthCenter::AppToken return nil' do
+        before do
+          allow(host_info_loader_dbl).to receive(:load).and_return(nil)
           subject.host_credentials = attr[:invent_num]
         end
 
