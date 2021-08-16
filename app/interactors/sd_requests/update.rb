@@ -3,6 +3,6 @@ module SdRequests
   class Update
     include Interactor::Organizer
 
-    organize ValidateForm, Save, NotifyOnUpdate
+    organize ValidateForm, Save, NotifyOnUpdate, Astraea::UpdateSdRequest
   end
 end

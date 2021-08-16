@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 module Astraea
-  RSpec.describe CreateSdRequest do
-    let!(:astraea_app) { create(:oauth_application, name: 'Astraea') }
+  RSpec.describe UpdateSdRequest do
     let(:user) { create(:admin) }
     let(:astraea_form_adapter_dbl) { instance_double(FormAdapter, read_attribute_for_serialization: {}) }
-    let(:sd_request) { create(:sd_request) }
+    let(:sd_request) { create(:sd_request, integration_id: 12345) }
     let(:form_dbl) { double(:form, model: sd_request) }
     let(:json_form) { { foo: 'bar' }.as_json }
     let(:files) do
@@ -24,8 +23,7 @@ module Astraea
         new_files: files
       )
     end
-    let(:body) { { case_id: 123 } }
-    let(:response) { double(:astraea_response, success?: true, body: body.to_json) }
+    let(:response) { double(:astraea_response, success?: true, body: {}) }
     before do
       allow(FormAdapter).to receive(:new).and_return(astraea_form_adapter_dbl)
       allow(FormAdapterSerializer).to receive(:new).with(astraea_form_adapter_dbl).and_return(json_form)
@@ -45,34 +43,6 @@ module Astraea
         expect(Api).to receive(:save_sd_request).with(json_form, files)
 
         context
-      end
-
-      it 'update integration_id of sd_request' do
-        context
-
-        expect(sd_request.integration_id).to eq 123
-      end
-
-      it 'update application_id of sd_request' do
-        context
-
-        expect(sd_request.application_id).to eq astraea_app.id
-      end
-
-      context 'when Astraea::Api.save_sd_request finished with error' do
-        let(:response) { double(:astraea_response, success?: false) }
-
-        it 'does not update integration_id of sd_request' do
-          context
-
-          expect(sd_request.integration_id).to be_nil
-        end
-
-        it 'does not update application_id of sd_request' do
-          context
-
-          expect(sd_request.application_id).to be_nil
-        end
       end
 
       context 'when Api raise connection error' do

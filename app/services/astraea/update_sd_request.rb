@@ -1,6 +1,6 @@
 module Astraea
-  # Синхронизирует данные с системой Astraea (создает заявку).
-  class CreateSdRequest
+  # Синхронизирует данные с системой Astraea (обновляет заявку).
+  class UpdateSdRequest
     include Interactor
 
     delegate :form, :current_user, :new_files, to: :context
@@ -10,10 +10,9 @@ module Astraea
       astraea_response = Astraea::Api.save_sd_request(form_data, new_files)
 
       if astraea_response.success?
-        form.model.update(
-          integration_id: JSON.parse(astraea_response.body)['case_id'],
-          application_id: Doorkeeper::Application.find_by(name: 'Astraea').id
-        )
+        Rails.logger.info { 'Данные в Astraea обновлены'.green }
+      else
+        Rails.logger.error { 'Ошибка. Данные в Astraea не обновлены'.red }
       end
 
     rescue Faraday::ConnectionFailed
