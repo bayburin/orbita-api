@@ -7,7 +7,6 @@ module JobInfo
     end
 
     def calculate
-      Rails.logger.debug "Hours: #{@hours}"
       response = Api.claim_end_time(@tn, @start_time, @hours)
 
       if response.success?
@@ -16,6 +15,10 @@ module JobInfo
         Rails.logger.error { "Не удалось получить дедлайн. Устанавливается время по умолчанию. Ошибка: #{response.body['message']}" }
         nil
       end
+    rescue Faraday::ConnectionFailed
+      Rails.logger.error { 'Не удалось высчитать дедлайн'.red }
+
+      nil
     end
   end
 end
