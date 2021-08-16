@@ -1,6 +1,6 @@
-module SdRequests
+module Astraea
   # Синхронизирует данные с системой Astraea.
-  class SyncWithAstraea
+  class CreateSdRequest
     include Interactor
 
     delegate :form, :current_user, :new_files, to: :context

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-module SdRequests
-  RSpec.describe SyncWithAstraea do
+module Astraea
+  RSpec.describe CreateSdRequest do
     let!(:astraea_app) { create(:oauth_application, name: 'Astraea') }
     let(:user) { create(:admin) }
     let(:astraea_form_adapter_dbl) { instance_double(AstraeaFormAdapter, read_attribute_for_serialization: {}) }
