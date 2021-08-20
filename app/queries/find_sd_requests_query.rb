@@ -11,6 +11,7 @@ class FindSdRequestsQuery < SdRequestsQuery
     @scope = filter_by_description(filters['description'])
     @scope = filter_by_priority(filters['priority'])
     @scope = filter_by_users(filters['users'])
+    @scope = filter_by_employee_id_tn(filters['employee_id_tn'])
     @scope = paginate(params[:page], params[:perPage])
   end
 
@@ -55,5 +56,9 @@ class FindSdRequestsQuery < SdRequestsQuery
     end
 
     scope
+  end
+
+  def filter_by_employee_id_tn(id_tn)
+    id_tn.present? ? scope.joins(:source_snapshot).where(source_snapshots: { id_tn: id_tn }) : scope
   end
 end

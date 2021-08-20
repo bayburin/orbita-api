@@ -76,5 +76,13 @@ RSpec.describe FindSdRequestsQuery do
       it { expect(subject.call(params).length).to eq 1 }
       it { expect(subject.call(params).first.id).to eq sd_request.id }
     end
+
+    context 'with filter by source_snapshot_id_tn' do
+      let(:filters) { { employee_id_tn: 12345 } }
+      before { create(:sd_request, source_snapshot: create(:source_snapshot, id_tn: 12345)) }
+
+      it { expect(subject.call(params).length).to eq 1 }
+      it { expect(subject.call(params).first.source_snapshot.id_tn).to eq 12345 }
+    end
   end
 end
