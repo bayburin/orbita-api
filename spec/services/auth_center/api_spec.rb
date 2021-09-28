@@ -64,7 +64,7 @@ module AuthCenter
       end
     end
 
-    describe '::user_info' do
+    describe '::login_info' do
       let(:access_token) { 'fake_access_token' }
       let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
       let(:req) { "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_LOGIN_INFO']}" }
@@ -84,7 +84,7 @@ module AuthCenter
       end
     end
 
-    describe '::login_info' do
+    describe '::host_info' do
       let(:access_token) { 'fake_access_token' }
       let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
       let(:params) { { id: 'invent_num', idfield: 'name' } }
@@ -109,6 +109,34 @@ module AuthCenter
 
       it 'returns instance of Faraday::Response class' do
         expect(subject.host_info(access_token, params[:id], params[:idfield])).to be_instance_of(Faraday::Response)
+      end
+    end
+
+    describe '::host_list' do
+      let(:access_token) { 'fake_access_token' }
+      let(:headers) { { 'Authorization' => "Bearer #{access_token}" } }
+      let(:params) { { tn: 12345 } }
+      let(:req) { "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_LIST']}?filter=tn=#{params[:tn]}" }
+
+      before do
+        stub_request(:get, req).to_return(status: 200, body: '', headers: {})
+      end
+
+      it 'sends :get request with required headers' do
+        subject.host_list(access_token, params[:tn])
+
+        expect(WebMock).to have_requested(:get, req).with(headers: headers)
+      end
+
+      it 'set default :idfield attribute' do
+        stub_request(:get, "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_LIST']}?filter=tn=#{params[:tn]}").to_return(status: 200, body: '', headers: {})
+        subject.host_list(access_token, params[:tn])
+
+        expect(WebMock).to have_requested(:get, "#{ENV['AUTH_CENTER_URL']}#{ENV['AUTH_CENTER_HOST_LIST']}?filter=tn=#{params[:tn]}").with(headers: headers)
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.host_list(access_token, params[:tn])).to be_instance_of(Faraday::Response)
       end
     end
   end

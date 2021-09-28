@@ -5,7 +5,7 @@ module Employees
       when :load
         # Требуется id_tn
         # Возвращает единственную найденную запись
-        Api.load_user(token, search_attr)
+        search_attr.to_i.positive? ? Api.load_user(token, search_attr) : Api.load_foreign_user(token, search_attr)
       when :by_id_tn
         # Требуется массив id_tn
         # Возвращает массив

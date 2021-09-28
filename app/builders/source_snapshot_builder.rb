@@ -14,9 +14,9 @@ class SourceSnapshotBuilder < BaseBuilder
     if employee_info
       employee = EmployeeInfo.new(employee_info)
       attrs.merge!(
-        tn: employee.employeePositions.first.personnelNo,
+        tn: employee.tn,
         fio: employee.fio,
-        dept: employee.employeePositions.first.departmentForAccounting,
+        dept: employee.dept,
         domain_user: employee.employeeContact.login
       )
     end

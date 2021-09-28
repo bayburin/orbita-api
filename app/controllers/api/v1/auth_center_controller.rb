@@ -6,4 +6,10 @@ class Api::V1::AuthCenterController < Api::V1::BaseController
 
     render json: body, status: auth_center_response.status
   end
+
+  def show_user_hosts
+    auth_center_response = AuthCenter::Api.host_list(current_user.auth_center_token.access_token, params[:tn])
+
+    render json: auth_center_response.body, status: auth_center_response.status
+  end
 end

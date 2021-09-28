@@ -48,6 +48,15 @@ module AuthCenter
           req.headers['Authorization'] = "Bearer #{token}"
         end
       end
+
+      # Возвращает список хостов для указанного табельного номера
+      def host_list(token, tn)
+        connect.get do |req|
+          req.params['filter'] = "tn=#{tn}"
+          req.url ENV['AUTH_CENTER_HOST_LIST']
+          req.headers['Authorization'] = "Bearer #{token}"
+        end
+      end
     end
   end
 end

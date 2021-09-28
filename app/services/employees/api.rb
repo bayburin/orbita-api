@@ -21,6 +21,13 @@ module Employees
         end
       end
 
+      # Получает данные по внешнему работнику.
+      def load_foreign_user(token, id_tn)
+        connect.get("foreign-emp/#{id_tn}") do |req|
+          req.headers['X-Auth-Token'] = token
+        end
+      end
+
       # Получает список работников по их id_tn.
       def load_users_by_id_tn(token, id_tns)
         connect.get('emp') do |req|

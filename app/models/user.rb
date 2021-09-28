@@ -61,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def fill_by_employee_info(employee_info)
-    self.tn = employee_info.employeePositions.first.personnelNo
+    self.tn = employee_info.tn
     self.id_tn = employee_info.id
     self.login = employee_info.employeeContact.login
     self.fio = employee_info.fio
