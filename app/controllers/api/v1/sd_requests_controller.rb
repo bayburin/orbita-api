@@ -20,7 +20,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     if sd_request
       render(
         json: sd_request,
-        include: ['source_snapshot', 'parameters', 'comments', 'attachments', 'works.histories', 'works.workers', 'works.workflows'],
+        include: ['source_snapshot', 'comments', 'parameters', 'attachments', 'works.histories', 'works.workers', 'works.workflows'],
       )
     else
       render json: { sd_request: nil }, status: 404
