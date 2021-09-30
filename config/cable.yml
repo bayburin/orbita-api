@@ -7,5 +7,8 @@ development:
 test:
   adapter: test
 
+staging:
+  adapter: <%= ENV.fetch("ACTION_CABLE_ADAPTER", "any_cable") %>
+
 production:
   adapter: <%= ENV.fetch("ACTION_CABLE_ADAPTER", "any_cable") %>
