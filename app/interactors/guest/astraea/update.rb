@@ -4,7 +4,7 @@ module Guest
     class Update
       include Interactor::Organizer
 
-      organize ::SdRequests::ValidateForm, ::SdRequests::Save
+      organize ::SdRequests::ValidateForm, ::SdRequests::Save, ::SdRequests::NotifyOnUpdate
     end
   end
 end
