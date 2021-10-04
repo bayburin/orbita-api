@@ -4,7 +4,7 @@ module Guest
     class Create
       include Interactor::Organizer
 
-      organize ::SdRequests::ValidateForm, ::SdRequests::Save
+      organize ::SdRequests::ValidateForm, ::SdRequests::Save, ::SdRequests::NotifyOnCreate
     end
   end
 end
