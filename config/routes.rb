@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
       resources :claims, only: :index do
         resources :attachments, only: [:show]
+        resources :comments, only: [:create]
       end
       resources :sd_requests, only: [:index, :show, :create, :update] do
         resources :parameters, only: [:index]
