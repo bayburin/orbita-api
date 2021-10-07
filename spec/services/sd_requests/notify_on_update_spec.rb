@@ -23,6 +23,12 @@ module SdRequests
 
           context
         end
+
+        it 'call BroadcastUpdatedRecordWorker worker' do
+          expect(BroadcastUpdatedRecordWorker).to receive(:perform_async).with(sd_request.id)
+
+          context
+        end
       end
     end
   end

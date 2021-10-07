@@ -1,5 +1,5 @@
 # Отправляет все необходимые уведомления всем участникам заявки после обновления заявки.
-class SendCommentWorker
+class BroadcastCommentWorker
   include Sidekiq::Worker
 
   def perform(claim_id, comment_id)

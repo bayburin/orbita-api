@@ -51,7 +51,6 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
                      :source_snapshot,
                      :parameters,
                      :attachments,
-                     comments: :sender,
                      works: [:group, :histories, workflows: :sender, workers: :user]
                     )
                    .find(params[:id])

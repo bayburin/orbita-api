@@ -11,7 +11,6 @@ module SdRequests
     collection :parameters, form: ParameterForm, populate_if_empty: Parameter
     collection :works, form: WorkForm, populator: :populate_works!
     collection :attachments, form: AttachmentForm, populator: :populate_attachments!
-    collection :comments, form: MessageForm, populator: :populate_comments!
 
     attr_accessor :current_user, :history_store
 
@@ -70,13 +69,6 @@ module SdRequests
         history_store.add_to_combine(:add_files, fragment[:attachment].original_filename)
         attachments.append(Attachment.new)
       end
-    end
-
-    # Обработка списка комментариев
-    def populate_comments!(fragment:, **)
-      return skip! if fragment[:id]
-
-      comments.append(Comment.new(sender: current_user))
     end
 
     protected

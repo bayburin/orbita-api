@@ -3,6 +3,6 @@ module SdRequests
   class Create
     include Interactor::Organizer
 
-    organize ValidateForm, Save, NotifyOnCreate, Astraea::CreateSdRequest
+    organize ValidateForm, Save, NotifyOnCreate, BroadcastOnCreate, Astraea::CreateSdRequest
   end
 end

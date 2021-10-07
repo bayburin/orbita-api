@@ -5,7 +5,6 @@ module Comments
     subject(:context) { described_class.call }
     before do
       allow(Save).to receive(:call!).and_return(true)
-      allow(NotifyOnCreate).to receive(:call!).and_return(true)
       allow(Astraea::AddComment).to receive(:call!).and_return(true)
     end
 

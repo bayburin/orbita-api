@@ -16,6 +16,7 @@ module Events
 
       if workflow.save
         history_store.save!
+        SdRequests::BroadcastUpdatedRecordWorker.perform_async(event.claim.id)
       else
         context.fail!(error: workflow.errors.full_messages)
       end

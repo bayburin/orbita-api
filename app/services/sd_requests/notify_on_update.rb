@@ -6,7 +6,10 @@ module SdRequests
     delegate :sd_request, :history_store, to: :context
 
     def call
-      SdRequests::UpdatedWorker.perform_async(sd_request.id) if history_store.histories.any?
+      if history_store.histories.any?
+        UpdatedWorker.perform_async(sd_request.id)
+        BroadcastUpdatedRecordWorker.perform_async(sd_request.id)
+      end
     end
   end
 end

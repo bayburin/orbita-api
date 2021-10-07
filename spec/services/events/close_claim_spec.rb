@@ -17,6 +17,7 @@ module Events
         allow(Time.zone).to receive(:now).and_return(time)
         allow(history_store_dbl).to receive(:work=)
         allow(Histories::CloseType).to receive(:new).and_return(close_type_dbl)
+        allow(SdRequests::BroadcastUpdatedRecordWorker).to receive(:perform_async)
       end
 
       it { expect(context).to be_a_success }
@@ -41,6 +42,12 @@ module Events
 
       it 'save history' do
         expect(history_store_dbl).to receive(:save!)
+
+        context
+      end
+
+      it 'call SdRequests::BroadcastUpdatedRecordWorker worker' do
+        expect(SdRequests::BroadcastUpdatedRecordWorker).to receive(:perform_async).with(claim.id)
 
         context
       end

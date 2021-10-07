@@ -14,6 +14,7 @@ module Events
 
       if event.claim.save
         history_store.save!
+        SdRequests::BroadcastUpdatedRecordWorker.perform_async(event.claim.id)
       else
         context.fail!(error: event.claim.errors.full_messages)
       end

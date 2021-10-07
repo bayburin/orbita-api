@@ -9,6 +9,7 @@ module SdRequests
     property :status
     property :source_snapshot, form: SourceSnapshotForm, populator: :populate_source_snapshot!
     property :sla, virtual: true
+    collection :comments, form: MessageForm, populator: :populate_comments!
 
     def description=(value)
       super value.strip
@@ -55,6 +56,13 @@ module SdRequests
         ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
         ss.host_credentials = fragment[:invent_num] if fragment[:invent_num]
       end
+    end
+
+    # Обработка списка комментариев
+    def populate_comments!(fragment:, **)
+      return skip! if fragment[:id]
+
+      comments.append(Comment.new(sender: current_user))
     end
 
     protected

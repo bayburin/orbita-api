@@ -3,6 +3,6 @@ module Comments
   class Create
     include Interactor::Organizer
 
-    organize Save, NotifyOnCreate, Astraea::AddComment
+    organize Save, Astraea::AddComment
   end
 end
