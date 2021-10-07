@@ -1,13 +1,15 @@
 class Api::V1::CommentsController < Api::V1::BaseController
   def create
-    claim = Claim.find(params[:claim_id])
-    comment = claim.comments.new(message: params[:message], sender: current_user)
+    create = Comments::Create.call(
+      claim: Claim.find(params[:claim_id]),
+      current_user: current_user,
+      params: params
+    )
 
-    if comment.save
+    if create.success?
       render json: { message: 'ok' }
-      SendCommentWorker.perform_async(claim.id, comment.id)
     else
-      render json: { error: comment.errors }
+      render json: create.error, status: :bad_request
     end
   end
 end
