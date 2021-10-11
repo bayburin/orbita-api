@@ -1,4 +1,5 @@
-FROM docker-hub.iss-reshetnev.ru/714/7141/orbita/orbita-api/orbita-center-test_app:latest AS app
+ARG APP_IMAGE_NAME
+FROM ${APP_IMAGE_NAME}:latest AS app
 FROM nginx:1.19.10-alpine
 
 ARG RAILS_ROOT
