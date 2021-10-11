@@ -1,5 +1,16 @@
 version: "3.9"
 
+x-syslog-driver: &syslog-driver
+  logging:
+    driver: syslog
+    options:
+      syslog-address: ${SYSLOG_URL}
+      tag: "{{.Name}}/{{.ID}}"
+
+x-jsonlog-driver: &jsonlog-driver
+  logging:
+    driver: "json-file"
+
 x-common-labels: &common-labels
   project-name: "orbita-center"
   environment: "production"
