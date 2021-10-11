@@ -6,7 +6,7 @@ x-common-labels: &common-labels
   maintainer: "bayburin@iss-reshetnev.ru"
 
 x-app: &app
-  image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+  image: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
   build:
     context: .
     dockerfile: .docker/app/app.prod.Dockerfile
@@ -18,7 +18,7 @@ x-app: &app
     labels:
       <<: *common-labels
     cache_from:
-      - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+      - ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
   tmpfs:
     - /tmp
 
@@ -44,7 +44,7 @@ services:
     entrypoint: .docker/entrypoint.sh
 
   nginx:
-    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+    image: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_nginx
     build:
       context: .
       dockerfile: .docker/nginx/nginx.Dockerfile
@@ -54,7 +54,7 @@ services:
       labels:
         <<: *common-labels
       cache_from:
-        - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+        - ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_nginx
     restart: unless-stopped
     depends_on:
       - app
