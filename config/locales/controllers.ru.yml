@@ -1,0 +1,8 @@
+ru:
+  controllers:
+    api:
+      v1:
+        sd_requests:
+          not_found: 'Заявка не найдена'
+        events:
+          processed_successfully: 'Событие обработано'

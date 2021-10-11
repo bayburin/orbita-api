@@ -1,0 +1,2 @@
+class CaseSerializer < ClaimSerializer
+end

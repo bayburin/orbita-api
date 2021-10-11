@@ -1,0 +1,130 @@
+version: "3.9"
+
+x-common-labels: &common-labels
+  project-name: "orbita-center"
+  environment: "production"
+  maintainer: "bayburin@iss-reshetnev.ru"
+
+x-app: &app
+  image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+  build:
+    context: .
+    dockerfile: .docker/app/app.prod.Dockerfile
+    args:
+      RUBY_VERSION: 2.7.2
+      BUNDLER_VERSION: 2.1.4
+      RAILS_ROOT: /app
+      RAILS_ENV: production
+    labels:
+      <<: *common-labels
+    cache_from:
+      - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  volumes:
+    - rails_cache:/app/tmp/cache
+  environment:
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+  stdin_open: true
+  tty: true
+  depends_on:
+    - mysql
+    - redis
+  env_file:
+    - .env
+
+services:
+  app:
+    <<: *backend
+    restart: unless-stopped
+    command: bundle exec puma -C config/puma.rb
+    entrypoint: .docker/entrypoint.sh
+
+  nginx:
+    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+    build:
+      context: .
+      dockerfile: .docker/nginx/nginx.Dockerfile
+      args:
+        RAILS_ROOT: /app
+        APP_HOSTNAME: orbita-center
+      labels:
+        <<: *common-labels
+      cache_from:
+        - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+    restart: unless-stopped
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true
+    mac_address: D0:CE:25:86:12:EF
+    networks:
+      macvlan:
+        ipv4_address: 10.0.45.37
+    deploy:
+      resources:
+        reservations:
+          memory: 64mb
+        limits:
+          cpu: 0.5
+          memory: 128mb
+
+  mysql:
+    image: mysql:5.7.33
+    volumes:
+      - /data/volumes/orbita/database:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  redis:
+    image: redis:5.0.12
+    volumes:
+      - redis:/data
+    restart: always
+
+  sidekiq:
+    <<: *backend
+    depends_on:
+      - redis
+    restart: unless-stopped
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
+  ws:
+    image: anycable/anycable-go:1.0
+    environment:
+      ANYCABLE_HOST: 0.0.0.0
+      ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
+      ANYCABLE_RPC_HOST: anycable:50051
+      ANYCABLE_DEBUG: 1
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  anycable:
+    <<: *backend
+    command: bundle exec anycable
+    environment:
+      ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
+      ANYCABLE_RPC_HOST: 0.0.0.0:50051
+      ANYCABLE_DEBUG: 1
+    depends_on:
+      - redis
+      - ws
+    restart: unless-stopped
+
+volumes:
+  rails_cache:
+  redis:
+
+networks:
+  macvlan:
+    external:
+      name: server-network

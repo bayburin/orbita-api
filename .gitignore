@@ -28,9 +28,9 @@
 .idea/
 .rspec
 /config/database.yml
-/config/redis.yml
+# /config/redis.yml
 config/database.yml
-config/redis.yml
+# config/redis.yml
 config/secrets.yml
 config/development.sphinx.conf
 config/test.sphinx.conf
@@ -40,4 +40,13 @@ db/sphinx
 .env
 .ruby-version
 /public/uploads
+spec/uploads
 coverage
+.rubocop.yml
+.vscode
+
+vendor
+
+/config/credentials/production.key
+
+/config/credentials/staging.key

@@ -1,0 +1,132 @@
+version: "3.9"
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: .docker/app/app.dev.Dockerfile
+    args:
+      RUBY_VERSION: 2.7.2
+      BUNDLER_VERSION: 2.1.4
+      RAILS_ROOT: /app
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  volumes:
+    - .:/app:cached
+    - bundle:/usr/local/bundle
+    - rails_cache:/app/tmp/cache
+  environment:
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+  stdin_open: true
+  tty: true
+  depends_on:
+    - mysql
+    - redis
+  env_file:
+    - .env
+
+services:
+  runner:
+    <<: *backend
+    command: /bin/bash
+
+  app:
+    <<: *backend
+    restart: unless-stopped
+    command: bash -c "rm -rf /app/tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+
+  nginx:
+    image: nginx:1.19.6-alpine
+    restart: unless-stopped
+    ports:
+      - 9080:80
+      - 9443:443
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+      - ./.docker/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/tls/:/etc/pki/tls/nginx/
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true
+
+  mysql:
+    image: mysql:5.7.33
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DEV_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DEV_DATABASE}
+      MYSQL_USER: ${MYSQL_DEV_USER}
+      MYSQL_PASSWORD: ${MYSQL_DEV_PASSWORD}
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  mysql_test:
+    image: mysql:5.7.33
+    volumes:
+      - mysql_test:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
+      MYSQL_USER: ${MYSQL_TEST_USER}
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+  redis:
+    image: redis:5.0.11
+    volumes:
+      - redis:/data
+    restart: always
+
+  sidekiq:
+    <<: *backend
+    depends_on:
+      - redis
+    restart: unless-stopped
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
+  guard:
+    <<: *backend
+    depends_on:
+      - mysql_test
+    command: bundle exec guard
+
+  ws:
+    image: anycable/anycable-go:1.0
+    ports:
+      - 8080:8080
+    environment:
+      no_proxy: '${no_proxy},redis,anycable'
+      NO_PROXY: '${no_proxy},redis,anycable'
+      ANYCABLE_HOST: 0.0.0.0
+      ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
+      ANYCABLE_RPC_HOST: anycable:50051
+      ANYCABLE_DEBUG: 1
+    depends_on:
+      - redis
+
+  anycable:
+    <<: *backend
+    command: bundle exec anycable
+    environment:
+      ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
+      ANYCABLE_RPC_HOST: 0.0.0.0:50051
+      ANYCABLE_DEBUG: 1
+    ports:
+      - 50051
+    depends_on:
+      - redis
+      - ws
+
+volumes:
+  bundle:
+  rails_cache:
+  mysql:
+  mysql_test:
+  redis:
