@@ -17,6 +17,8 @@ x-app: &app
       RAILS_ENV: production
     labels:
       <<: *common-labels
+    cache_from:
+      - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
   tmpfs:
     - /tmp
 
@@ -42,28 +44,38 @@ services:
     entrypoint: .docker/entrypoint.sh
 
   nginx:
+    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
     build:
       context: .
       dockerfile: .docker/nginx/nginx.Dockerfile
       args:
         RAILS_ROOT: /app
-        APP_HOSTNAME: orbita-center-test
+        APP_HOSTNAME: orbita-center
       labels:
         <<: *common-labels
-    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+      cache_from:
+        - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
     restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
     depends_on:
       - app
     stdin_open: true
     tty: true
+    mac_address: D0:CE:25:86:12:EF
+    networks:
+      macvlan:
+        ipv4_address: 10.0.45.37
+    deploy:
+      resources:
+        reservations:
+          memory: 64mb
+        limits:
+          cpu: 0.5
+          memory: 128mb
 
   mysql:
     image: mysql:5.7.33
     volumes:
-      - mysql:/var/lib/mysql
+      - /data/volumes/orbita/database:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -87,8 +99,6 @@ services:
 
   ws:
     image: anycable/anycable-go:1.0
-    ports:
-      - 8080:8080
     environment:
       ANYCABLE_HOST: 0.0.0.0
       ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
@@ -105,8 +115,6 @@ services:
       ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
       ANYCABLE_DEBUG: 1
-    ports:
-      - 50051
     depends_on:
       - redis
       - ws
@@ -114,5 +122,9 @@ services:
 
 volumes:
   rails_cache:
-  mysql:
   redis:
+
+networks:
+  macvlan:
+    external:
+      name: server-network
