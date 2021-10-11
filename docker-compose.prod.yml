@@ -69,7 +69,7 @@ services:
         reservations:
           memory: 64mb
         limits:
-          cpu: 0.5
+          cpus: 0.5
           memory: 128mb
 
   mysql:
