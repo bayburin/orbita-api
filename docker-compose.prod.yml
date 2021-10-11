@@ -80,6 +80,8 @@ services:
     image: mysql:5.7.33
     volumes:
       - /data/volumes/orbita/database:/var/lib/mysql
+    port:
+      - 33006:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
