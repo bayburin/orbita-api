@@ -43,7 +43,7 @@ RSpec.describe Api::V1::AuthCenterController, type: :controller do
     it 'respond with received data' do
       get :show_user_hosts, params: params
 
-      expect(response.body).to eq body.to_json
+      expect(response.body).to eq({ hosts: body }.to_json)
     end
 
     it 'respond with received status' do

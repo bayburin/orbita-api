@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SendCommentWorker, type: :worker do
+RSpec.describe BroadcastCommentWorker, type: :worker do
   let(:sd_request) { create(:sd_request) }
   let(:comment) { create(:comment, claim: sd_request) }
   let(:admin) { create(:admin) }
