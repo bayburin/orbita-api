@@ -16,6 +16,11 @@ module Astraea
 
         multipart_connect.post('sd_requests.json', payload)
       end
+
+      # Закрывает заявку
+      def close_case(payload)
+        multipart_connect.post('sd_requests.json', payload.to_json)
+      end
     end
   end
 end

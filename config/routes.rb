@@ -39,9 +39,17 @@ Rails.application.routes.draw do
       namespace :v1 do
         get 'welcome', to: 'base#welcome'
         resources :sd_requests, only: :create
-        resources :service_desk, only: :create
         resources :events, only: :create
         resources :astraea, only: [:create, :update]
+      end
+    end
+  end
+
+  namespace :service_desk, constraints: { format: 'json' } do
+    namespace :api do
+      namespace :v1 do
+        get 'welcome', to: 'base#welcome'
+        resources :sd_requests, only: :create
       end
     end
   end

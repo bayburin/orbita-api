@@ -4,6 +4,6 @@ module Events
     include Interactor::Organizer
     include Requirements
 
-    organize FindOrCreateWork, CloseClaim
+    organize FindOrCreateWork, CloseClaim, Astraea::SyncCloseClaim
   end
 end

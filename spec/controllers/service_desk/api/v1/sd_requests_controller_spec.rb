@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe Guest::Api::V1::ServiceDeskController, type: :controller do
+RSpec.describe ServiceDesk::Api::V1::SdRequestsController, type: :controller do
   sign_in_employee
 
   describe 'POST #create' do
-    let(:params) { { app: { desc: 'test' }, id_tn: 123 } }
+    let(:params) { { sd_request: { desc: 'test' }.to_json, id_tn: 123 } }
 
     it 'respond with success status' do
       post :create, params: params, format: :json
