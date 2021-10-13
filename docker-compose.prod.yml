@@ -1,12 +1,23 @@
 version: "3.9"
 
+x-syslog-driver: &syslog-driver
+  logging:
+    driver: syslog
+    options:
+      syslog-address: ${SYSLOG_URL}
+      tag: "{{.Name}}/{{.ID}}"
+
+x-jsonlog-driver: &jsonlog-driver
+  logging:
+    driver: "json-file"
+
 x-common-labels: &common-labels
   project-name: "orbita-center"
   environment: "production"
   maintainer: "bayburin@iss-reshetnev.ru"
 
 x-app: &app
-  image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+  image: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
   build:
     context: .
     dockerfile: .docker/app/app.prod.Dockerfile
@@ -18,7 +29,7 @@ x-app: &app
     labels:
       <<: *common-labels
     cache_from:
-      - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_app
+      - ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
   tmpfs:
     - /tmp
 
@@ -39,22 +50,27 @@ x-backend: &backend
 services:
   app:
     <<: *backend
+    <<: *syslog-driver
     restart: unless-stopped
     command: bundle exec puma -C config/puma.rb
     entrypoint: .docker/entrypoint.sh
+    networks:
+      orbita-prod-local:
 
   nginx:
-    image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+    <<: *syslog-driver
+    image: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_nginx
     build:
       context: .
       dockerfile: .docker/nginx/nginx.Dockerfile
       args:
         RAILS_ROOT: /app
         APP_HOSTNAME: orbita-center
+        APP_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
       labels:
         <<: *common-labels
       cache_from:
-        - ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
+        - ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_nginx
     restart: unless-stopped
     depends_on:
       - app
@@ -62,6 +78,7 @@ services:
     tty: true
     mac_address: D0:CE:25:86:12:EF
     networks:
+      orbita-prod-local:
       macvlan:
         ipv4_address: 10.0.45.37
     deploy:
@@ -69,13 +86,16 @@ services:
         reservations:
           memory: 64mb
         limits:
-          cpu: 0.5
+          cpus: 0.5
           memory: 128mb
 
   mysql:
+    <<: *syslog-driver
     image: mysql:5.7.33
     volumes:
       - /data/volumes/orbita/database:/var/lib/mysql
+    ports:
+      - 33006:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -83,21 +103,30 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    networks:
+      orbita-prod-local:
 
   redis:
+    <<: *syslog-driver
     image: redis:5.0.12
     volumes:
       - redis:/data
     restart: always
+    networks:
+      orbita-prod-local:
 
   sidekiq:
     <<: *backend
+    <<: *syslog-driver
     depends_on:
       - redis
     restart: unless-stopped
     command: bundle exec sidekiq -C config/sidekiq.yml
+    networks:
+      orbita-prod-local:
 
-  ws:
+  websocket:
+    <<: *syslog-driver
     image: anycable/anycable-go:1.0
     environment:
       ANYCABLE_HOST: 0.0.0.0
@@ -107,9 +136,12 @@ services:
     depends_on:
       - redis
     restart: unless-stopped
+    networks:
+      orbita-prod-local:
 
   anycable:
     <<: *backend
+    <<: *syslog-driver
     command: bundle exec anycable
     environment:
       ANYCABLE_REDIS_URL: ${REDIS_URL}/${REDIS_DB}
@@ -117,14 +149,18 @@ services:
       ANYCABLE_DEBUG: 1
     depends_on:
       - redis
-      - ws
+      - websocket
     restart: unless-stopped
+    networks:
+      orbita-prod-local:
 
 volumes:
   rails_cache:
   redis:
 
 networks:
+  orbita-prod-local:
+    driver: bridge
   macvlan:
     external:
       name: server-network

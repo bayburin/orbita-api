@@ -1,12 +1,15 @@
 module Astraea
   # Адаптер для преобразования заявки из Орбиты в вид, необходимый для системы Astraea.
+  # form - объект формы
+  # current_user - текущий пользователь
+  # type - тип заявки (new - новая, update - существующая)
   class FormAdapter
     include ActiveModel::Serializers::JSON
 
-    def initialize(form, current_user)
+    def initialize(form, current_user, type = 'new')
       @form = form
       @current_user = current_user
-      @state = @form.model.id ? EditFormState.new(form) : NewFormState.new(form)
+      @state = type == 'update' ? EditFormState.new(form) : NewFormState.new(form)
     end
 
     def case_id

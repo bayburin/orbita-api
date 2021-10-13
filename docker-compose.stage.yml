@@ -48,6 +48,7 @@ services:
       args:
         RAILS_ROOT: /app
         APP_HOSTNAME: orbita-center-test
+        APP_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${PRODUCTION_PROJECT_NAME}_app
       labels:
         <<: *common-labels
     image: ${CI_REGISTRY_IMAGE}/${DEPLOY_PROJECT_NAME}_nginx
@@ -85,7 +86,7 @@ services:
     restart: unless-stopped
     command: bundle exec sidekiq -C config/sidekiq.yml
 
-  ws:
+  websocket:
     image: anycable/anycable-go:1.0
     # ports:
     #   - 8080:8080
@@ -109,7 +110,7 @@ services:
     #   - 50051
     depends_on:
       - redis
-      - ws
+      - websocket
     restart: unless-stopped
 
 volumes:

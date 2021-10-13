@@ -13,7 +13,7 @@ module Astraea
     let!(:sd_request) { create(:sd_request, integration_id: 11, source_snapshot: source_snapshot, works: [work]) }
     let(:new_user) { create(:manager) }
     let(:form) { SdRequests::CreateForm.new(sd_request) }
-    subject { described_class.new(form, user) }
+    subject { described_class.new(form, user, 'new') }
     before do
       create(:employee)
       allow(Time.zone).to receive(:now).and_return(time)
@@ -47,6 +47,7 @@ module Astraea
 
     context 'when it is updating form' do
       let(:form) { SdRequests::UpdateForm.new(sd_request) }
+      subject { described_class.new(form, user, 'update') }
 
       it { expect(subject.desc).to be_nil }
       it { expect(subject.user_id).to eq source_snapshot.tn }

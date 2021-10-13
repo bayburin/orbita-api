@@ -6,7 +6,7 @@ module Astraea
     delegate :form, :current_user, :new_files, to: :context
 
     def call
-      form_data = FormAdapterSerializer.new(FormAdapter.new(form, current_user)).as_json
+      form_data = FormAdapterSerializer.new(FormAdapter.new(form, current_user, 'update')).as_json
       astraea_response = Astraea::Api.save_sd_request(form_data, new_files)
       Rails.logger.debug { "Данные в Astraea: #{form_data}" }
 

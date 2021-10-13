@@ -25,7 +25,7 @@ module Astraea
     end
     let(:response) { double(:astraea_response, success?: true, body: {}) }
     before do
-      allow(FormAdapter).to receive(:new).and_return(astraea_form_adapter_dbl)
+      allow(FormAdapter).to receive(:new).with(form_dbl, user, 'update').and_return(astraea_form_adapter_dbl)
       allow(FormAdapterSerializer).to receive(:new).with(astraea_form_adapter_dbl).and_return(json_form)
       allow(Api).to receive(:save_sd_request).and_return(response)
     end
