@@ -8,6 +8,7 @@ module Guest
         allow(::SdRequests::ValidateForm).to receive(:call!).and_return(true)
         allow(::SdRequests::Save).to receive(:call!).and_return(true)
         allow(::SdRequests::NotifyOnCreate).to receive(:call!).and_return(true)
+        allow(::SdRequests::BroadcastOnCreate).to receive(:call!).and_return(true)
       end
 
       describe '.call' do

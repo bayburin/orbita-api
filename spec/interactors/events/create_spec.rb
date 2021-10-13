@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Events
   RSpec.describe Create do
-    subject { described_class.call(claim: claim, user: user, params: params) }
+    subject { described_class.call(claim: claim, user: user, params: params, need_update_astraea: true) }
 
     describe '.call' do
       let(:claim) { create(:claim) }
@@ -22,7 +22,7 @@ module Events
       end
 
       it 'call "call" method of Switch instance with Event instance argument' do
-        expect(sw_dbl).to receive(:call).with(EventBuilder.build(params))
+        expect(sw_dbl).to receive(:call).with(EventBuilder.build(params), true)
 
         subject
       end

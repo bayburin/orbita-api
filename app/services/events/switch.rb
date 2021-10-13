@@ -11,11 +11,12 @@ module Events
 
     # Вызывает обработчик события по полученному экземпляру класса Event.
     # event - объект класса Event
-    def call(event)
+    # need_update_astraea? - флаг, показывающий, нужно ли отправлять событию в систему Astraea
+    def call(event, need_update_astraea = false)
       command = event_map[event.event_type.name]
       raise 'Неизвестное событие' unless command
 
-      command.call(event: event)
+      command.call(event: event, need_update_astraea: need_update_astraea)
     end
   end
 end

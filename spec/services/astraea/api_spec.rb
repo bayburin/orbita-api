@@ -26,5 +26,19 @@ module Astraea
         expect(subject.save_sd_request({})).to be_instance_of(Faraday::Response)
       end
     end
+
+    describe '::close_case' do
+      before { stub_request(:post, /#{server_url}.*/).to_return(status: 200, body: '', headers: {}) }
+
+      it 'sends :post request with required params' do
+        subject.close_case({})
+
+        expect(WebMock).to have_requested(:post, "#{ENV['ASTRAEA_URL']}/sd_requests.json")
+      end
+
+      it 'returns instance of Faraday::Response class' do
+        expect(subject.close_case({})).to be_instance_of(Faraday::Response)
+      end
+    end
   end
 end
