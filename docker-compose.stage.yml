@@ -86,7 +86,7 @@ services:
     restart: unless-stopped
     command: bundle exec sidekiq -C config/sidekiq.yml
 
-  ws:
+  websocket:
     image: anycable/anycable-go:1.0
     # ports:
     #   - 8080:8080
@@ -110,7 +110,7 @@ services:
     #   - 50051
     depends_on:
       - redis
-      - ws
+      - websocket
     restart: unless-stopped
 
 volumes:

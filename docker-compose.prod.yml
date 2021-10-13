@@ -125,7 +125,7 @@ services:
     networks:
       orbita-prod-local:
 
-  ws:
+  websocket:
     <<: *syslog-driver
     image: anycable/anycable-go:1.0
     environment:
@@ -149,7 +149,7 @@ services:
       ANYCABLE_DEBUG: 1
     depends_on:
       - redis
-      - ws
+      - websocket
     restart: unless-stopped
     networks:
       orbita-prod-local:
