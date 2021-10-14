@@ -17,7 +17,7 @@ module Astraea
     end
 
     def user_id
-      @state.user_id
+      @current_user.tn
     end
 
     def phone
