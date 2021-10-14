@@ -10,10 +10,6 @@ module Astraea
       @form.integration_id
     end
 
-    def user_id
-      @source_snapshot.tn
-    end
-
     def phone
       @source_snapshot.user_attrs[:phone]
     end
