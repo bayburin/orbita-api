@@ -5,23 +5,23 @@ module Astraea
     end
 
     def case_id
-      raise 'Необходимо реализовать метод case_id'
+      @form.integration_id
     end
 
-    def user_id
-      raise 'Необходимо реализовать метод user_id'
+    def user_tn
+      @source_snapshot.tn
     end
 
     def phone
-      raise 'Необходимо реализовать метод phone'
+      @source_snapshot.user_attrs[:phone]
     end
 
     def host_id
-      raise 'Необходимо реализовать метод host_id'
+      @source_snapshot.invent_num
     end
 
     def barcode
-      raise 'Необходимо реализовать метод barcode'
+      @source_snapshot.barcode
     end
 
     def desc
