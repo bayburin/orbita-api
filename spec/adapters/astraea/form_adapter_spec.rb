@@ -32,6 +32,7 @@ module Astraea
 
       it { expect(subject.case_id).to eq form.integration_id }
       it { expect(subject.user_id).to eq user.tn }
+      it { expect(subject.user_tn).to eq source_snapshot.tn }
       it { expect(subject.phone).to eq source_snapshot.user_attrs[:phone] }
       it { expect(subject.host_id).to eq source_snapshot.invent_num }
       it { expect(subject.barcode).to eq source_snapshot.barcode }
@@ -51,6 +52,7 @@ module Astraea
 
       it { expect(subject.desc).to be_nil }
       it { expect(subject.user_id).to eq user.tn }
+      it { expect(subject.user_tn).to eq source_snapshot.tn }
       it { expect(subject.phone).to eq source_snapshot.user_attrs[:phone] }
       it { expect(subject.host_id).to eq source_snapshot.invent_num }
       it { expect(subject.barcode).to eq source_snapshot.barcode }
