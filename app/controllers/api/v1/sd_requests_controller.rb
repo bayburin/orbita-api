@@ -81,6 +81,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
       :ticket_identity,
       :ticket_name,
       :description,
+      :status,
       :priority,
       :finished_at_plan,
       :sla,

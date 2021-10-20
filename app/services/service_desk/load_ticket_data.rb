@@ -11,8 +11,8 @@ module ServiceDesk
       if response.success?
         context.ticket = Ticket.new(response.body)
       else
-        Rails.logger.warn { "Ошибка: #{response.error}".red }
-        context.fail!(error: response.error)
+        Rails.logger.warn { "Ошибка: #{response.body}".red }
+        context.fail!(error: response.body)
       end
     end
   end

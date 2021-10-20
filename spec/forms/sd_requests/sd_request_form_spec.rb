@@ -35,7 +35,7 @@ module SdRequests
       end
 
       context 'when priority is not null' do
-        let(:priority) { 'low' }
+        let(:priority) { 'medium' }
         before { subject.priority = priority }
 
         it { expect(subject.priority).to eq priority }

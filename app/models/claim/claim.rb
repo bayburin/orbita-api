@@ -10,7 +10,7 @@ class Claim < ApplicationRecord
 
   belongs_to :application, optional: true, class_name: 'Doorkeeper::Application'
 
-  enum priority: { default: 1, low: 2, high: 3 }, _suffix: true
+  enum priority: { default: 1, medium: 2, high: 3 }, _suffix: true
 
   def self.default_finished_at_plan
     Time.zone.now + 3.days

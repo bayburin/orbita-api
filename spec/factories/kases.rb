@@ -13,7 +13,7 @@ FactoryBot.define do
     barcode { 456 }
     phone { '12-34' }
     time { 1618642512 }
-    severity { 'low' }
+    severity { 'medium' }
     status_id { 1 }
     users { [create(:manager).tn, create(:manager).tn] }
     messages do
