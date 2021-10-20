@@ -9,7 +9,7 @@ module SdRequests
     let(:history_store_dbl) { instance_double('Histories::Storage', add: true) }
     let(:params) do
       attributes_for(:sd_request).merge(
-        priority: 'low',
+        priority: 'medium',
         finished_at_plan: (Time.zone.now + 5.days).to_s
       )
     end

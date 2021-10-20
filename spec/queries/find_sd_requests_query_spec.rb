@@ -58,11 +58,11 @@ RSpec.describe FindSdRequestsQuery do
     end
 
     context 'with filter by priority' do
-      let(:filters) { { priority: :low } }
-      before { create(:sd_request, priority: :low) }
+      let(:filters) { { priority: :medium } }
+      before { create(:sd_request, priority: :medium) }
 
       it { expect(subject.call(params).length).to eq 1 }
-      it { expect(subject.call(params).first.priority).to eq 'low' }
+      it { expect(subject.call(params).first.priority).to eq 'medium' }
     end
 
     context 'with filter by users' do
