@@ -50,4 +50,8 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  def filename
+    file&.filename
+  end
 end
