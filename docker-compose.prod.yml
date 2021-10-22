@@ -56,6 +56,12 @@ services:
     entrypoint: .docker/entrypoint.sh
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 1gb
+        limits:
+          memory: 2gb
 
   nginx:
     <<: *syslog-driver
@@ -86,7 +92,6 @@ services:
         reservations:
           memory: 64mb
         limits:
-          cpus: 0.5
           memory: 128mb
 
   mysql:
@@ -105,6 +110,12 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 512mb
+        limits:
+          memory: 1gb
 
   redis:
     <<: *syslog-driver
@@ -114,6 +125,12 @@ services:
     restart: always
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 64mb
+        limits:
+          memory: 128mb
 
   sidekiq:
     <<: *backend
@@ -124,6 +141,12 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 265mb
+        limits:
+          memory: 384mb
 
   websocket:
     <<: *syslog-driver
@@ -138,6 +161,12 @@ services:
     restart: unless-stopped
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 64mb
+        limits:
+          memory: 128mb
 
   anycable:
     <<: *backend
@@ -153,6 +182,12 @@ services:
     restart: unless-stopped
     networks:
       orbita-prod-local:
+    deploy:
+      resources:
+        reservations:
+          memory: 256mb
+        limits:
+          memory: 512mb
 
 volumes:
   rails_cache:
