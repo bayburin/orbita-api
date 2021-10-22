@@ -9,7 +9,6 @@ module Events
       event.claim.finished_at = Time.zone.now
       event.claim.status = :done
 
-      history_store.work = event.work
       history_store.add(Histories::CloseType.new.build)
 
       if event.claim.save

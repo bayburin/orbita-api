@@ -4,7 +4,7 @@ module Events
   class FindOrCreateWork
     include Interactor
 
-    delegate :event, to: :context
+    delegate :event, :history_store, to: :context
 
     def call
       work = event.claim.find_or_initialize_work_by_user(event.user)
@@ -12,6 +12,7 @@ module Events
 
       if work.save
         event.work = work
+        history_store.work = event.work
       else
         context.fail!(error: work.errors.full_messages)
       end

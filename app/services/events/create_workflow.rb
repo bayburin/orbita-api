@@ -11,7 +11,6 @@ module Events
         sender: event.user
       )
 
-      history_store.work = event.work
       history_store.add(Histories::WorkflowType.new(workflow: event.payload['message']).build)
 
       if workflow.save

@@ -5,5 +5,6 @@ class Event
   attribute :event_type, EventType
   attribute :user, User
   attribute :work, Work
-  attribute :payload, Hash
+  attribute :payload, Json, default: {}
+  attribute :files, Array[File]
 end

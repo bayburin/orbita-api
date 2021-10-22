@@ -4,7 +4,9 @@ class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
     create = Events::Create.call(
       claim: claim,
       user: current_user,
-      params: event_params
+      event_type: params[:event_type],
+      payload: params[:payload],
+      files: params[:files],
     )
 
     if create.success?
@@ -21,7 +23,9 @@ class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
       :integration_id,
       :id_tn,
       :event_type,
-      payload: {}
+      :payload,
+      files: [],
+      payload: {},
     )
   end
 end

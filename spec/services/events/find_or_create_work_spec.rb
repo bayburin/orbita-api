@@ -4,8 +4,10 @@ module Events
   RSpec.describe FindOrCreateWork do
     let(:user) { create(:admin) }
     let(:claim) { create(:claim) }
+    let(:history_store_dbl) { double('history_store') }
     let(:event) { EventBuilder.build(claim: claim, user: user) }
-    subject(:context) { described_class.call(event: event) }
+    subject(:context) { described_class.call(event: event, history_store: history_store_dbl) }
+    before { allow(history_store_dbl).to receive(:work=) }
 
     describe '.call' do
       it { expect(context).to be_a_success }

@@ -2,27 +2,27 @@ require 'rails_helper'
 
 module Events
   RSpec.describe Create do
-    subject { described_class.call(claim: claim, user: user, params: params, need_update_astraea: true) }
+    let(:claim) { create(:claim) }
+    let(:user) { create(:admin) }
+    let(:sw_dbl) { double(:sw, register: true, call: true) }
+    let(:event_dbl) { double('event') }
+    subject { described_class.call(claim: claim, user: user, event_type: :workflow, need_update_astraea: true) }
+    before do
+      allow(EventBuilder).to receive(:build).and_return(event_dbl)
+      allow(Switch).to receive(:new).and_return(sw_dbl)
+    end
 
     describe '.call' do
-      let(:claim) { create(:claim) }
-      let(:user) { create(:admin) }
-      let(:sw_dbl) { double(:sw, register: true, call: true) }
-      let(:params) { { foo: :bar } }
-      before do
-        allow(EventBuilder).to receive(:build).with(**params)
-        allow(Switch).to receive(:new).and_return(sw_dbl)
-      end
-
       it 'register all event types' do
         expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
+        expect(sw_dbl).to receive(:register).with('add_files', AddFilesEvent)
 
         subject
       end
 
       it 'call "call" method of Switch instance with Event instance argument' do
-        expect(sw_dbl).to receive(:call).with(EventBuilder.build(params), true)
+        expect(sw_dbl).to receive(:call).with(event_dbl, true)
 
         subject
       end

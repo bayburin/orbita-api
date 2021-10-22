@@ -18,3 +18,14 @@ ru:
         source_snapshot:
           tn:
             int?: "должен быть числом"
+
+  activerecord:
+    attributes:
+      attachment:
+        attachment: "Файл"
+    errors:
+      models:
+        attachment:
+          attributes:
+            attachment:
+              blank: "отсутствует"
