@@ -52,7 +52,7 @@ module SdRequests
 
     # Обрабатывает источник заявки
     def populate_source_snapshot!(fragment:, **)
-      self.source_snapshot = SourceSnapshotBuilder.build do |ss|
+      self.source_snapshot = SourceSnapshotBuilder.build(fragment) do |ss|
         ss.user_credentials = fragment[:id_tn] if fragment[:id_tn]
         ss.host_credentials = fragment[:invent_num] if fragment[:invent_num]
       end

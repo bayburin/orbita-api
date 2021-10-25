@@ -65,7 +65,7 @@ class User < ApplicationRecord
     self.id_tn = employee_info.id
     self.login = employee_info.employeeContact.login
     self.fio = employee_info.fio
-    self.work_tel = employee_info.first_phone
-    self.email = employee_info.first_email
+    self.work_tel = employee_info.phone
+    self.email = employee_info.email
   end
 end

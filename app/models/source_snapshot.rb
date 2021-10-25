@@ -7,7 +7,7 @@ class SourceSnapshot < ApplicationRecord
       tn: tn,
       fio: fio,
       dept: dept,
-      user_attrs: user_attrs,
+      user_attrs: user_attrs || {},
       domain_user: domain_user
     )
   end

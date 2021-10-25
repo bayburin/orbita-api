@@ -13,11 +13,16 @@ class SourceSnapshotBuilder < BaseBuilder
 
     if employee_info
       employee = EmployeeInfo.new(employee_info)
+      user_attrs = {
+        phone: model.user.phone || employee.phone,
+        email: model.user.email || employee.email
+      }
       attrs.merge!(
         tn: employee.tn,
         fio: employee.fio,
         dept: employee.dept,
-        domain_user: employee.employeeContact.login
+        domain_user: employee.employeeContact.login,
+        user_attrs: user_attrs
       )
     end
 

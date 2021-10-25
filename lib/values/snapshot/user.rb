@@ -9,5 +9,13 @@ module Snapshot
     attribute :dept, Types::Integer.optional
     attribute :user_attrs, Types::Hash.optional.default({}.freeze)
     attribute :domain_user, Types::String.optional
+
+    def phone
+      user_attrs ? user_attrs[:phone] : nil
+    end
+
+    def email
+      user_attrs ? user_attrs[:email] : nil
+    end
   end
 end

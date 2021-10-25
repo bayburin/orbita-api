@@ -31,19 +31,19 @@ class EmployeeInfo < Dry::Struct
     "#{lastName} #{firstName} #{middleName}"
   end
 
-  def first_phone
-    employeeContact.phone&.first
-  end
-
-  def first_email
-    employeeContact.email&.first
-  end
-
   def tn
     employeePositions&.first&.personnelNo || code
   end
 
   def dept
     employeePositions&.first&.departmentForAccounting || company.code
+  end
+
+  def phone
+    employeeContact&.phone&.first
+  end
+
+  def email
+    employeeContact&.email&.first
   end
 end

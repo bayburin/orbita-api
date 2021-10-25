@@ -6,7 +6,7 @@ FactoryBot.define do
     tn { Faker::Number.number(digits: 6) }
     fio { Faker::Name.name_with_middle }
     dept { Faker::Number.number(digits: 3) }
-    user_attrs { {} }
+    user_attrs { { phone: '12-34', email: 'bayburin' } }
     domain_user { 'LoginAD' }
   end
 end

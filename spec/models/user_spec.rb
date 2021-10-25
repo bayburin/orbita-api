@@ -115,7 +115,7 @@ RSpec.describe User, type: :model do
     it { expect(subject.id_tn).to eq employee_info.id }
     it { expect(subject.login).to eq employee_info.employeeContact.login }
     it { expect(subject.fio).to eq employee_info.fio }
-    it { expect(subject.work_tel).to eq employee_info.first_phone }
-    it { expect(subject.email).to eq employee_info.first_email }
+    it { expect(subject.work_tel).to eq employee_info.phone }
+    it { expect(subject.email).to eq employee_info.email }
   end
 end
