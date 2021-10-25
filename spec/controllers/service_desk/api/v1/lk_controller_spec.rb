@@ -8,6 +8,7 @@ RSpec.describe ServiceDesk::Api::V1::LkController, type: :controller do
     let(:params) do
       {
         id_tn: user.id_tn,
+        sd_request: '{}',
         new_attachments: []
       }
     end

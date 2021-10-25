@@ -23,7 +23,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
         include: ['source_snapshot', 'comments', 'parameters', 'attachments', 'works.histories', 'works.workers', 'works.workflows'],
       )
     else
-      render json: { sd_request: nil }, status: 404
+      render json: { sd_request: nil }, status: :not_found
     end
   end
 

@@ -2,7 +2,8 @@ class ServiceDesk::Api::V1::LkController < ServiceDesk::Api::V1::BaseController
   def create_svt_item_request
     create = ServiceDesk::Lk::CreateSvtItemRequest.call(
       current_user: current_user,
-      # params: sd_request_params,
+      params: sd_request_params,
+      doorkeeper_token: doorkeeper_token,
       new_files: params[:new_attachments] || []
     )
 
@@ -15,17 +16,20 @@ class ServiceDesk::Api::V1::LkController < ServiceDesk::Api::V1::BaseController
 
   protected
 
-  # def sd_request_params
-  #   params.permit(
-  #     :id_tn, # id_tn пользователя, запросившего услугу (в твоем случае это пользователь, который прислал служебку, например)
-  #   )
-  # end
+  def sd_request_params
+    ActionController::Parameters.new(JSON.parse(params[:sd_request])).permit(
+      :ticket_identity,
+      :integration_id,
+      :description,
+      parameters: [:common, :payload]
+    )
+  end
 end
 
 =begin
   {
     id_tn: number # идентификатор пользователя
-    sd_request: {} # json-строка
+    sd_request: sd_request_params # json-строка
     new_attachments: [] # список новых файлов
   }
 =end

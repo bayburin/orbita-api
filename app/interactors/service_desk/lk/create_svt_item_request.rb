@@ -4,7 +4,7 @@ module ServiceDesk
     class CreateSvtItemRequest
       include Interactor::Organizer
 
-      organize BuildSvtItemForm, ::SdRequests::ValidateForm, ::SdRequests::Save, ::SdRequests::BroadcastOnCreate
+      organize ServiceDesk::LoadTicketData, BuildSvtItemForm, SdRequests::ValidateForm, SdRequests::Save, SdRequests::BroadcastOnCreate
     end
   end
 end

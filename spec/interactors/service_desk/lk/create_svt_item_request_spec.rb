@@ -5,6 +5,7 @@ module ServiceDesk
     RSpec.describe CreateSvtItemRequest do
       subject(:context) { described_class.call }
       before do
+        allow(ServiceDesk::LoadTicketData).to receive(:call!).and_return(true)
         allow(BuildSvtItemForm).to receive(:call!).and_return(true)
         allow(::SdRequests::ValidateForm).to receive(:call!).and_return(true)
         allow(::SdRequests::Save).to receive(:call!).and_return(true)
