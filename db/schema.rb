@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_20_102322) do
+ActiveRecord::Schema.define(version: 2021_10_25_020537) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2021_10_20_102322) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["application_id"], name: "index_claims_on_application_id"
-    t.index ["integration_id", "application_id"], name: "index_claims_on_integration_id_and_application_id", unique: true
+    t.index ["integration_id", "application_id", "ticket_identity"], name: "claim_by_integration_application_ticket_identity", unique: true
     t.index ["priority"], name: "index_claims_on_priority"
     t.index ["service_id"], name: "index_claims_on_service_id"
     t.index ["status"], name: "index_claims_on_status"
