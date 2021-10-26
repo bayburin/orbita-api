@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_25_020537) do
+ActiveRecord::Schema.define(version: 2021_10_25_083133) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -139,8 +139,8 @@ ActiveRecord::Schema.define(version: 2021_10_25_020537) do
 
   create_table "parameters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
-    t.string "name", null: false
-    t.text "value"
+    t.integer "schema_version", default: 1, null: false
+    t.json "payload"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id"], name: "index_parameters_on_claim_id"

@@ -2,7 +2,7 @@ class ServiceDesk::Api::V1::LkController < ServiceDesk::Api::V1::BaseController
   def create_svt_item_request
     create = ServiceDesk::Lk::CreateSvtItemRequest.call(
       current_user: current_user,
-      params: sd_request_params,
+      params: JSON.parse(params[:sd_request]).deep_symbolize_keys,
       doorkeeper_token: doorkeeper_token,
       new_files: params[:new_attachments] || []
     )
@@ -12,17 +12,6 @@ class ServiceDesk::Api::V1::LkController < ServiceDesk::Api::V1::BaseController
     else
       render json: create.error, status: :bad_request
     end
-  end
-
-  protected
-
-  def sd_request_params
-    ActionController::Parameters.new(JSON.parse(params[:sd_request])).permit(
-      :ticket_identity,
-      :integration_id,
-      :description,
-      parameters: [:common, :payload]
-    )
   end
 end
 

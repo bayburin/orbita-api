@@ -2,12 +2,10 @@
 class ParameterForm < Reform::Form
   property :id
   property :claim_id
-  property :name
-  property :value
+  property :schema_version
+  property :payload
 
-  validation do
-    config.messages.backend = :i18n
-
-    params { required(:name).filled }
+  def schema_version
+    super || 1
   end
 end

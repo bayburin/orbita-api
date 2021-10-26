@@ -6,7 +6,8 @@ RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:users).through(:workers).dependent(:destroy) }
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
-  it { is_expected.to have_many(:parameters).dependent(:destroy) }
+  it { is_expected.to have_one(:parameter).dependent(:destroy) }
+  it { is_expected.to have_one(:source_snapshot).dependent(:destroy) }
   it { is_expected.to belong_to(:application).optional.class_name('Doorkeeper::Application') }
 
   describe '.default_finished_at_plan' do

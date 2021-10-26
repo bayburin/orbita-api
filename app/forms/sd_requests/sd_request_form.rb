@@ -8,7 +8,7 @@ module SdRequests
     property :application_id
     property :priority
     property :finished_at_plan
-    collection :parameters, form: ParameterForm, populate_if_empty: Parameter
+    property :parameter, form: ParameterForm, populate_if_empty: Parameter
     collection :works, form: WorkForm, populator: :populate_works!
     collection :attachments, form: AttachmentForm, populator: :populate_attachments!
 

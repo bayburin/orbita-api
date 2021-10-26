@@ -15,8 +15,6 @@ module ServiceDesk
           # cl.finished_at_plan = ticket.sla
         end
         context.form = SdRequests::CreateForm.new(context.sd_request)
-
-        params.merge!(source_snapshot: { id_tn: current_user.id_tn })
       end
     end
   end
