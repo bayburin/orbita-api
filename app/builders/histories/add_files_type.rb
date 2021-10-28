@@ -1,5 +1,5 @@
-# Класс создает историю с типом add_files
 module Histories
+  # Создает историю с типом add_files
   class AddFilesType < BaseBuilder
     TYPE = 'add_files'.freeze
 

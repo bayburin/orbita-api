@@ -1,5 +1,5 @@
-# Класс создает историю с типом del_workers
 module Histories
+  # Создает историю с типом del_workers
   class DelWorkerType < BaseBuilder
     TYPE = 'del_workers'.freeze
 

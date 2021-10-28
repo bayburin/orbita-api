@@ -1,5 +1,5 @@
-# Класс создает историю с типом comment
 module Histories
+  # Создает историю с типом comment
   class CommentType < BaseBuilder
     TYPE = 'comment'.freeze
 

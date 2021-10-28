@@ -1,5 +1,5 @@
-# Класс создает историю с типом priority
 module Histories
+  # Создает историю с типом priority
   class PriorityType < BaseBuilder
     TYPE = 'priority'.freeze
 

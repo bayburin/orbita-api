@@ -65,7 +65,7 @@ FactoryBot.define do
     trait :add_tags do
       name { :add_tags }
       template { 'Add tags: {tags}' }
-      order { 110 }
+      order { 900 }
     end
 
     trait :priority do
@@ -78,6 +78,24 @@ FactoryBot.define do
       name { :add_self }
       template { 'Add Self' }
       order { 15 }
+    end
+
+    trait :to_user_message do
+      name { :to_user_message }
+      template { 'To User Message: {message}' }
+      order { 120 }
+    end
+
+    trait :to_user_accept do
+      name { :to_user_accept }
+      template { 'To User Accept: {message}' }
+      order { 130 }
+    end
+
+    trait :from_user_accept do
+      name { :from_user_accept }
+      template { 'From User Accept: {response}' }
+      order { 140 }
     end
   end
 end

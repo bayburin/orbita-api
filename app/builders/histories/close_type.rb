@@ -1,5 +1,5 @@
-# Класс создает историю с типом closed
 module Histories
+  # Создает историю с типом closed
   class CloseType < BaseBuilder
     TYPE = 'close'.freeze
 

@@ -423,7 +423,7 @@ EventType.create(
       name: :add_tags,
       description: 'Добавлены теги',
       template: 'Добавлены теги: {tags}',
-      order: 110
+      order: 900
     },
     {
       name: :priority,
@@ -438,6 +438,24 @@ EventType.create(
       template: 'Подключился к работе',
       is_public: true,
       order: 15
+    },
+    {
+      name: :to_user_message,
+      description: 'Пользователю отправлено сообщение',
+      template: 'Cообщил пользователю: {message}',
+      order: 120
+    },
+    {
+      name: :to_user_accept,
+      description: 'Пользователю отправлен запрос',
+      template: 'Отправил пользователю запрос: {message}',
+      order: 130
+    },
+    {
+      name: :from_user_accept,
+      description: 'Пользователь ответил на запрос',
+      template: 'Пользователь ответил на запрос: {answer}. {comment}',
+      order: 140
     }
   ]
 )

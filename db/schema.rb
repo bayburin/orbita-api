@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_25_083133) do
+ActiveRecord::Schema.define(version: 2021_10_27_091549) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -88,6 +88,9 @@ ActiveRecord::Schema.define(version: 2021_10_25_083133) do
     t.bigint "sender_id", null: false
     t.string "type"
     t.text "message"
+    t.boolean "accept_value"
+    t.text "accept_comment"
+    t.text "accept_endpoint"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id"], name: "index_messages_on_claim_id"

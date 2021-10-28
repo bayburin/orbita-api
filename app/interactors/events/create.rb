@@ -6,6 +6,9 @@ module Events
       sw.register('workflow', Events::WorkflowEvent)
       sw.register('close', Events::CloseEvent)
       sw.register('add_files', Events::AddFilesEvent)
+      sw.register('to_user_message', Events::ToUserMessageEvent)
+      sw.register('to_user_accept', Events::ToUserAcceptEvent)
+      sw.register('from_user_accept', Events::FromUserAcceptEvent)
 
       event = EventBuilder.build do |builder|
         builder.event_type = event_type

@@ -1,5 +1,5 @@
-# Класс создает историю с типом del_files
 module Histories
+  # Создает историю с типом del_files
   class DelFilesType < BaseBuilder
     TYPE = 'del_files'.freeze
 

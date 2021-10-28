@@ -1,5 +1,5 @@
-# Класс создает историю с типом open
 module Histories
+  # Создает историю с типом open
   class OpenType < BaseBuilder
     TYPE = 'open'.freeze
 

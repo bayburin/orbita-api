@@ -17,6 +17,9 @@ module Events
         expect(sw_dbl).to receive(:register).with('workflow', WorkflowEvent)
         expect(sw_dbl).to receive(:register).with('close', CloseEvent)
         expect(sw_dbl).to receive(:register).with('add_files', AddFilesEvent)
+        expect(sw_dbl).to receive(:register).with('to_user_message', ToUserMessageEvent)
+        expect(sw_dbl).to receive(:register).with('to_user_accept', ToUserAcceptEvent)
+        expect(sw_dbl).to receive(:register).with('from_user_accept', FromUserAcceptEvent)
 
         subject
       end

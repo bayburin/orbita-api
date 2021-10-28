@@ -1,5 +1,5 @@
-# Класс создает историю с типом workflow
 module Histories
+  # Создает историю с типом workflow
   class WorkflowType < BaseBuilder
     TYPE = 'workflow'.freeze
 

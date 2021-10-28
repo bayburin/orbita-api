@@ -1,5 +1,5 @@
-# Класс создает историю с типом postpone
 module Histories
+  # Создает историю с типом postpone
   class PostponeType < BaseBuilder
     TYPE = 'postpone'.freeze
 

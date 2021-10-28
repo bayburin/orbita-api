@@ -1,5 +1,5 @@
-# Класс создает историю с типом add_workers
 module Histories
+  # Создает историю с типом add_workers
   class AddWorkerType < BaseBuilder
     TYPE = 'add_workers'.freeze
 
