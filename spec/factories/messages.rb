@@ -20,5 +20,6 @@ FactoryBot.define do
     work
     accept_value { true }
     accept_endpoint { 'https://fake_endpoint' }
+    accept_comment { 'fake-comment' }
   end
 end

@@ -5,6 +5,6 @@ module Events
     include Interactor::Organizer
     include Requirements
 
-    organize FindOrCreateWork, CreateFromUserAccept
+    organize FindOrCreateWork, CreateFromUserAccept, SendUserAnswer
   end
 end

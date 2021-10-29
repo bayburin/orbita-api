@@ -7,6 +7,7 @@ module Events
     before do
       allow(FindOrCreateWork).to receive(:call!).and_return(true)
       allow(CreateFromUserAccept).to receive(:call!).and_return(true)
+      allow(SendUserAnswer).to receive(:call!).and_return(true)
     end
 
     describe '.call' do
