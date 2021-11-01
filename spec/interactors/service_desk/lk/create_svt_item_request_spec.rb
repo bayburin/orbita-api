@@ -11,6 +11,7 @@ module ServiceDesk
         allow(::SdRequests::ValidateForm).to receive(:call!).and_return(true)
         allow(::SdRequests::Save).to receive(:call!).and_return(true)
         allow(::SdRequests::BroadcastOnCreate).to receive(:call!).and_return(true)
+        allow(::SdRequests::CreateInExternalApp).to receive(:call!).and_return(true)
       end
 
       describe '.call' do

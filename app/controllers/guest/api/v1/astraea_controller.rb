@@ -2,7 +2,9 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   def create
     kase = Astraea::Kase.new(astraea_params)
     sd_request = SdRequest.new(application_id: doorkeeper_token.application.id)
-    serialized_adapter = SdRequestAdapterSerializer.new(SdRequestAdapter.new(kase, current_user)).as_json(include: ['*', 'works.workers', 'works.workflows'])
+    serialized_adapter = SdRequestAdapterSerializer.new(
+      SdRequestAdapter.new(kase, current_user)).as_json(include: ['*', 'works.workers', 'works.workflows']
+    )
     create = Guest::Astraea::Create.call(
       current_user: current_user,
       form: SdRequests::CreateForm.new(sd_request),
@@ -29,7 +31,9 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
     update = Guest::Astraea::Update.call(
       current_user: current_user,
       form: SdRequests::UpdateForm.new(sd_request),
-      params: SdRequestAdapterSerializer.new(SdRequestAdapter.new(kase, current_user, sd_request)).as_json(include: ['*', 'works.workers', 'works.workflows'])
+      params: SdRequestAdapterSerializer.new(
+        SdRequestAdapter.new(kase, current_user, sd_request)).as_json(include: ['*', 'works.workers', 'works.workflows']
+      )
     )
 
     if update.success?

@@ -23,8 +23,9 @@ module ServiceDesk
         common_params.each do |key, val|
           parameter_schema[:common].push(
             key: key,
+            key_desc: desc_key(key),
             value: val,
-            desc: desc(key),
+            value_desc: desc_value(val),
             order: order
           )
 
@@ -38,7 +39,7 @@ module ServiceDesk
             str.each do |key, val|
               parameter_schema[:table][:columns].push(
                 key: key,
-                desc: desc(key),
+                desc: desc_key(key),
                 order: order
               )
             end
@@ -46,7 +47,13 @@ module ServiceDesk
             order = order + 10
           end
 
-          parameter_schema[:table][:data].push(str)
+          str.each do |key, val|
+            parameter_schema[:table][:data].push({
+              key: key,
+              value: val,
+              desc: desc_value(val)
+            })
+          end
         end
 
         params[:parameter] = {
@@ -55,18 +62,24 @@ module ServiceDesk
         }
       end
 
-      def desc(attr)
+      def desc_key(attr)
         case attr.to_s
-        when 'tn'
-          'Табельный номер'
-        when 'fio'
-          'ФИО'
-        when 'svt_type'
-          'Тип ВТ'
-        when 'reason'
-          'Обоснование'
-        when 'invent_num'
-          'Инвентарный номер'
+        when 'tn' then 'Табельный номер'
+        when 'fio' then 'ФИО'
+        when 'type' then 'Тип ВТ'
+        when 'reason' then 'Обоснование'
+        when 'invent_num' then 'Инвентарный номер'
+        when 'arrears_ids' then 'Список РМ с задолжностями'
+        else attr
+        end
+      end
+
+      def desc_value(attr)
+        case attr.to_s
+        when 'pc' then 'Компьютер'
+        when 'allin1' then 'Моноблок'
+        when 'notebook' then 'Ноутбук'
+        else attr
         end
       end
     end
