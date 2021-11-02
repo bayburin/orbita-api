@@ -9,7 +9,7 @@ module ParameterSchema
       def adaptee
         result = {
           common: {},
-          table_data: {}
+          table_data: []
         }
 
         @payload.common&.each do |el|
@@ -20,10 +20,11 @@ module ParameterSchema
         end
 
         @payload.table&.data&.each do |el|
-          key = el.key
-          value = el.value
-
-          result[:table_data][key] = value
+          obj = el.reduce({}) do |acc, (key, val)|
+            acc[key] = val['value']
+            acc
+          end
+          result[:table_data] << obj
         end
 
         result

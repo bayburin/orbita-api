@@ -17,12 +17,13 @@ module ParameterSchema
           attribute :desc, Types::String # Описание ключа
           attribute :order, Types::Integer
         end
-        # attribute? :data, Types::Array.of(Types::Hash)
-        attribute? :data, Types::Array do
-          attribute :key, Types::String # Ключ
-          attribute :value, Types::String # Значение
-          attribute :desc, Types::String # Описание значения
-        end
+        # Схема { [dynamic_key]: { value: pc, desc: 'Компьютер' } }
+        attribute? :data, Types::Array.of(Types::Hash)
+        # attribute? :data, Types::Array do
+        #   attribute :key, Types::String # Ключ
+        #   attribute :value, Types::String # Значение
+        #   attribute :desc, Types::String # Описание значения
+        # end
       end
     end
   end

@@ -33,10 +33,10 @@ module ServiceDesk
         end
 
         # Заполнение секции table
-        table_params.each_with_index do |str, i|
+        table_params.each_with_index do |hash, i|
           if i.zero?
             order = 10
-            str.each do |key, val|
+            hash.each do |key, val|
               parameter_schema[:table][:columns].push(
                 key: key,
                 desc: desc_key(key),
@@ -47,13 +47,14 @@ module ServiceDesk
             order = order + 10
           end
 
-          str.each do |key, val|
-            parameter_schema[:table][:data].push({
-              key: key,
+          obj = hash.reduce({}) do |acc, (key, val)|
+            acc[key] = {
               value: val,
               desc: desc_value(val)
-            })
+            }
+            acc
           end
+          parameter_schema[:table][:data].push(obj)
         end
 
         params[:parameter] = {
