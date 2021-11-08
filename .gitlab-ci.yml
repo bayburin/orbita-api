@@ -19,7 +19,7 @@ docker-build-staging:
     - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" down --remove-orphans
     - docker-compose -f docker-compose.stage.yml -p $DEPLOY_PROJECT_NAME -H "ssh://$DEPLOY_USER@$STAGING_SERVER" up -d
   only:
-    - develop
+    - feature/lk-svt-item-request
 
 docker-build-production:
   stage: build
