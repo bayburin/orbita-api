@@ -42,9 +42,9 @@ module ServiceDesk
                 desc: desc_key(key),
                 order: order
               )
-            end
 
-            order = order + 10
+              order = order + 10
+            end
           end
 
           obj = hash.reduce({}) do |acc, (key, val)|
