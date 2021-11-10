@@ -12,7 +12,7 @@ module Events
 
       event = EventBuilder.build do |builder|
         builder.event_type = event_type
-        builder.payload = payload
+        builder.payload = payload if payload
         builder.files = files
         builder.user = user
         builder.claim = claim

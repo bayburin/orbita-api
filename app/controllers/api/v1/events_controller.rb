@@ -3,8 +3,8 @@ class Api::V1::EventsController < Api::V1::BaseController
     create = Events::Create.call(
       claim: Claim.find(event_params[:claim_id]),
       user: current_user,
-      event_type: params[:event_type],
-      payload: params[:payload],
+      event_type: event_params[:event_type],
+      payload: event_params[:payload],
       need_update_astraea: true
     )
 
