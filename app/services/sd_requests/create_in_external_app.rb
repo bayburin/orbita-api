@@ -8,16 +8,20 @@ module SdRequests
     def call
       endpoint =
         case sd_request.ticket_identity
-        when 783 then 'https://svt.iss-reshetnev.ru/requests'
+        when 783 then ENV['TMP_SVT_NEW_PC']
         end
 
-      files = sd_request.attachments.map(&:attachment)
+      files = sd_request.attachments.map { |attachment| attachment.attachment.file }
       parameters = sd_request.parameter&.payload_for_external_app
       response = Api.create(endpoint, sd_request, parameters, files)
 
-      unless response.success?
+      if response.success?
+        sd_request.update(integration_id: JSON.parse(response.body)['id'])
+      else
         Rails.logger.error { "Не удалось создать заявку по адресу #{endpoint}: #{response.body}".red }
       end
+    rescue Encoding::CompatibilityError
+      Rails.logger.error { "Не удалось создать заявку по адресу #{endpoint}".red }
     end
   end
 end

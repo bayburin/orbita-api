@@ -31,7 +31,7 @@ module Connection
   module ClassMethods
     def multipart_connect
       Faraday.new(url: api_const) do |faraday|
-        faraday.response :logger, Rails.logger
+        faraday.response :logger, Rails.logger, { bodies: true, log_level: :debug }
         faraday.request :multipart
         faraday.adapter Faraday.default_adapter
       end
