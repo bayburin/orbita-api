@@ -10,6 +10,7 @@ module SdRequests
         cl.ticket = ticket
         cl.build_works_by_responsible_users(ticket.responsible_users)
         cl.application_id = doorkeeper_token.application.id
+        cl.build_claim_application(doorkeeper_token.application.id, params[:integration_id])
         cl.status = :at_work
         # TODO: Здесь необходимо с помощью АСУ ФЭЗ расчитать sla.
         # cl.finished_at_plan = ticket.sla

@@ -18,6 +18,21 @@ class SdRequestBuilder < BaseBuilder
     model.works << work
   end
 
+  # Добавляет "приложение" и соответствующий "внешний id" к заявке
+  def add_claim_application(claim_application)
+    model.claim_applications << claim_application
+  end
+
+  # Создает объект-связку "приложение" и прикрепляет его к заявке
+  def build_claim_application(application_id, integration_id)
+    claim_application = ClaimApplication.new(
+      application_id: application_id,
+      integration_id: integration_id
+    )
+
+    add_claim_application(claim_application)
+  end
+
   # Создает работы по списку ответственных.
   # users - массив объектов вида { tn: 123 }
   def build_works_by_responsible_users(users)

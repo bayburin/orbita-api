@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_091549) do
+ActiveRecord::Schema.define(version: 2021_11_12_070845) do
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "claim_id", null: false
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 2021_10_27_091549) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["claim_id"], name: "index_attachments_on_claim_id"
+  end
+
+  create_table "claim_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "claim_id", null: false
+    t.bigint "application_id", null: false
+    t.bigint "integration_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["application_id"], name: "index_claim_applications_on_application_id"
+    t.index ["claim_id"], name: "index_claim_applications_on_claim_id"
   end
 
   create_table "claims", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -225,6 +235,8 @@ ActiveRecord::Schema.define(version: 2021_10_27_091549) do
   end
 
   add_foreign_key "attachments", "claims"
+  add_foreign_key "claim_applications", "claims"
+  add_foreign_key "claim_applications", "oauth_applications", column: "application_id"
   add_foreign_key "claims", "oauth_applications", column: "application_id"
   add_foreign_key "groups", "departments"
   add_foreign_key "histories", "event_types"

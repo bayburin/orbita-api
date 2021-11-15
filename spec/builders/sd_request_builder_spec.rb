@@ -36,5 +36,22 @@ RSpec.describe SdRequestBuilder do
       it { expect(subject.model.works.find_by(group_id: manager.group_id).users.first).to eq manager }
       it { expect(subject.model.works.find_by(group_id: admin.group_id).users.first).to eq admin }
     end
+
+    describe '#add_claim_application' do
+      let(:claim_application) { build(:claim_application) }
+      before { subject.add_claim_application(claim_application) }
+
+      it { expect(subject.model.claim_applications.length).to eq 1 }
+    end
+
+    describe '#build_claim_application' do
+      let(:application_id) { 1 }
+      let(:integration_id) { 2 }
+      before { subject.build_claim_application(application_id, integration_id) }
+
+      it { expect(subject.model.claim_applications.length).to eq 1 }
+      it { expect(subject.model.claim_applications.first.application_id).to eq application_id }
+      it { expect(subject.model.claim_applications.first.integration_id).to eq integration_id }
+    end
   end
 end

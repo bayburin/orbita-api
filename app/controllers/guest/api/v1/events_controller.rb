@@ -1,6 +1,8 @@
 class Guest::Api::V1::EventsController < Guest::Api::V1::BaseController
   def create
-    claim = Claim.find_by(integration_id: params[:integration_id], application_id: doorkeeper_token.application.id)
+    claim = Claim
+              .joins(:claim_applications)
+              .find_by(claim_applications: { integration_id: params[:integration_id], application_id: doorkeeper_token.application.id })
     create = Events::Create.call(
       claim: claim,
       user: current_user,

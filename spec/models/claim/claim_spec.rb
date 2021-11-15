@@ -6,9 +6,10 @@ RSpec.describe Claim, type: :model do
   it { is_expected.to have_many(:users).through(:workers).dependent(:destroy) }
   it { is_expected.to have_many(:comments).dependent(:destroy) }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
+  it { is_expected.to have_many(:claim_applications).dependent(:destroy) }
+  it { is_expected.to have_many(:applications).through(:claim_applications).class_name('Doorkeeper::Application') }
   it { is_expected.to have_one(:parameter).dependent(:destroy) }
   it { is_expected.to have_one(:source_snapshot).dependent(:destroy) }
-  it { is_expected.to belong_to(:application).optional.class_name('Doorkeeper::Application') }
 
   describe '.default_finished_at_plan' do
     let!(:time) { Time.parse('2020-08-20 10:00:15') }

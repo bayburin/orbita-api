@@ -20,7 +20,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     if sd_request
       render(
         json: sd_request,
-        include: ['source_snapshot', 'comments', 'parameter', 'attachments', 'works.histories', 'works.workers', 'works.workflows'],
+        include: ['*', 'works.histories', 'works.workers', 'works.workflows'],
       )
     else
       render json: { sd_request: nil }, status: :not_found
@@ -38,7 +38,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     if create.success?
       render(
         json: create.sd_request,
-        include: ['source_snapshot', 'comments', 'parameter', 'attachments', 'works.histories', 'works.workers', 'works.workflows']
+        include: ['*', 'works.histories', 'works.workers', 'works.workflows']
       )
     else
       render json: create.error, status: :bad_request
@@ -64,7 +64,7 @@ class Api::V1::SdRequestsController < Api::V1::BaseController
     if update.success?
       render(
         json: update.sd_request,
-        include: ['source_snapshot', 'comments', 'parameter', 'attachments', 'works.histories', 'works.workers', 'works.workflows']
+        include: ['*', 'works.histories', 'works.workers', 'works.workflows']
       )
     else
       render json: update.error, status: :bad_request

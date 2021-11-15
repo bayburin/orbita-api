@@ -5,10 +5,10 @@ class Claim < ApplicationRecord
   has_many :users, through: :workers, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :attachments, dependent: :destroy
+  has_many :claim_applications, dependent: :destroy
+  has_many :applications, through: :claim_applications, class_name: 'Doorkeeper::Application'
   has_one :parameter, dependent: :destroy
   has_one :source_snapshot, dependent: :destroy
-
-  belongs_to :application, optional: true, class_name: 'Doorkeeper::Application'
 
   enum priority: { default: 1, medium: 2, high: 3 }, _suffix: true
 
