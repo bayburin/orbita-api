@@ -11,17 +11,16 @@ class SdRequestAdapter
 
   attr_reader :works
 
-  def initialize(kase, current_user, sd_request = nil)
+  # kase - кейс, полученный из Astraea
+  # current_user - текущий пользователь
+  # sd_request - ! Необходим только во время обновления заявки ! Текущая заявка в Орбите
+  def initialize(kase, current_user, sd_request: nil)
     @kase = kase
     @current_user = current_user
     @sd_request = sd_request
 
     load_ticket if @kase.ticket_id
     build_works if @kase.users.any?
-  end
-
-  def integration_id
-    @kase.case_id
   end
 
   def service_id

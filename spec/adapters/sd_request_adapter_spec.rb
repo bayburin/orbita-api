@@ -5,7 +5,6 @@ RSpec.describe SdRequestAdapter do
   let!(:kase) { build(:astraea_kase) }
   subject { described_class.new(kase, current_user) }
 
-  it { expect(subject.integration_id).to eq kase.case_id }
   it { expect(subject.description).to eq kase.desc }
   it { expect(subject.priority).to eq kase.severity }
 
@@ -15,7 +14,7 @@ RSpec.describe SdRequestAdapter do
     context 'when time is nil' do
       let!(:sd_request) { create(:sd_request) }
       let!(:kase) { build(:astraea_kase, time: nil) }
-      subject { described_class.new(kase, current_user, sd_request) }
+      subject { described_class.new(kase, current_user, sd_request: sd_request) }
 
       it { expect(subject.finished_at_plan).to eq sd_request.finished_at_plan.to_s }
     end
@@ -113,7 +112,7 @@ RSpec.describe SdRequestAdapter do
       let(:kase) { build(:astraea_kase, users: [create(:manager).tn, create(:manager).tn, new_user.tn]) }
       let!(:work1) { create(:work, claim: sd_request, group: remove_user.group, workers: [build(:worker, user: remove_user)]) }
       let!(:work2) { create(:work, claim: sd_request, group: new_user.group, workers: []) }
-      subject { described_class.new(kase, current_user, sd_request) }
+      subject { described_class.new(kase, current_user, sd_request: sd_request) }
 
       it { expect(subject.works.find { |w| w.id == work1.id }.workers.first._destroy).to eq true }
       it { expect(subject.works.length).to eq sd_request.works.length + kase.users.length }

@@ -1,5 +1,5 @@
 class SdRequestAdapterSerializer < ActiveModel::Serializer
-  attributes :integration_id, :service_id, :service_name, :ticket_identity, :ticket_name, :description, :status, :priority, :finished_at_plan, :comments
+  attributes :service_id, :service_name, :ticket_identity, :ticket_name, :description, :status, :priority, :finished_at_plan, :comments
 
   has_one :source_snapshot
   has_many :works
