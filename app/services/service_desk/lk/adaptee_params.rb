@@ -67,6 +67,7 @@ module ServiceDesk
         case attr.to_s
         when 'tn' then 'Табельный номер'
         when 'fio' then 'ФИО'
+        when 'lk_id' then 'Номер заявки в ЛК'
         when 'type' then 'Тип ВТ'
         when 'reason' then 'Обоснование'
         when 'invent_num' then 'Инвентарный номер'
