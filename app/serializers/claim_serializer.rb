@@ -1,5 +1,5 @@
 class ClaimSerializer < ActiveModel::Serializer
-  attributes :id, :application_id, :type, :description, :status, :priority, :runtime
+  attributes :id, :type, :description, :status, :priority, :runtime
 
   has_many :works
   has_many :comments, each_serializer: MessageSerializer

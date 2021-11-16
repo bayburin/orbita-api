@@ -4,7 +4,7 @@ module Astraea
   RSpec.describe UpdateSdRequest do
     let(:user) { create(:admin) }
     let(:astraea_form_adapter_dbl) { instance_double(FormAdapter, read_attribute_for_serialization: {}) }
-    let(:sd_request) { create(:sd_request, integration_id: 12345) }
+    let(:sd_request) { create(:sd_request) }
     let(:form_dbl) { double(:form, model: sd_request) }
     let(:json_form) { { foo: 'bar' }.as_json }
     let(:files) do

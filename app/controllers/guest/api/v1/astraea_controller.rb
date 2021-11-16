@@ -2,7 +2,6 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   def create
     kase = Astraea::Kase.new(astraea_params)
     sd_request = SdRequestBuilder.build do |cl|
-      cl.application_id = doorkeeper_token.application.id
       cl.build_claim_application(doorkeeper_token.application.id, kase.case_id)
     end
     serialized_adapter = SdRequestAdapterSerializer.new(SdRequestAdapter.new(kase, current_user))

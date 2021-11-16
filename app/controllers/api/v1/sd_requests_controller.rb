@@ -1,12 +1,12 @@
 class Api::V1::SdRequestsController < Api::V1::BaseController
   def index
     sd_requests = FindSdRequestsQuery
-                    .new(SdRequest.includes(:source_snapshot, :comments, works: [:workers, :histories]))
+                    .new(SdRequest.includes(:claim_applications, :source_snapshot, :comments, works: [:workers, :histories]))
                     .call(params)
 
     render(
       json: sd_requests,
-      include: ['source_snapshot', 'comments', 'works.histories', 'works.workers'],
+      include: ['claim_applications', 'source_snapshot', 'comments', 'works.histories', 'works.workers'],
       meta: pagination_dict(sd_requests)
     )
   end

@@ -8,7 +8,6 @@ RSpec.describe SdRequestBuilder do
     subject { described_class.new }
 
     it { expect(subject.respond_to?(:ticket=)).to be_truthy }
-    it { expect(subject.respond_to?(:application_id=)).to be_truthy }
     it { expect(subject.respond_to?(:status=)).to be_truthy }
 
     describe '#add_works' do

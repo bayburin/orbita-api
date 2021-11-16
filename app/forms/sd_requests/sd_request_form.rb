@@ -4,7 +4,6 @@ module SdRequests
     feature Coercion
 
     property :id
-    property :application_id
     property :priority
     property :finished_at_plan
     property :parameter, form: ParameterForm, populate_if_empty: Parameter

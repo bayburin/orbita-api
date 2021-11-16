@@ -6,7 +6,7 @@ class SdRequestBuilder < BaseBuilder
     super()
   end
 
-  delegate :ticket=, :application_id=, :status=, to: :model
+  delegate :ticket=, :status=, to: :model
 
   # Создает объект Runtime
   def set_runtime(finished_at_plan, finished_at)

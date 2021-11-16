@@ -56,6 +56,6 @@ class Claim < ApplicationRecord
 
     return unless application
 
-    claim_applications.find_by(application_id: application.id).integration_id
+    claim_applications.find_by(application_id: application.id).try(:integration_id)
   end
 end

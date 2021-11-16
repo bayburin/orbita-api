@@ -62,16 +62,8 @@ module Astraea
       context 'when Astraea::Api.save_sd_request finished with error' do
         let(:response) { double(:astraea_response, success?: false) }
 
-        it 'does not update integration_id of sd_request' do
-          context
-
-          expect(sd_request.integration_id).to be_nil
-        end
-
-        it 'does not update application_id of sd_request' do
-          context
-
-          expect(sd_request.application_id).to be_nil
+        it 'does not create claim_applications record' do
+          expect { context }.not_to change { ClaimApplication.count }
         end
       end
 
