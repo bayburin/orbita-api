@@ -41,8 +41,9 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
   end
 
   describe 'PUT #update' do
-    let!(:sd_request) { create(:sd_request, integration_id: 456, application_id: access_token.application.id) }
-    let(:params) { { id: sd_request.integration_id, id_tn: 123, sd_request: attributes_for(:astraea_kase) } }
+    let!(:sd_request) { create(:sd_request) }
+    let!(:claim_application) { create(:claim_application, claim: sd_request, integration_id: 456, application_id: access_token.application.id) }
+    let(:params) { { id: claim_application.integration_id, id_tn: 123, sd_request: attributes_for(:astraea_kase) } }
     let(:update_form_dbl) { double(:update_form, success?: true, sd_request: sd_request, error: 'errors') }
     before do
       allow(SdRequest).to receive(:find_by).and_return(sd_request)
@@ -50,7 +51,7 @@ RSpec.describe Guest::Api::V1::AstraeaController, type: :controller do
     end
 
     context 'when claim not found' do
-      before { allow(SdRequest).to receive_message_chain(:includes, :find_by).and_return(nil) }
+      before { allow_any_instance_of(ClaimsQuery).to receive_message_chain(:search_by_integration, :includes, :first).and_return(nil) }
 
       it 'respond with 404 status' do
         put :update, params: params, as: :json

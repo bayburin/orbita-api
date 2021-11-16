@@ -45,7 +45,17 @@ class Claim < ApplicationRecord
     self.finished_at = runtime.finished_at
   end
 
+  # Возвращает работу для указанного пользователя
   def work_for(user)
     works.joins(:workers).find_by(workers: { user_id: user.id })
+  end
+
+  # Возвращает integration_id для приложения с указанным именем
+  def integration_id_for(application_name)
+    application = Doorkeeper::Application.find_by(name: application_name.to_s)
+
+    return unless application
+
+    claim_applications.find_by(application_id: application.id).integration_id
   end
 end

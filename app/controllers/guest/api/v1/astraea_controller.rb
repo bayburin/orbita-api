@@ -21,9 +21,10 @@ class Guest::Api::V1::AstraeaController < Guest::Api::V1::BaseController
   end
 
   def update
-    sd_request = SdRequest
+    sd_request = ClaimsQuery.new
+                   .search_by_integration(doorkeeper_token.application.id, params[:id])
                    .includes(comments: :sender, works: [:group, workers: :user, workflows: :sender])
-                   .find_by(integration_id: params[:id], application_id: doorkeeper_token.application.id)
+                   .first
     unless sd_request
       render json: { message: I18n.t('controllers.api.v1.sd_requests.not_found') }, status: :not_found
       return

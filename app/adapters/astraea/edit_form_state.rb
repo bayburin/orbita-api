@@ -7,7 +7,7 @@ module Astraea
     end
 
     def case_id
-      @form.model.claim_applications.find_by(application_id: Doorkeeper::Application.find_by(name: 'Astraea').id).integration_id
+      @form.model.integration_id_for('Astraea')
     end
 
     def desc

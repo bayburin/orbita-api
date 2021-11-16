@@ -8,7 +8,7 @@ module Astraea
     def call
       return unless need_update_astraea
 
-      CloseCaseWorker.perform_async(event.claim.integration_id, event.user.tn)
+      CloseCaseWorker.perform_async(event.claim.integration_id_for('Astraea'), event.user.tn)
     end
   end
 end

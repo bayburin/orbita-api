@@ -50,13 +50,13 @@ module Astraea
       it 'update integration_id of sd_request' do
         context
 
-        expect(sd_request.integration_id).to eq 123
+        expect(sd_request.integration_id_for('Astraea')).to eq 123
       end
 
       it 'update application_id of sd_request' do
         context
 
-        expect(sd_request.application_id).to eq astraea_app.id
+        expect(sd_request.claim_applications.first.application_id).to eq astraea_app.id
       end
 
       context 'when Astraea::Api.save_sd_request finished with error' do

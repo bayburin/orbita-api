@@ -70,5 +70,15 @@ RSpec.describe Claim, type: :model do
 
       expect(subject.work_for(user)).to eq work_1
     end
+
+    describe 'integration_id_for' do
+      let(:app) { create(:oauth_application, name: 'app_name') }
+      let(:integration_id) { 123 }
+      let!(:claim_application) { create(:claim_application, claim: claim, application: app, integration_id: integration_id) }
+      subject(:claim) { create(:claim) }
+
+      it { expect(subject.integration_id_for('app_name')).to eq integration_id }
+      it { expect(subject.integration_id_for('error_name')).to be_nil }
+    end
   end
 end
