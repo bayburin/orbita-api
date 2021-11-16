@@ -10,7 +10,8 @@ module Astraea
     let!(:work) { create(:work) }
     let!(:worker) { create(:worker, work: work) }
     let!(:workflow) { create(:workflow, work: work) }
-    let!(:sd_request) { create(:sd_request, integration_id: 11, source_snapshot: source_snapshot, works: [work]) }
+    let!(:sd_request) { create(:sd_request, source_snapshot: source_snapshot, works: [work]) }
+    let!(:claim_application) { create(:claim_application, claim: sd_request, integration_id: 11, application: create(:oauth_application, name: 'Astraea')) }
     let(:new_user) { create(:manager) }
     let(:form) { SdRequests::CreateForm.new(sd_request) }
     subject { described_class.new(form, user, 'new') }
@@ -30,7 +31,7 @@ module Astraea
     context 'when it is new form' do
       before { allow(form.model).to receive(:id).and_return(nil) }
 
-      it { expect(subject.case_id).to eq form.integration_id }
+      it { expect(subject.case_id).to be_nil }
       it { expect(subject.user_id).to eq user.tn }
       it { expect(subject.user_tn).to eq source_snapshot.tn }
       it { expect(subject.phone).to eq source_snapshot.user_attrs[:phone] }
@@ -50,6 +51,7 @@ module Astraea
       let(:form) { SdRequests::UpdateForm.new(sd_request) }
       subject { described_class.new(form, user, 'update') }
 
+      it { expect(subject.case_id).to eq 11  }
       it { expect(subject.desc).to be_nil }
       it { expect(subject.user_id).to eq user.tn }
       it { expect(subject.user_tn).to eq source_snapshot.tn }

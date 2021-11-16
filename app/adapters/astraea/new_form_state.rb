@@ -6,6 +6,10 @@ module Astraea
       @source_snapshot = form.source_snapshot
     end
 
+    def case_id
+      nil
+    end
+
     def desc
       @form.description
     end

@@ -12,9 +12,9 @@ module Astraea
 
       if astraea_response.success?
         Rails.logger.info { 'Данные в Astraea сохранены'.green }
-        form.model.update(
-          integration_id: JSON.parse(astraea_response.body)['case_id'],
-          application_id: Doorkeeper::Application.find_by(name: 'Astraea').id
+        form.model.claim_applications.create(
+          application_id: Doorkeeper::Application.find_by(name: 'Astraea').id,
+          integration_id: JSON.parse(astraea_response.body)['case_id']
         )
       else
         Rails.logger.error { 'Ошибка. Данные в Astraea не сохранены'.red }

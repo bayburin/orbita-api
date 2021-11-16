@@ -5,7 +5,7 @@ module Astraea
     end
 
     def case_id
-      @form.integration_id
+      raise 'Необходимо реализовать метод case_ids'
     end
 
     def user_tn

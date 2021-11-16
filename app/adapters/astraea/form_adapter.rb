@@ -14,7 +14,7 @@ module Astraea
 
     # ID кейса
     def case_id
-      @form.integration_id
+      @state.case_id
     end
 
     # Табельный работника, который выполнил некоторое действие
