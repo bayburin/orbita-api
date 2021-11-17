@@ -69,10 +69,10 @@ RSpec.describe SdRequestAdapter do
     let!(:kase) { build(:astraea_kase, ticket_id: 11) }
     let(:ticket) { build(:sd_ticket) }
     let(:ticket_response_dbl) { double(:response, success?: true, body: ticket) }
-    before { allow(ServiceDesk::Api).to receive(:ticket).and_return(ticket_response_dbl) }
+    before { allow(ServiceDesk::ServerApi).to receive(:ticket).and_return(ticket_response_dbl) }
 
     it 'load ticket data' do
-      expect(ServiceDesk::Api).to receive(:ticket).with(kase.ticket_id)
+      expect(ServiceDesk::ServerApi).to receive(:ticket).with(kase.ticket_id)
 
       described_class.new(kase, current_user)
     end

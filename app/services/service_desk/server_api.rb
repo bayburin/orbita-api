@@ -1,6 +1,6 @@
 module ServiceDesk
   # Содержит API для обращения к порталу техподдержки.
-  class Api
+  class ServerApi
     include Connection
 
     API_ENDPOINT = ENV['SERVICE_DESK_URL']

@@ -72,7 +72,7 @@ class SdRequestAdapter
   protected
 
   def load_ticket
-    response = ServiceDesk::Api.ticket(@kase.ticket_id)
+    response = ServiceDesk::ServerApi.ticket(@kase.ticket_id)
 
     if response.success?
       @ticket = ServiceDesk::Ticket.new(response.body)

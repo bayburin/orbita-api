@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :v1 do
         get 'welcome', to: 'base#welcome'
+        get 'lk', to: 'lk#index'
         post 'lk/create_svt_item_request', to: 'lk#create_svt_item_request'
         resources :sd_requests, only: :create
       end

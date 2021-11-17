@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module ServiceDesk
-  RSpec.describe Api do
+  RSpec.describe ServerApi do
     subject { described_class }
 
     it 'define API_ENDPOINT constant' do

@@ -1,4 +1,12 @@
 class ServiceDesk::Api::V1::LkController < ServiceDesk::Api::V1::BaseController
+  def index
+    sd_requests = FindSdRequestsQuery
+                    .new(SdRequest.includes(:source_snapshot, :attachments, works: :messages))
+                    .call(params)
+
+    render json: sd_requests
+  end
+
   def create_svt_item_request
     create = ServiceDesk::Lk::CreateSvtItemRequest.call(
       current_user: current_user,
