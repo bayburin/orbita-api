@@ -72,6 +72,7 @@ module ServiceDesk
         when 'reason' then 'Обоснование'
         when 'invent_num' then 'Инвентарный номер'
         when 'arrears_ids' then 'Список РМ с задолжностями'
+        when 'description' then 'Описание'
         else attr
         end
       end
