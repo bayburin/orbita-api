@@ -17,6 +17,7 @@ module SdRequests
       end
 
       context.fail!(error: form.errors.messages) unless form.validate(params)
+      context.fail!(error: form.model.errors.messages) unless form.model.valid?
     end
   end
 end

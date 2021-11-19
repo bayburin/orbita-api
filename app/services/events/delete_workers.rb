@@ -7,7 +7,7 @@ module Events
 
     def call
       users = User.where(tn: event.payload['tns'])
-      workers = Worker.joins(:work).where(works: { claim: event.claim }, user: users)
+      workers = WorkersQuery.new.search_workers_into_claim(event.claim, users)
       workers.map { |worker| history_store.add_to_combine(:del_workers, worker.user_id) }
 
       if workers.any?
