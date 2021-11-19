@@ -20,6 +20,8 @@ module Events
         expect(sw_dbl).to receive(:register).with('to_user_message', ToUserMessageEvent)
         expect(sw_dbl).to receive(:register).with('to_user_accept', ToUserAcceptEvent)
         expect(sw_dbl).to receive(:register).with('from_user_accept', FromUserAcceptEvent)
+        expect(sw_dbl).to receive(:register).with('add_workers', AddWorkersEvent)
+        expect(sw_dbl).to receive(:register).with('del_workers', DelWorkersEvent)
 
         subject
       end

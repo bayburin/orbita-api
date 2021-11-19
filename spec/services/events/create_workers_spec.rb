@@ -36,7 +36,9 @@ module Events
       it { expect(context.event.claim.works.find_by(group_id: user_3.group_id).workers.first.user_id).to eq user_3.id }
 
       it 'add history to history_store' do
-        expect(history_store_dbl).to receive(:add_to_combine).exactly(2).times
+        [user_2, user_3].each do |u|
+          expect(history_store_dbl).to receive(:add_to_combine).with(:add_workers, u.id)
+        end
 
         context
       end
@@ -84,7 +86,7 @@ module Events
         end
 
         it { expect(context).to be_a_failure }
-        it { expect(context.error).to eq error_msg }
+        it { expect(context.error).to match_array(error_msg) }
 
         it 'does not save history' do
           expect(history_store_dbl).not_to receive(:save!)

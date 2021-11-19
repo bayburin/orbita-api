@@ -10,6 +10,7 @@ module Events
       sw.register('to_user_accept', Events::ToUserAcceptEvent)
       sw.register('from_user_accept', Events::FromUserAcceptEvent)
       sw.register('add_workers', Events::AddWorkersEvent)
+      sw.register('del_workers', Events::DelWorkersEvent)
 
       event = EventBuilder.build do |builder|
         builder.event_type = event_type
