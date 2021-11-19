@@ -6,7 +6,7 @@ module Events
     delegate :event, :history_store, :from_user_accept, to: :context
 
     def call
-      context.from_user_accept = event.work.to_user_accepts.find(event.payload['id'])
+      context.from_user_accept = ToUserAccept.where(work: event.claim.works).find(event.payload['id'])
       history_store.add(
         Histories::FromUserAcceptType.new(
           answer: event.payload['accept_value'] == true ? 'Согласовано' : 'Отклонено',
